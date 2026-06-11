@@ -595,6 +595,15 @@ async function loadFromCloud() {
     const record = data.record;
     if (record.examHistory) S.examHistory = record.examHistory;
     if (record.topicDone) S.topicDone = record.topicDone;
+    if (record.eggPin) S.cloudPin = record.eggPin;
+    if (record.hockeyStats) S.hockeyStats = record.hockeyStats;
+    if (record.lessonContent) {
+      // Merge rich lesson content into ssTopics
+      record.lessonContent.forEach(lc => {
+        const topic = ssTopics.find(t => t.id === lc.id);
+        if (topic) topic.lesson = lc.lesson;
+      });
+    }
     lastSyncedData = JSON.stringify(buildSyncPayload());
     console.log("Loaded from cloud ✓");
     const el=document.getElementById("syncStatus");
@@ -640,7 +649,579 @@ function buildSyncPayload() {
     },
     // Granular breakdowns
     versionBests,
-    topicAverages
+    topicAverages,
+    // Secret PIN for Easter Egg vault (stored in JSONbin so it can be changed remotely)
+    eggPin: "1997",
+    // Rich lesson content — stored in JSONbin to keep HTML file lean
+    lessonContent: [
+      { id: "contamination", lesson: [
+        {
+          h: "What Is Food Contamination — and Why Should You Care?",
+          t: "Food contamination means something harmful has entered food that could make a person sick. It doesn't always look, smell, or taste different — which makes it genuinely dangerous. The CDC estimates that 48 million Americans get sick from foodborne illness every year. That's 1 in 6 people. As a food handler, your decisions directly impact whether that number goes up or down.",
+          why: "Most foodborne illness is completely preventable. Understanding contamination is the foundation of everything else in food safety — if you understand how food gets contaminated, every other rule makes sense.",
+          tip: "The exam will ask you to identify types of contamination. Remember: Biological = living organisms (bacteria, viruses, parasites). Chemical = cleaning products, pesticides, or additives. Physical = foreign objects like glass, bone, or metal."
+        },
+        {
+          h: "Biological Contamination: The Most Common Threat",
+          t: "Biological contamination involves living microorganisms — bacteria, viruses, parasites, and fungi — that get into food. Bacteria like Salmonella, E. coli, and Listeria are the most common culprits. Unlike a piece of glass you can see, biological contaminants are invisible. A piece of chicken can look perfectly normal and be loaded with dangerous bacteria.",
+          bullets: [
+            "Bacteria multiply by doubling — one cell becomes two, two become four, and so on. In ideal conditions, bacteria can double every 20 minutes.",
+            "At that rate, a single bacterium can become over 1 million in just 7 hours.",
+            "Viruses like Norovirus don't grow in food — but they survive in it and just need to be ingested to cause illness.",
+            "Parasites like Cryptosporidium and Giardia are spread primarily through contaminated water or produce."
+          ],
+          why: "Knowing that bacteria multiply exponentially is why time and temperature control is so critical. It's not just that food is contaminated — it's that every minute in the danger zone, the contamination gets exponentially worse.",
+          tip: "Biological contamination is the most common cause of foodborne illness outbreaks. The exam heavily tests this category."
+        },
+        {
+          h: "The Temperature Danger Zone: Where Bacteria Thrive",
+          t: "The Temperature Danger Zone is the range between 41°F and 135°F. Within this range, bacteria grow fastest — particularly between 70°F and 125°F, where doubling can happen every 20 minutes. Room temperature (around 70°F) is practically a bacteria hotel. Food left on a counter isn't just cooling down — it's actively becoming more dangerous with every passing minute.",
+          bullets: [
+            "Below 41°F: bacterial growth slows dramatically but does not stop entirely.",
+            "Above 135°F: most bacteria begin to die, and above 165°F the kill is rapid.",
+            "41°F to 135°F: the Danger Zone — never leave TCS food here for more than 4 cumulative hours.",
+            "The most dangerous window is 70°F–125°F, where growth is fastest."
+          ],
+          why: "This is why you refrigerate food — not just to keep it cool, but to dramatically slow bacterial growth. Every degree matters. A refrigerator running at 45°F instead of 41°F can double the rate of bacterial growth.",
+          tip: "41°F–135°F is the Danger Zone. Memorize it. It appears on nearly every version of the ServSafe exam."
+        },
+        {
+          h: "Cross-Contamination: How Bacteria Travel",
+          t: "Cross-contamination is when harmful microorganisms — usually bacteria — are transferred from one surface or food to another. The classic example: cutting raw chicken on a board, then using that same board to slice vegetables for a salad. The bacteria on the chicken are now on the vegetables, which will be eaten raw with no heat to kill them. Cross-contamination can also happen from hands, utensils, drip from improperly stored food, and unclean equipment.",
+          bullets: [
+            "Direct cross-contamination: raw meat touches ready-to-eat food.",
+            "Indirect cross-contamination: a cutting board or knife transfers bacteria between foods.",
+            "Drip contamination: raw meat stored above ready-to-eat food drips onto it.",
+            "Hand-to-food contamination: a food handler touches raw meat then touches a bun."
+          ],
+          why: "Ready-to-eat foods are the most dangerous target because they receive no further cooking to kill bacteria. Once contaminated, they go straight into someone's mouth.",
+          tip: "The exam will ask which storage order prevents cross-contamination. Top to bottom in the refrigerator: ready-to-eat foods, then raw fish, raw beef/pork, raw ground meat, then raw poultry at the very bottom. This order is based on required cooking temperatures."
+        },
+        {
+          h: "TCS Foods: Which Foods Need the Most Protection",
+          t: "TCS stands for Time/Temperature Control for Safety. TCS foods are those that support the growth of bacteria and therefore require careful temperature control throughout receiving, storage, prep, cooking, and service. What makes a food TCS? Bacteria need moisture, protein, and a neutral pH to thrive. TCS foods provide all three.",
+          bullets: [
+            "Meat, poultry, fish, and seafood",
+            "Eggs and dairy products",
+            "Cooked starches: rice, beans, pasta, potatoes",
+            "Cut melons, cut tomatoes, cut leafy greens",
+            "Tofu and soy products",
+            "Sprouts and sprout seeds",
+            "Garlic-in-oil mixtures"
+          ],
+          why: "Non-TCS foods (crackers, dry rice, whole uncut fruits) are safe at room temperature because they lack the moisture or protein that bacteria need. Once you cut a tomato or cook a potato, you've changed its chemistry — it's now a TCS food that needs temperature control.",
+          tip: "The exam loves to test which foods ARE and ARE NOT TCS. Whole uncut tomato = not TCS. Cut tomato = TCS. Dry beans = not TCS. Cooked beans = TCS."
+        },
+        {
+          h: "Chemical and Physical Contamination",
+          t: "Chemical contamination occurs when harmful chemicals enter food — cleaning products, pesticides, incorrect food additives, or chemicals that leach from containers. Physical contamination is when a foreign object gets into food — glass, bone, metal shavings, staples, or even a bandage. Both are serious hazards that can cause injury or illness.",
+          bullets: [
+            "Never store chemicals near food — even fumes can contaminate.",
+            "All chemical containers must be clearly labeled at all times.",
+            "Use only food-grade containers for storing food — never repurpose chemical buckets.",
+            "Physical contaminants can cause choking, broken teeth, or internal injury.",
+            "Inspect equipment regularly — a chipped cutting board or cracked container is a physical hazard."
+          ],
+          why: "Chemical and physical contamination are often overlooked because biological contamination gets most of the attention. But a customer who finds glass in their food or has an allergic reaction from a cleaning product residue is just as harmed.",
+          tip: "The exam distinguishes between the three types of contamination. Know examples of each: Biological (Salmonella), Chemical (bleach residue), Physical (bone fragment)."
+        },
+        {
+          h: "The Big 6 Pathogens: The Most Dangerous Threats",
+          t: "The FDA identifies six pathogens as the most dangerous in food service — so dangerous that food handlers diagnosed with them must be excluded from the operation entirely, not just restricted. These are called the Big 6: Norovirus, Hepatitis A, Salmonella Typhi, Shiga toxin-producing E. coli (STEC), Nontyphoidal Salmonella, and Shigella. Each spreads primarily through the fecal-oral route — meaning they get into food through improper handwashing.",
+          bullets: [
+            "Norovirus: most common cause of foodborne illness. Spreads aggressively. Requires 48 hours symptom-free before return.",
+            "Hepatitis A: attacks the liver. Can be transmitted for weeks before symptoms appear.",
+            "Salmonella Typhi: causes typhoid fever. Requires health authority approval to return to work.",
+            "STEC (E. coli O157:H7): can cause life-threatening kidney failure, especially in children.",
+            "Nontyphoidal Salmonella: commonly linked to eggs, poultry, and produce.",
+            "Shigella: highly contagious, spread through contaminated water and produce."
+          ],
+          why: "These pathogens are excluded (not just restricted) because the risk they pose is too high to allow any food contact duties. Understanding why helps you remember the rule — it's not arbitrary; these specific organisms have caused mass illness outbreaks.",
+          tip: "Know the difference between EXCLUSION (no work at all) and RESTRICTION (non-food contact duties only). The Big 6 require exclusion. A sore throat with fever in a general population operation requires restriction."
+        },
+        {
+          h: "Allergens: A Different Kind of Contamination",
+          t: "Food allergens aren't pathogens — but they can be just as deadly. The FDA recognizes 9 major food allergens: milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, and sesame. For a person with a severe allergy, even a trace amount of an allergen — invisible to the eye — can trigger anaphylaxis, a life-threatening immune response. Allergen cross-contact (different from cross-contamination) occurs when an allergen is unintentionally transferred to an allergen-free food.",
+          bullets: [
+            "Cross-contact cannot be removed by cooking — allergens survive heat.",
+            "Equipment must be thoroughly cleaned and sanitized between allergen and allergen-free prep.",
+            "Never assume a 'little bit' is safe for an allergic customer.",
+            "Always take allergen requests seriously — mishandling can be fatal.",
+            "Labels on packaged food must clearly declare all 9 major allergens."
+          ],
+          why: "Unlike bacteria, allergens can't be killed or cooked away. Once they're in a dish, they're there. This is why dedicated equipment and surfaces for allergen-free prep is the gold standard — not just good practice.",
+          tip: "The exam distinguishes cross-contamination (bacteria transfer) from cross-contact (allergen transfer). Know both terms and what causes each."
+        }
+      ]},
+      { id: "temperature", lesson: [
+        {
+          h: "Why Temperature Is Your Most Powerful Food Safety Tool",
+          t: "Temperature is the single most controllable factor in preventing bacterial growth in food. Bacteria need warmth to multiply — remove the warmth and you remove the threat. This is why every major food safety rule eventually connects back to temperature: cooking temperatures, holding temperatures, cooling temperatures, storage temperatures. Understanding the WHY behind temperature rules makes them much easier to remember and apply.",
+          why: "Temperature doesn't just slow bacteria — it can kill them entirely. Cooking to the correct minimum internal temperature is the last line of defense before food reaches a customer's plate. If that step is skipped or done wrong, there is no second chance.",
+          tip: "Temperature-related questions make up a significant portion of the ServSafe exam. Know your minimum internal cooking temperatures cold — pun intended."
+        },
+        {
+          h: "Minimum Internal Cooking Temperatures",
+          t: "Minimum internal temperatures exist because different foods harbor different pathogens at different depths. A steak can be seared on the outside and the interior may still be safe — because pathogens live on the surface. But ground beef has surface pathogens mixed throughout, requiring a higher internal temperature to guarantee safety. Similarly, poultry can harbor Salmonella deep in the meat, requiring the highest cooking temperature.",
+          bullets: [
+            "165°F — Poultry (whole, ground, or stuffed), stuffed meats, stuffed pasta, reheated leftovers",
+            "155°F — Ground beef, ground pork, ground seafood, eggs cooked for hot holding",
+            "145°F — Whole intact beef/pork/veal/lamb steaks and roasts (with 3-min rest), seafood, eggs served immediately",
+            "135°F — Fruits, vegetables, grains, and legumes cooked for hot holding",
+            "165°F — Any food cooked in a microwave (must rest 2 minutes and be covered)"
+          ],
+          why: "The 3-minute rest time at 145°F for steaks and roasts isn't arbitrary — it allows carryover heat to continue killing bacteria at the surface as the interior equalizes. Cutting the meat immediately releases that heat and can drop the internal temperature below the kill threshold.",
+          tip: "The exam will give you a scenario and ask the minimum temperature. Stuffed anything = 165°F. Ground anything = 155°F. Intact muscle meat = 145°F. Memorize the exceptions first."
+        },
+        {
+          h: "Hot Holding: Keeping Hot Food Safe During Service",
+          t: "Once food is cooked, the job isn't done. If food is being held for service — on a steam table, in a chafing dish, or under a heat lamp — it must stay at 135°F or above at all times. Bacteria that survived cooking can begin to multiply again as food cools into the danger zone. Hot holding equipment is designed to maintain temperature, not to cook or reheat food.",
+          bullets: [
+            "Check temperatures at least every 2 hours during hot holding.",
+            "If food drops below 135°F, it has 4 total cumulative hours in the danger zone before it must be discarded.",
+            "Steam tables, chafing dishes, and heat lamps are holding equipment — never use them to reheat food.",
+            "Stir foods regularly to distribute heat evenly throughout.",
+            "Never mix fresh hot food with food already being held — it disrupts temperature tracking."
+          ],
+          why: "The danger isn't just initial cooking — bacteria can re-contaminate food after cooking from surfaces, air, or handlers. Hot holding above 135°F prevents that re-contamination from becoming a danger.",
+          tip: "Steam tables CANNOT reliably reach 165°F fast enough to safely reheat food. Always reheat in an oven, stovetop, or microwave first, then transfer to a steam table for holding."
+        },
+        {
+          h: "Cold Holding: Keeping Cold Food Safe",
+          t: "Cold food must be maintained at 41°F or below during storage and service. This applies to salad bars, deli cases, refrigerators, and any cold holding setup. Unlike hot holding, which kills bacteria, cold holding simply slows bacterial growth — it doesn't stop it entirely. This is why even properly refrigerated food has a maximum shelf life.",
+          bullets: [
+            "Ready-to-eat TCS food stored at 41°F or below can be kept for a maximum of 7 days.",
+            "Date labels are mandatory — write the prep or open date and the use-by date.",
+            "FIFO (First In, First Out) ensures older food is used before newer stock.",
+            "Cold food without temperature control can only be held for a maximum of 4 hours before discard.",
+            "Monitor refrigerator temperatures at least daily — equipment can fail without warning."
+          ],
+          why: "The 7-day maximum at 41°F exists because even slow bacterial growth adds up. After 7 days, food that looked and smelled fine on day 1 may have accumulated dangerous levels of Listeria, which grows even at refrigerator temperatures.",
+          tip: "Listeria monocytogenes can grow at refrigerator temperatures — it's one of the reasons cold holding isn't a permanent solution and date labeling is mandatory."
+        },
+        {
+          h: "Cooling Food Safely: The Two-Stage Process",
+          t: "Cooling is one of the most dangerous steps in food service — and one of the most commonly mishandled. When a large batch of hot food is placed directly into a refrigerator, the outside cools quickly but the center stays warm for hours, sitting squarely in the danger zone. ServSafe requires a two-stage cooling process to move food through the danger zone as quickly as possible.",
+          bullets: [
+            "Stage 1: Cool from 135°F to 70°F within 2 hours.",
+            "Stage 2: Cool from 70°F to 41°F within 4 more hours.",
+            "Total cooling time: 6 hours maximum.",
+            "If Stage 1 isn't met in 2 hours, discard the food — do not attempt to continue cooling.",
+            "Best methods: ice baths, blast chillers, shallow pans (no more than 2 inches deep), ice paddles."
+          ],
+          why: "The two-stage process targets the most dangerous temperature window. From 135°F to 70°F is where bacterial growth begins to accelerate — that first drop must happen quickly. The second stage is more forgiving because growth slows significantly below 70°F.",
+          tip: "The exam loves cooling questions. Know both stages, both time limits, and the best methods. Never cool large batches of food in deep covered containers in a refrigerator — this is the most common cooling mistake."
+        },
+        {
+          h: "Thawing Food the Right Way",
+          t: "Thawing food on the counter is one of the most dangerous and most common mistakes in home and professional kitchens. When food thaws at room temperature, the outside enters the danger zone long before the inside has thawed — creating a perfect environment for bacterial growth. ServSafe approves only four safe thawing methods, each designed to keep food out of the danger zone.",
+          bullets: [
+            "Refrigerator thawing: safest method. Food stays at or below 41°F throughout. Takes the longest.",
+            "Cold running water: water must be 70°F or below. Food must be submerged. Cook immediately after.",
+            "Microwave: only safe if food will be cooked immediately afterward.",
+            "As part of cooking: thin items like frozen hamburger patties can be cooked from frozen — just verify the final internal temperature."
+          ],
+          why: "The counter method fails because frozen food acts like an insulator — the interior stays frozen while the exterior warms rapidly through the danger zone. Bacteria can grow to dangerous levels on the outside of meat before the inside has even thawed.",
+          tip: "Never thaw at room temperature, in warm water, or on a counter. These are automatic fails on the ServSafe exam and real health code violations."
+        },
+        {
+          h: "Food Thermometers: Your Most Important Tool",
+          t: "You cannot judge internal food temperature by looking at color, touch, or the juices running clear. These are myths that cause foodborne illness. A properly calibrated food thermometer is the only reliable way to verify that food has reached a safe internal temperature. Different types of thermometers work best for different foods — using the wrong type gives inaccurate readings.",
+          bullets: [
+            "Bimetallic stemmed: best for large roasts and thick foods. Insert into the thickest part. Has a sensing area 1–2 inches from the tip.",
+            "Thermocouple: fastest and most accurate. Works with thin foods like burger patties. Reads from the tip.",
+            "Infrared: measures surface temperature only — not suitable for verifying internal cooking temperature.",
+            "Thermistor (digital): thin probe, reads quickly, good for a wide range of foods.",
+            "Always calibrate using the ice-point method: 32°F in an ice water slurry."
+          ],
+          why: "A thermometer is cheap. A foodborne illness lawsuit, health code violation, or customer hospitalization is not. Calibrate thermometers before each shift and after any drop, extreme temperature change, or rough handling.",
+          tip: "The exam tests which thermometer to use for which food. Thin patties = thermocouple. Large roasts = bimetallic stemmed. Surface check only = infrared. Calibration = ice water slurry at 32°F."
+        },
+        {
+          h: "The Complete Temperature Reference Guide",
+          t: "Before your exam, you need these numbers memorized cold. This page is your master reference. Read through it once carefully, then come back to it as many times as you need.",
+          bullets: [
+            "Danger Zone: 41°F – 135°F",
+            "Max time in danger zone: 4 cumulative hours (then discard)",
+            "Poultry, stuffed meats, reheated leftovers: 165°F",
+            "Ground meats, eggs for hot holding: 155°F",
+            "Whole intact steaks/roasts, seafood, eggs served immediately: 145°F (+ 3-min rest for roasts)",
+            "Fruits, vegetables, grains for hot holding: 135°F",
+            "Hot holding minimum: 135°F",
+            "Cold holding maximum: 41°F",
+            "Cooling Stage 1: 135°F → 70°F within 2 hours",
+            "Cooling Stage 2: 70°F → 41°F within 4 hours (6 hours total)",
+            "Refrigerator maximum: 41°F",
+            "Freezer maximum: 0°F",
+            "Handwashing water: ~100°F (comfortable warm)",
+            "3-compartment wash sink: 110°F minimum",
+            "High-temp dishwasher final rinse: 180°F",
+            "Chemical dishwasher minimum water temp: 120°F",
+            "Thermometer calibration (ice point): 32°F"
+          ],
+          why: "The real ServSafe exam is 90 questions and you have 90 minutes. Having these numbers memorized means you can answer temperature questions in seconds and use your remaining time on the harder scenario-based questions.",
+          tip: "Print this list or write it out by hand. Writing information down significantly improves retention. You've got this!"
+        }
+      ]},
+      { id: "hygiene", lesson: [
+        {
+          h: "Why Personal Hygiene Is the #1 Food Safety Factor",
+          t: "The most common source of foodborne illness contamination in food service isn't the food itself — it's the people handling it. Food handlers who are ill, who haven't washed their hands properly, or who have poor hygiene habits are the primary vector for spreading pathogens like Norovirus, Hepatitis A, and Salmonella. Everything else in food safety — temperatures, storage, equipment — can be perfect, but one food handler with poor hygiene can undo all of it.",
+          why: "This isn't about making food handlers feel judged. It's about understanding that human hands are extraordinarily effective at transferring bacteria and viruses. We touch our faces 16 times per hour on average. Every touch is a potential contamination event.",
+          tip: "Personal hygiene questions appear throughout the exam. They're often scenario-based: 'A food handler does X — what should they do?' Know the correct response for each situation."
+        },
+        {
+          h: "Handwashing: The Single Most Important Action You Can Take",
+          t: "Proper handwashing isn't just rinsing your hands — there's a specific technique that actually removes pathogens. The friction from scrubbing physically removes bacteria from the skin. Soap doesn't kill bacteria — it loosens and suspends them so they can be rinsed away. The 20-second scrub time exists because studies show that's the minimum needed to meaningfully reduce pathogen counts.",
+          bullets: [
+            "Step 1: Wet hands and forearms with warm running water (~100°F).",
+            "Step 2: Apply soap — bar or liquid, both work.",
+            "Step 3: Scrub hands, between fingers, under nails, and forearms for at least 20 seconds.",
+            "Step 4: Rinse thoroughly under running water.",
+            "Step 5: Dry with a single-use paper towel or air dryer.",
+            "Step 6: Use paper towel to turn off the faucet."
+          ],
+          why: "The 20-second rule isn't arbitrary — it takes about that long for friction and soap to effectively lift and remove pathogens from the skin. Cold water and quick rinses don't accomplish this. Studies show most people wash for about 6 seconds — far less than needed.",
+          tip: "The exam will ask about the correct handwashing order. Wet → Soap → Scrub 20 seconds → Rinse → Dry. This sequence must be memorized exactly."
+        },
+        {
+          h: "When Exactly Must You Wash Your Hands?",
+          t: "Food handlers must wash their hands any time there's a reasonable chance their hands have become contaminated. This happens far more frequently than most people realize. The key is understanding that hands are contaminated by almost everything we touch — not just obviously dirty things.",
+          bullets: [
+            "Before starting work and after every break",
+            "Before and after handling raw meat, poultry, or seafood",
+            "After using the restroom (must wash in restroom AND upon returning to food area)",
+            "After touching your face, hair, body, or clothing",
+            "After sneezing, coughing, or blowing your nose",
+            "After handling garbage or trash",
+            "After handling chemicals or cleaning products",
+            "After handling money",
+            "After touching animals",
+            "After eating or drinking",
+            "After handling cell phones or personal items"
+          ],
+          why: "This list is long because contamination happens constantly. Your phone has more bacteria on it than a toilet seat. Money is handled by hundreds of people. Hair carries bacteria. The more contamination events you can identify, the safer food service becomes.",
+          tip: "Gloves are NOT a substitute for handwashing. Hands must be washed before putting gloves on. Gloves must be changed whenever you would wash your hands. The exam tests this frequently."
+        },
+        {
+          h: "Gloves: Protection and Limitations",
+          t: "Single-use gloves provide an additional barrier between hands and food, but they are misunderstood by many food handlers. Gloves are not a force field — they must be used correctly to be effective. The biggest mistake is treating gloves as if they make hands permanently clean, which leads to the exact same contamination risks as bare hands.",
+          bullets: [
+            "Always wash hands before putting on gloves.",
+            "Change gloves whenever you would wash your hands (same triggers apply).",
+            "Change gloves at least every 4 hours during continuous use.",
+            "Change gloves when switching between raw and ready-to-eat foods.",
+            "Change gloves if they become torn, soiled, or contaminated.",
+            "Never wash and reuse single-use gloves — they're single use for a reason.",
+            "Latex allergies: use nitrile or vinyl gloves instead."
+          ],
+          why: "Gloves can develop microscopic tears that are invisible to the eye. Bacteria can penetrate these tears. Additionally, the outside of a glove becomes contaminated exactly as quickly as bare hands would — the difference is that gloves prevent transferring skin flora, but they don't prevent picking up environmental contamination.",
+          tip: "The exam will ask when gloves must be changed. The answer is: same situations as handwashing, plus every 4 hours minimum during continuous use."
+        },
+        {
+          h: "Illness, Symptoms, and When to Stay Home",
+          t: "Working with food while sick is one of the most direct ways to cause a foodborne illness outbreak. A single infected food handler with Norovirus can contaminate hundreds of meals. The challenge is that food handlers sometimes feel pressure to come in when sick, either from scheduling pressure or financial necessity. Understanding the specific rules — and why they exist — helps make the right call easier.",
+          bullets: [
+            "EXCLUDE from all work: Norovirus, Hepatitis A, Salmonella Typhi, STEC E. coli, Shigella, Nontyphoidal Salmonella (The Big 6)",
+            "EXCLUDE: any food handler with vomiting or diarrhea",
+            "EXCLUDE: jaundice (yellowing of skin/eyes — sign of Hepatitis A)",
+            "RESTRICT to non-food contact: sore throat with fever (in a regular operation)",
+            "EXCLUDE with sore throat and fever if serving highly susceptible populations",
+            "Norovirus exclusion ends 48 hours after ALL symptoms resolve",
+            "Big 6 diagnoses require health authority approval to return"
+          ],
+          why: "The Big 6 are specifically excluded (not just restricted) because they spread at extremely low infectious doses — meaning just a tiny amount of pathogen can cause illness. Norovirus, for example, requires fewer than 20 viral particles to make someone sick.",
+          tip: "Know the difference: EXCLUSION means no work at all. RESTRICTION means limited duties (no food contact). The Big 6 = Exclusion. Sore throat with fever in a general operation = Restriction."
+        },
+        {
+          h: "Personal Cleanliness: Uniforms, Hair, Nails, and Jewelry",
+          t: "Beyond handwashing, food handlers must maintain overall personal cleanliness in ways that prevent hair, skin, and other contaminants from entering food. These rules might feel overly strict, but each one exists because of documented contamination incidents.",
+          bullets: [
+            "Hair must be restrained with a hat, hairnet, or other effective restraint — pulled back ponytails alone are not sufficient.",
+            "Fingernails must be short, clean, and unpolished. Nail polish can chip into food. Artificial nails harbor bacteria and can break off.",
+            "Jewelry must be minimal — a plain wedding band is generally acceptable. Rings with stones, bracelets, and watches trap bacteria and can fall into food.",
+            "Uniforms and aprons must be clean and changed if they become contaminated.",
+            "Remove aprons before entering the restroom — never bring food prep clothing into a bathroom.",
+            "Avoid touching your face, hair, or body while working with food.",
+            "Food handlers should not wear strong perfumes or colognes — chemical contamination risk."
+          ],
+          why: "Hair in food is the classic physical contamination example — but the real danger is that hair carries bacteria. A hair restraint prevents hair (and the bacteria on it) from falling into food. It's both a physical and biological hazard prevention measure.",
+          tip: "The exam tests specific hygiene requirements. Know: no artificial nails, no nail polish, plain band rings only, hair must be restrained (not just tied back), aprons removed for restrooms."
+        },
+        {
+          h: "Eating, Drinking, and Tasting in Food Service",
+          t: "Eating and drinking in food preparation areas is prohibited because it creates multiple contamination risks. When you eat, you touch your mouth, which carries bacteria. Food and drink can splash or drip onto prep surfaces. And eating generates more reason to touch your face. However, food handlers do need to hydrate — there are safe ways to do it.",
+          bullets: [
+            "Eating is only allowed in designated areas away from food prep.",
+            "Drinking is allowed in food prep areas ONLY if using a covered container with a straw.",
+            "Never taste food with a spoon and then continue using that spoon — use a clean tasting spoon once and discard.",
+            "No gum chewing while working with food — it leads to touching the face/mouth repeatedly.",
+            "No smoking in food prep areas."
+          ],
+          why: "A covered container with a straw is specified because it prevents hands from contaminating the rim of the cup, and the straw prevents mouth contact with the outside of the container. This is a surprisingly precise rule that the exam tests.",
+          tip: "Know the covered-container-with-straw rule for drinking. And know that tasting food requires a clean, single-use spoon — taste and discard."
+        },
+        {
+          h: "Reporting Illness: Your Responsibility and the Manager's Role",
+          t: "Food handlers have a legal and ethical responsibility to report symptoms and diagnoses to their manager. Managers have a corresponding responsibility to act on that information immediately. The system only works when both sides fulfill their role. This isn't just policy — in many states, failure to report certain diagnoses is a criminal violation.",
+          bullets: [
+            "Food handlers must report: vomiting, diarrhea, jaundice, sore throat with fever, and any Big 6 diagnosis.",
+            "Managers must immediately restrict or exclude the food handler based on the symptom.",
+            "Managers must notify the local health authority when a food handler has a Big 6 diagnosis.",
+            "The operation must cooperate fully with any resulting health investigation.",
+            "A food handler cannot be punished for reporting illness — doing so is illegal.",
+            "Managers should train staff regularly on when and how to report symptoms."
+          ],
+          why: "The most dangerous scenario is the one where a food handler knows they're sick but comes in anyway — either from personal pressure or because they're afraid to report it. Managers who create a culture of open reporting literally save lives.",
+          tip: "The exam will present scenarios where a manager discovers a sick food handler. Know the exact steps: identify symptoms → restrict or exclude → notify health authority if Big 6 → document everything."
+        }
+      ]},
+      { id: "cleaning", lesson: [
+        {
+          h: "Cleaning vs. Sanitizing: Two Different Things That Must Both Happen",
+          t: "Cleaning and sanitizing are two separate processes that work together — but neither alone is sufficient. Cleaning removes dirt, food residue, and grease from a surface. Sanitizing reduces the number of pathogens on an already-clean surface to safe levels. You cannot effectively sanitize a dirty surface, and you cannot safely serve food from a cleaned-but-not-sanitized surface. Both steps are always required, in that order.",
+          why: "This sequence matters chemically. Food residue physically blocks sanitizer from making contact with the surface. It's like trying to disinfect a counter that still has visible food on it — the sanitizer can't reach the bacteria under the residue. Clean first, always.",
+          tip: "The exam will ask: what must happen before sanitizing? The answer is always cleaning first. This is tested repeatedly."
+        },
+        {
+          h: "The 6-Step Cleaning and Sanitizing Process",
+          t: "ServSafe defines a specific 6-step process for cleaning and sanitizing food contact surfaces. Each step has a purpose — skip one and the whole process is compromised. This process applies to prep tables, cutting boards, utensils, and any surface that touches food.",
+          bullets: [
+            "Step 1: Scrape or remove food bits and debris from the surface.",
+            "Step 2: Wash with hot soapy water (at least 110°F in a 3-compartment sink).",
+            "Step 3: Rinse with clean water to remove all soap residue.",
+            "Step 4: Sanitize — apply chemical sanitizer at the correct concentration for the required contact time.",
+            "Step 5: Allow to air dry completely — never towel dry.",
+            "Step 6: (For equipment) Reassemble and store properly."
+          ],
+          why: "The rinse step between washing and sanitizing is critical because soap residue neutralizes most chemical sanitizers — chlorine especially. If you sanitize over soapy residue, the sanitizer is rendered ineffective. This is why all three sinks in a 3-compartment setup are essential.",
+          tip: "The 3-compartment sink order is wash → rinse → sanitize. Air dry after — never towel dry. Towels re-contaminate surfaces."
+        },
+        {
+          h: "Chemical Sanitizers: Types, Concentrations, and Contact Time",
+          t: "The three most common chemical sanitizers in food service are chlorine (bleach), iodine, and quaternary ammonium compounds (quats). Each has a specific effective concentration range — too low and it doesn't work, too high and it becomes toxic and can leave dangerous residue. Contact time is equally important — the sanitizer must stay wet on the surface for the required time to actually kill pathogens.",
+          bullets: [
+            "Chlorine: 50–100 ppm. Most common and cheapest. Effective at lower concentrations. Weakened by organic matter and hot water.",
+            "Iodine: 12.5–25 ppm. Amber/brown color makes it easy to test visually. Less effective in hard water.",
+            "Quaternary Ammonium (Quats): 200–400 ppm (varies by product). More stable than chlorine. Effective in hard water. Leaves no residue.",
+            "Contact time: most require at least 30 seconds of wet contact with the surface.",
+            "Water temperature affects effectiveness: most sanitizers work best at 55–75°F."
+          ],
+          why: "PPM stands for parts per million — it's a measure of concentration. Using too little sanitizer means pathogens survive. Using too much means toxic chemical residue remains on food contact surfaces and could end up in food, making customers sick in a completely different way.",
+          tip: "Know the correct concentration for each sanitizer type. The exam will give you a scenario (sanitizer too weak, too strong) and ask what to do. Answer: discard and remake to correct concentration."
+        },
+        {
+          h: "Test Kits and Thermometers: Verifying Your Sanitizer Actually Works",
+          t: "You can't see whether a sanitizer solution is at the correct concentration by looking at it. A solution that looks clean and smells like bleach could be far too weak or far too strong. Test kits — simple paper strips that change color when dipped — are the only way to verify concentration. They're inexpensive, take seconds to use, and should be used every time fresh sanitizer is prepared.",
+          bullets: [
+            "Dip the test strip briefly in the sanitizer solution.",
+            "Remove and compare the color change to the manufacturer's chart immediately.",
+            "If concentration is too low: add more sanitizer chemical and retest.",
+            "If concentration is too high: add water to dilute and retest.",
+            "Replace sanitizer solutions regularly — at least every 4 hours, or when visibly dirty.",
+            "Cloudy or dirty sanitizer is ineffective — replace it immediately."
+          ],
+          why: "Sanitizer solutions degrade over time, especially chlorine solutions which lose effectiveness when exposed to organic matter, light, and heat. A test kit costs pennies. A foodborne illness outbreak costs far more.",
+          tip: "The exam tests test kit usage. Know: dip briefly, compare to chart, don't leave strip in solution. Also know that cloudy or dirty sanitizer must be replaced."
+        },
+        {
+          h: "The 3-Compartment Sink: Setup and Use",
+          t: "The 3-compartment sink is the manual dishwashing standard for food service when a commercial dishwasher isn't available or practical. Each compartment has a specific function, and the order is mandatory. Setting up and using a 3-compartment sink correctly ensures that dishes come out clean, rinsed of soap, and sanitized to safe levels.",
+          bullets: [
+            "Compartment 1 — Wash: hot water at least 110°F with detergent. Scrub items to remove all food and grease.",
+            "Compartment 2 — Rinse: clean warm water. No soap. Removes detergent residue so sanitizer can work.",
+            "Compartment 3 — Sanitize: water with chemical sanitizer at correct concentration. 30 seconds minimum contact time.",
+            "After sanitizing: air dry on a clean drying rack. Never towel dry.",
+            "Change solutions when visibly dirty or at least every 4 hours.",
+            "Pre-scrape all items before placing in the wash compartment."
+          ],
+          why: "The rinse compartment exists for one reason: to remove soap that would otherwise neutralize the sanitizer in compartment 3. Skipping the rinse step is one of the most common — and consequential — 3-compartment sink mistakes.",
+          tip: "Wash water minimum is 110°F. Sanitize compartment: use a test kit to verify concentration. Air dry after. The exam will ask the order and minimum temperatures."
+        },
+        {
+          h: "Dishwashing Machines: Temperature vs. Chemical Sanitizing",
+          t: "Commercial dishwashers sanitize using one of two methods: high-temperature sanitizing (heat) or chemical sanitizing. Both are effective when used correctly, but they have different operating requirements. Using the wrong settings, or running the machine when it's malfunctioning, means dishes aren't actually sanitized — they just look clean.",
+          bullets: [
+            "High-temperature dishwashers: final rinse must reach 180°F at the surface of the dishes.",
+            "Chemical sanitizing dishwashers: water must be at least 120°F and chemical must be at correct concentration.",
+            "Always check temperatures and sanitizer levels before starting service.",
+            "If a dishwasher fails to reach required temperature/concentration, take it out of service and use the 3-compartment sink.",
+            "Dishes must air dry after — stacking wet dishes traps moisture and promotes bacterial growth."
+          ],
+          why: "180°F at the dish surface — not just the water — is the standard for high-temp dishwashers because dishes arrive at the final rinse cooler than the water. The machine must be calibrated to ensure the surface reaches 180°F despite this temperature drop.",
+          tip: "Know both types: high-temp (180°F final rinse) and chemical (120°F water + correct sanitizer concentration). If either fails, the machine must be taken out of service."
+        },
+        {
+          h: "Cleaning Schedules, Frequency, and Master Cleaning Programs",
+          t: "Not every surface needs to be sanitized every 4 hours — but food contact surfaces do. A Master Cleaning Program is a formal schedule that lists every surface in the operation, how often it must be cleaned and/or sanitized, who is responsible, and what products to use. Having a written schedule prevents the 'I thought someone else did it' problem.",
+          bullets: [
+            "Food contact surfaces (cutting boards, prep tables, slicers): clean and sanitize after each use, before switching food types, and at minimum every 4 hours during continuous use.",
+            "Non-food contact surfaces (walls, floors, shelving): clean regularly but do not require sanitizing to the same standard.",
+            "Equipment with multiple parts (slicers, mixers): disassemble, clean each component, rinse, sanitize, reassemble.",
+            "Wiping cloths: store in sanitizer solution between uses — never just rinse and reuse.",
+            "Drain cleaning: at least daily to prevent fly breeding and organic buildup."
+          ],
+          why: "The 4-hour rule for food contact surfaces exists because bacteria can grow to dangerous levels on a surface in 4 hours at room temperature. Even surfaces that look clean can harbor invisible bacterial colonies.",
+          tip: "The exam will ask: how often must food contact surfaces be cleaned and sanitized during continuous use? The answer is: at least every 4 hours."
+        },
+        {
+          h: "Chemicals in Food Service: Storage, Labeling, and Safety",
+          t: "Cleaning and sanitizing chemicals are effective tools — but they're also hazardous. Improper storage, unlabeled containers, or incorrect use can cause chemical contamination of food or injury to staff. A Safety Data Sheet (SDS) — formerly called an MSDS — must be on file and accessible for every chemical used in the operation.",
+          bullets: [
+            "Store all chemicals separately from food, utensils, and food-contact surfaces.",
+            "All chemical containers must be clearly labeled at all times — never store chemicals in unmarked containers.",
+            "SDS sheets must be on file and accessible to all staff.",
+            "Never mix chemicals unless specifically directed by the manufacturer — some combinations create toxic gases.",
+            "Use only food-safe chemicals on food contact surfaces.",
+            "Train all staff on proper chemical use, dilution ratios, and emergency procedures.",
+            "Chemical storage areas must be locked or restricted."
+          ],
+          why: "Chemical contamination from cleaning products is a real and underappreciated food safety hazard. Residue left on food contact surfaces can transfer directly to food. Some cleaning agents in high concentrations are corrosive or toxic — proper dilution isn't just about effectiveness, it's about safety.",
+          tip: "The exam will ask where chemicals must be stored (away from food, clearly labeled, locked area) and what must be on file (SDS/Safety Data Sheets). Know both."
+        }
+      ]},
+      { id: "pests", lesson: [
+        {
+          h: "Why Pest Control Is a Critical Food Safety Issue",
+          t: "Pests in a food service operation aren't just unpleasant — they're a direct public health hazard. Cockroaches, rodents, and flies carry and spread dozens of pathogens including Salmonella, E. coli, Listeria, and Staphylococcus. They contaminate food through direct contact, droppings, urine, and hair. A single cockroach sighting during a health inspection can result in immediate closure of a food service establishment.",
+          why: "Pest contamination is particularly dangerous because it often goes undetected. Rodents operate at night, cockroaches hide during daylight hours, and contaminated food may look, smell, and taste completely normal. By the time the problem is discovered, dozens of customers may already have been exposed.",
+          tip: "The exam tests pest identification, prevention, response, and the role of a licensed PCO. Know all four areas."
+        },
+        {
+          h: "Recognizing the Signs: How to Identify a Pest Problem",
+          t: "Pests go to great lengths to hide from humans — which is why being able to read the signs of their presence is a critical skill. Waiting until you actually see a pest means the infestation is already well established. Early detection through regular inspection prevents small problems from becoming major health violations.",
+          bullets: [
+            "Rodents: droppings (small, dark pellets), gnaw marks on food packaging and structure, grease marks on walls from their fur, nesting materials (shredded paper, fabric, insulation), fresh tracks in dusty areas.",
+            "Cockroaches: droppings (small black specks resembling ground pepper), egg cases (brown, capsule-shaped), cast skins (shed exoskeletons), musty odor in infested areas, grease smear marks along walls.",
+            "Flies: clusters of flies near drains or garbage, larvae (maggots) in wet organic matter, pupae cases near food sources.",
+            "Stored product pests: webbing in flour or cereal, clumping in dry goods, larvae or beetles in grain products."
+          ],
+          why: "Each sign tells you something specific about the pest. Fresh rodent droppings (moist, dark) vs. old droppings (dry, gray) tell you whether the infestation is active. Egg cases tell you cockroaches are breeding on-site. Reading these signs correctly determines the urgency of the response.",
+          tip: "The exam may show you a scenario and ask what pest is indicated. Match signs to pests: gnaw marks + grease marks = rodents. Egg cases + cast skins = cockroaches. Webbing in flour = stored product pests."
+        },
+        {
+          h: "Integrated Pest Management (IPM): Prevention First",
+          t: "Integrated Pest Management (IPM) is the gold standard approach to pest control in food service. Rather than simply reacting to pest sightings with pesticide applications, IPM takes a systematic prevention-first approach — making the facility as inhospitable to pests as possible, then using chemical controls only as a last resort.",
+          bullets: [
+            "Denial of entry: seal cracks, gaps, and openings. Install door sweeps. Use air curtains. Screen vents and floor drains.",
+            "Denial of food: store all food in sealed, pest-proof containers. Keep food at least 6 inches off the floor. Clean up spills immediately.",
+            "Denial of water: fix leaky pipes and drains. Eliminate standing water. Clean floor drains regularly.",
+            "Denial of shelter: eliminate clutter, cardboard boxes, and excess storage. Rotate stock regularly to disturb potential nesting sites.",
+            "Monitoring: inspect regularly and keep logs. Use pheromone traps, glue boards, and monitoring devices.",
+            "Control: when prevention fails, use licensed PCO with targeted, food-safe chemical applications."
+          ],
+          why: "IPM is more effective than spray-first approaches because it addresses the ROOT CAUSE of pest activity — the conditions that attract and sustain them. A cockroach that can't find food, water, or shelter in your facility will not establish an infestation, regardless of how many it finds outside.",
+          tip: "The exam tests IPM principles heavily. Know: prevention before chemicals, licensed PCO for pesticide application, deny food/water/shelter/entry. The first step in IPM is identification and prevention, not pesticide use."
+        },
+        {
+          h: "The Role of the Licensed Pest Control Operator (PCO)",
+          t: "Food service operations should never attempt to apply pesticides themselves. Pesticide application in a food environment requires specialized training, licensing, and knowledge of food-safe products and application methods. A licensed Pest Control Operator (PCO) has the expertise to identify the specific pest, select the appropriate treatment, apply it safely, and document the work.",
+          bullets: [
+            "Only a licensed PCO should apply pesticides in a food service operation.",
+            "The PCO should provide documentation of every visit: date, pest findings, products used, concentrations, areas treated.",
+            "Operations should have a written pest control contract with a licensed PCO.",
+            "Schedule preventive PCO visits on a regular basis — don't wait for a sighting.",
+            "After any pesticide treatment, ventilate the area and follow all PCO instructions before resuming food service.",
+            "Keep all PCO records on file — health inspectors will ask for them."
+          ],
+          why: "Using the wrong pesticide in a food environment — or applying it incorrectly — can contaminate food and surfaces with chemical residue. Some pesticides are toxic at low levels. The licensing requirement exists because the consequences of error are severe.",
+          tip: "The exam will ask who can apply pesticides in a food operation. The answer is always: only a licensed PCO. Never food service staff, regardless of product label claims."
+        },
+        {
+          h: "Facility Maintenance: Structural Pest Prevention",
+          t: "The physical structure of a food service facility is either a pest's invitation or its barrier. Gaps around pipes, cracks in walls, improperly fitted doors, and damaged screens are open invitations for insects and rodents. Structural pest prevention — sometimes called 'pest exclusion' — means maintaining the building itself as the first line of defense.",
+          bullets: [
+            "Seal all gaps and cracks in walls, floors, and ceilings — particularly around utility pipes, drains, and electrical conduits.",
+            "Install door sweeps on all exterior doors — mice can enter through a gap as small as ¼ inch.",
+            "Keep exterior doors closed when not in active use; use air curtains where doors must stay open.",
+            "Screen all vents, drains, and windows.",
+            "Maintain proper lighting — yellow or sodium vapor lights near entrances attract fewer insects than white fluorescent lights.",
+            "Fix leaky plumbing immediately — standing water is a major attractant for pests of all types.",
+            "Keep outdoor garbage containers as far from the building as practical, in sealed containers."
+          ],
+          why: "A mouse can compress its body to fit through a gap the size of a dime. Cockroaches can flatten themselves to fit through gaps as thin as 1/16 inch. Structural exclusion is the only way to prevent pests that are actively trying to enter from succeeding.",
+          tip: "Know what structural features prevent pest entry: door sweeps (bottom of doors), air curtains (entry points), sealed cracks (walls/pipes), screens (drains/vents). The exam tests these specifically."
+        },
+        {
+          h: "Garbage and Waste Management: Eliminating the #1 Pest Attractant",
+          t: "Garbage is the primary attractant for virtually every common food service pest — cockroaches, rodents, and flies all feed on organic waste. Proper garbage management doesn't just keep the facility clean — it actively removes the food source that sustains pest populations. Without consistent access to food, even established pest populations can't survive.",
+          bullets: [
+            "Use garbage containers with tight-fitting lids — inside and outside.",
+            "Empty indoor garbage cans frequently — at minimum daily, more often if they fill quickly.",
+            "Keep outdoor garbage containers as far from the building as practical.",
+            "Clean garbage containers regularly — organic residue inside the can continues to attract pests even when empty.",
+            "Never allow garbage to accumulate on floors or near food prep areas.",
+            "Grease traps and floor drains must be cleaned regularly — they accumulate organic matter that attracts flies."
+          ],
+          why: "Flies breed in organic matter. A single female housefly can lay up to 500 eggs in her lifetime, all in garbage, wet organic waste, or decaying food. Controlling garbage directly controls fly populations — not through pesticide, but by eliminating their breeding and feeding site.",
+          tip: "Garbage storage and management questions are common on the exam. Key rules: tight lids, away from building, cleaned containers, no floor accumulation."
+        },
+        {
+          h: "Pest Documentation and Regulatory Compliance",
+          t: "Pest control isn't just a practical necessity — it's a regulatory requirement. Health codes mandate that food service operations have active pest control programs, maintain documentation, and report significant infestations to health authorities. During a health inspection, a pest control log is one of the first things an inspector will request.",
+          bullets: [
+            "Maintain a written pest control log documenting every PCO visit: date, findings, products used, areas treated, PCO signature.",
+            "Keep a pest sighting log where staff can record any pest activity they observe, with date, time, and location.",
+            "Report significant or persistent pest infestations to the local health authority as required by regulation.",
+            "Cooperate fully with any health authority investigation following a pest-related complaint.",
+            "Ensure all staff know how to report pest sightings immediately to management.",
+            "Review pest control records regularly to identify trends — increasing trap activity signals a growing problem."
+          ],
+          why: "Documentation serves two purposes: it demonstrates compliance during health inspections, and it creates a trend record that allows you to catch worsening infestations before they become unmanageable. An operation that can show a consistent PCO schedule and clean sighting logs is demonstrating due diligence.",
+          tip: "The exam will ask what information pest control records must contain. Know: date of visit, chemicals used, areas treated, concentration, and PCO signature. Missing records is a health code violation."
+        },
+        {
+          h: "Responding to Pest Activity: Immediate Action Steps",
+          t: "Discovering pest activity requires an immediate, systematic response. The speed and thoroughness of the response determines whether a small problem stays small or becomes a full infestation. Every food handler should know what to do when they encounter evidence of pests — and that it's always: report immediately, don't ignore it.",
+          bullets: [
+            "Immediately report any pest sighting or evidence to the manager — don't handle it yourself.",
+            "If food has been in the pest-affected area, discard it immediately regardless of packaging condition.",
+            "Contact the licensed PCO immediately for assessment and treatment.",
+            "Document the sighting in the pest log: date, time, location, what was observed.",
+            "If the infestation is severe, consider temporary closure to prevent contamination of food being served.",
+            "After treatment, follow all PCO instructions before resuming service: ventilate, clean, sanitize.",
+            "Conduct a root-cause analysis: how did the pest gain access? What attracted it? Fix those conditions."
+          ],
+          why: "One cockroach seen during daylight hours is a serious sign — cockroaches are nocturnal and only venture out during the day when the population is large enough to compete for food. A single daytime sighting typically means dozens or hundreds are hiding nearby.",
+          tip: "The exam will present pest response scenarios. The correct first action is always: report to manager and contact the PCO. Never attempt to apply pesticide yourself. If food was exposed, discard it."
+        }
+      ]}
+    ],
+    // Hockey stats shown during PIN lockout — stored here so they can be updated remotely
+    hockeyStats: [
+      "🏒 Wayne Gretzky scored 92 goals in a single season (1981-82). No one has come close since.",
+      "🏆 The Detroit Red Wings have won 11 Stanley Cups — more than any other franchise outside Montreal.",
+      "🎽 Gordie Howe played in 5 different decades: the 1940s, 50s, 60s, 70s, and 80s.",
+      "🥅 Martin Brodeur holds the NHL record for career wins with 691 — a number that may never be broken.",
+      "⚡ The fastest goal in NHL history was scored just 4 seconds into a game by Doug Smail in 1981.",
+      "🏒 Wayne Gretzky has more assists alone (1,963) than any other player has total points in NHL history.",
+      "🦴 Nicklas Lidstrom won the Norris Trophy as the NHL's best defenseman 7 times in his career.",
+      "🚀 The Montreal Canadiens have won 24 Stanley Cups — the most in NHL history.",
+      "🏟️ The Detroit Red Wings' former home, Joe Louis Arena, was nicknamed 'The Joe' and held 20,058 fans.",
+      "🎯 Steve Yzerman captained the Detroit Red Wings for 20 seasons — longer than any captain in NHL history.",
+      "❄️ A regulation NHL rink is 200 feet long and 85 feet wide — roughly the size of a basketball court plus half again.",
+      "🏆 The New York Rangers last won the Stanley Cup in 1994, breaking a 54-year drought.",
+      "🔴 The Red Wings' octopus tradition began in 1952 — fans throw them because an octopus has 8 arms, matching the 8 wins needed for the Cup.",
+      "💨 The fastest skater in NHL history reached 29.7 mph — that's Bobby Orr-era speed, but Connor McDavid has clocked 25.4 mph in modern tracking.",
+      "📺 The first NHL game ever televised was on October 11, 1952 — a Detroit Red Wings game, naturally.",
+      "🥊 Hockey sticks are made to flex — pros use sticks with flex ratings between 75 and 110, snapping like a spring on every shot.",
+      "🏒 Sergei Fedorov won the Hart Trophy (league MVP) in 1994 — the last Red Wing to do so.",
+      "⭐ Mario Lemieux scored 5 goals 5 different ways in a single game in 1988: even strength, power play, shorthanded, penalty shot, and empty net.",
+      "🎽 Brett Hull scored 86 goals in the 1990-91 season — the third-highest single-season total in NHL history.",
+      "🏆 The Stanley Cup has been to some unusual places: it's been used as a cereal bowl, a baptismal font, and once left on the side of a road.",
+      "🌡️ NHL ice is kept at approximately 16°F (-9°C) — cold enough to stay hard but not so cold that it becomes brittle.",
+      "🦅 The Philadelphia Flyers were swept by the Detroit Red Wings in the 1997 Stanley Cup Finals 4-0. The Rangers didn't even make the playoffs.",
+      "🏒 Dominik Hasek won back-to-back Hart Trophies in 1997 and 1998 — the only goalie ever to win consecutive MVPs.",
+      "📊 The NHL has 32 teams today, split between the Eastern and Western conferences.",
+      "🎯 A hockey puck weighs 6 ounces and travels at speeds up to 108 mph on a slapshot.",
+      "🏆 Steve Yzerman was diagnosed with a serious knee injury before the 1997 playoffs and played through it to win the Cup. Pure heart.",
+      "❄️ The Zamboni machine was invented by Frank Zamboni in 1949 in Paramount, California — not Canada.",
+      "🔴 Vladimir Konstantinov was named to the All-Star team after the 1997 Cup — then was critically injured in a limo crash just days later.",
+      "🏒 Patrick Roy won the Conn Smythe Trophy (playoff MVP) three times — more than any other goalie in NHL history.",
+      "⭐ Brendan Shanahan scored 52 goals in the 1993-94 season and added a Stanley Cup ring in 1997 with Detroit.",
+      "🌍 Over 30% of NHL players today are from outside North America — Sweden, Finland, Russia, and the Czech Republic lead the way.",
+      "🏆 The 1997 Detroit Red Wings ended a 42-year Cup drought for the franchise — and dedicated the win to injured teammate Vladimir Konstantinov."
+    ]
   };
 }
 
@@ -662,7 +1243,7 @@ async function saveToCloud() {
     lastSyncedData = payloadStr;
     console.log("Saved to cloud ✓");
     const el=document.getElementById("syncStatus");
-    if(el){el.textContent="☁️ Synced just now";setTimeout(()=>{if(el)el.textContent="";},3000);}
+    if(el){el.textContent=eggSyncMessage("☁️ Synced just now");setTimeout(()=>{if(el)el.textContent="";},3000);}
   } catch(e) {
     console.warn("Cloud save failed, data kept locally:", e.message);
   }
@@ -682,7 +1263,10 @@ let S={
   examVersion:null, examQs:[], examIdx:0, examSel:null, examAnswers:[], examHistory:[],
   examType:"full",
   showCheer:false, cheerMsg:"",
-  // Feedback
+  eggTaunt:null,
+  pin:{entry:"", error:"", clue:"", wrongCount:0, locked:false, lockTimer:null, lockSecondsLeft:0, statIdx:0, statInterval:null},
+  cloudPin:"1997",
+  hockeyStats:[],
   fb:{type:"",mood:0,tags:[],message:"",screenshot:null,screenshotName:"",sending:false,sent:false,error:""}
 };
 function saveHist(){ scheduleSave(); }
@@ -747,7 +1331,10 @@ function render(){
     reports:"linear-gradient(135deg,#001a4d,#003087)",
     links:"linear-gradient(135deg,#003087,#001a4d)",
     servsafe:"linear-gradient(160deg,#003087 0%,#001a4d 100%)",
-    feedback:"linear-gradient(160deg,#001a4d 0%,#1a0005 100%)"
+    feedback:"linear-gradient(160deg,#001a4d 0%,#1a0005 100%)",
+    pin:"linear-gradient(160deg,#0a0a0a 0%,#1a0005 100%)",
+    pinVictory:"linear-gradient(160deg,#0a0a0a 0%,#8B0000 100%)",
+    eggList:"linear-gradient(160deg,#0a0a0a 0%,#8B0000 100%)"
   };
   document.body.style.background=bgMap[S.screen]||"#f5f5f5";
   const screens={
@@ -762,12 +1349,202 @@ function render(){
     examResult:renderExamResult,
     reports:renderReports,
     links:renderLinks,
-    feedback:renderFeedback
+    feedback:renderFeedback,
+    pin:renderPin,
+    pinVictory:renderPinVictory,
+    eggList:renderEggList
   };
   const content=(screens[S.screen]||renderHome)();
   const cheer=S.showCheer?"<div class='overlay'><div class='overlay-box'><div style='font-size:60px;margin-bottom:12px'>🌟</div><div style='font-size:22px;font-weight:bold;color:#333'>"+S.cheerMsg+"</div></div></div>":"";
+  const wingsFlash=EGG.flashVisible?"<div style='position:fixed;bottom:80px;right:16px;z-index:150;animation:popIn 0.3s ease;background:rgba(200,16,46,0.92);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(0,0,0,0.4)'><img src='"+RW_LOGO+"' style='width:32px;height:32px;object-fit:contain'><span style='font-size:12px;color:#fff;font-weight:bold;font-family:Oswald,sans-serif'>Red Wings still better 🔴</span></div>":"";  const footer="<div style='text-align:center;padding:18px 14px 28px;opacity:0.85;display:flex;align-items:center;justify-content:center;gap:10px'>"
+    +"<span style='font-size:16px;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.12em;text-transform:uppercase;font-weight:400'>Powered by</span>"
+    +"<img src='https://raw.githubusercontent.com/webgenerations77/kenzie/main/Logo.png' alt='Web Generations' style='height:88px;width:auto;object-fit:contain;cursor:pointer' data-action='goPin' title='Secret area...'>"
+    +"</div>";
   const fab="";
-  return content+cheer+fab;
+  return content+footer+cheer+wingsFlash+fab;
+}
+
+// ═══════════════════════════════════════════
+// 🥚 EASTER EGG ENGINE — Red Wings > Rangers
+// ═══════════════════════════════════════════
+const RW_LOGO="https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Detroit_Red_Wings_logo.svg/500px-Detroit_Red_Wings_logo.svg.png";
+const NYR_LOGO="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/New_York_Rangers.svg/500px-New_York_Rangers.svg.png";
+
+// Egg state — persists for the session
+const EGG={
+  logoTapCount:0,
+  logoTapTimer:null,
+  wingsThemeActive:false,
+  wingsThemeTimer:null,
+  wrongAnswerCount:0,
+  flashVisible:false,
+  flashTimer:null
+};
+
+// EGG 1 — Tuesday logo swap + monthly tagline swap
+function eggGetHomeLogoAndTagline(){
+  const now=new Date();
+  const day=now.getDay(); // 0=Sun, 2=Tue
+  const date=now.getDate();
+  // Tuesday (day===2): full Wings swap
+  if(day===2){
+    return{
+      logo:RW_LOGO,
+      tagline:"<p style='color:#FFCC00;font-size:12px;margin:0 0 3px;font-style:italic'>🪄 It's Tuesday — Wings Day! Every Tuesday the Red Wings take over. Why? Because they've won the Stanley Cup 11 times to the Rangers' 4. Just saying. 😇</p>",
+      slogan:"<p style='color:#FFCC00;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RED WINGS! 🔴</p>"
+    };
+  }
+  // First day of month: tagline swap only
+  if(date===1){
+    return{
+      logo:NYR_LOGO,
+      tagline:"<p style='color:rgba(255,255,255,0.9);font-size:13px;font-style:italic;margin:0 0 4px'>Turning food safety into a superpower 🦸‍♀️</p>",
+      slogan:"<p style='color:#FFCC00;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.08em;font-weight:600'>🔴 Red Wings are better (it's the 1st — fact of the month!)</p>"
+    };
+  }
+  // Konami/tap override active
+  if(EGG.wingsThemeActive){
+    return{
+      logo:RW_LOGO,
+      tagline:"<p style='color:#FFCC00;font-size:12px;margin:0 0 3px;font-style:italic'>🥚 Easter Egg activated! You tapped the logo 5 times. The Red Wings theme is yours for 30 seconds — enjoy it while it lasts! 😄</p>",
+      slogan:"<p style='color:#FFCC00;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RED WINGS! 🔴</p>"
+    };
+  }
+  return{
+    logo:NYR_LOGO,
+    tagline:"<p style='color:rgba(255,255,255,0.9);font-size:13px;font-style:italic;margin:0 0 4px'>Turning food safety into a superpower 🦸‍♀️</p>",
+    slogan:"<p style='color:#A2AAAD;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RANGERS!</p>"
+  };
+}
+
+// EGG 2 — Wrong answer taunt (1 in 12 chance)
+function eggWrongAnswerTaunt(){
+  EGG.wrongAnswerCount++;
+  if(Math.random()<(1/12)){
+    const taunts=[
+      "Not quite... even a Red Wings fan would've known that one. 🔴",
+      "Oops! The Red Wings won the Cup in '97, '98, '02, and '08 — they know a thing or two about winning. You'll get there! 🏒",
+      "Not this time! Fun fact: the Red Wings have retired 9 numbers. The Rangers? 8. Details matter! 😇",
+      "Almost! The Red Wings' Gordie Howe once scored 801 regular-season goals. Precision counts — keep going! 🏒",
+      "Not quite! Steve Yzerman captained the Wings for 20 seasons. Persistence wins — just like you will! 🔴"
+    ];
+    return taunts[Math.floor(Math.random()*taunts.length)];
+  }
+  return null;
+}
+
+// EGG 3 — Sync status sneak (1 in 15 chance)
+function eggSyncMessage(normal){
+  if(Math.random()<(1/15)){
+    const msgs=[
+      "☁️ Synced (Red Wings still better btw)",
+      "☁️ Saved! 🔴 11 Cups > 4 Cups. Just syncing facts.",
+      "☁️ Synced just now — unlike the Rangers' Cup drought 😇",
+      "☁️ Progress saved! Wings have been Cup contenders since 1926 🔴"
+    ];
+    return msgs[Math.floor(Math.random()*msgs.length)];
+  }
+  return normal;
+}
+
+// EGG 4 — Score 71% easter egg (Gordie Howe's #71 / 1971)
+function eggCheck71(pct){
+  if(pct===71){
+    return"<div style='background:linear-gradient(135deg,#C8102E,#8B0000);border-radius:13px;padding:12px 15px;margin-top:10px;display:flex;gap:12px;align-items:center'>"
+    +"<img src='"+RW_LOGO+"' style='width:40px;height:40px;object-fit:contain;flex-shrink:0'>"
+    +"<div style='font-size:12px;color:#fff;line-height:1.7'>"
+    +"🥚 <strong>Easter Egg!</strong> You scored 71%! In 1971, Gordie Howe — the greatest Red Wing ever — came out of retirement at age 45 to play with his sons. He wore #9 his whole career but his legacy is #1. The Red Wings retired his number in 1972. Try again and beat 71 like Gordie beat Father Time! 🔴"
+    +"</div></div>";
+  }
+  return"";
+}
+
+// EGG 5 — Perfect score (100%) Wings invasion
+function eggPerfectScore(pct){
+  if(pct===100){
+    return"<div style='background:linear-gradient(135deg,#C8102E,#8B0000);border-radius:13px;padding:14px 16px;margin-top:10px;text-align:center'>"
+    +"<img src='"+RW_LOGO+"' style='width:55px;height:55px;object-fit:contain;margin-bottom:8px'>"
+    +"<div style='font-size:13px;color:#fff;line-height:1.7'>"
+    +"🥚 <strong>Easter Egg!</strong> A PERFECT SCORE! Even we have to admit that's impressive — and we're Red Wings fans. For context: the Wings have scored 100+ points in a season 13 times. You just matched that energy. Perfection belongs to Detroit... but today, it belongs to you too. 🔴🏆"
+    +"</div></div>";
+  }
+  return"";
+}
+
+// EGG 6 — Barely passing (exactly 75%) Wings confetti
+function eggBarely75(pct){
+  if(pct===75){
+    return"<div style='background:rgba(200,16,46,0.15);border:1px solid rgba(200,16,46,0.4);border-radius:13px;padding:12px 15px;margin-top:10px;display:flex;gap:12px;align-items:center'>"
+    +"<img src='"+RW_LOGO+"' style='width:36px;height:36px;object-fit:contain;flex-shrink:0'>"
+    +"<div style='font-size:12px;color:#fff;line-height:1.7'>"
+    +"🥚 <strong>Easter Egg!</strong> Exactly 75% — the minimum to pass! The Red Wings once finished a season at exactly .500 in 1985-86... and still made the playoffs. Sometimes just enough IS enough. Congrats! 🔴"
+    +"</div></div>";
+  }
+  return"";
+}
+
+// EGG 7 — Best score on progress report is 71
+function eggReportBest71(best){
+  if(best===71){
+    return"<div style='background:linear-gradient(135deg,#C8102E,#8B0000);border-radius:13px;padding:12px 15px;margin-bottom:13px;display:flex;gap:12px;align-items:center'>"
+    +"<img src='"+RW_LOGO+"' style='width:38px;height:38px;object-fit:contain;flex-shrink:0'>"
+    +"<div style='font-size:12px;color:#fff;line-height:1.7'>"
+    +"🥚 <strong>Easter Egg!</strong> Your best score is 71%! #71 is a legendary number in Detroit — it was worn by several Wings greats. But more importantly: the Red Wings franchise was founded in 1926, and by 1971 they already had 3 Stanley Cups. The Rangers? Also 3 at that point. They've been tied ever since... except Detroit kept winning. 😇 Keep studying!"
+    +"</div></div>";
+  }
+  return"";
+}
+
+// EGG 8 — 8th exam taken (Steve Yzerman wore #19, won Cup in '97, '98, '02 — 8 is the number of Wings Hall of Famers active 1990-2004)
+function eggEighthExam(total){
+  if(total===8){
+    return"<div style='background:rgba(200,16,46,0.12);border:1px solid rgba(200,16,46,0.35);border-radius:13px;padding:12px 15px;margin-bottom:13px;display:flex;gap:12px;align-items:center'>"
+    +"<img src='"+RW_LOGO+"' style='width:36px;height:36px;object-fit:contain;flex-shrink:0'>"
+    +"<div style='font-size:12px;color:#fff;line-height:1.7'>"
+    +"🥚 <strong>Easter Egg!</strong> 8 exams taken! The Red Wings have retired 8 jersey numbers — #1 Terry Sawchuk, #6 Larry Aurie, #7 Ted Lindsay, #9 Gordie Howe, #10 Alex Delvecchio, #12 Sid Abel, #16 Vladimir Konstantinov, and #19 Steve Yzerman. Eight legends. You're on your own legendary run! 🔴"
+    +"</div></div>";
+  }
+  return"";
+}
+
+// EGG 9 — All 5 topics completed
+function eggAllTopicsDone(topicsDone){
+  if(topicsDone===5){
+    return"<div style='background:linear-gradient(135deg,#C8102E,#8B0000);border-radius:13px;padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:center'>"
+    +"<img src='"+RW_LOGO+"' style='width:40px;height:40px;object-fit:contain;flex-shrink:0'>"
+    +"<div style='font-size:12px;color:#fff;line-height:1.7'>"
+    +"🥚 <strong>Easter Egg!</strong> All 5 topics mastered! The Detroit Red Wings have 5 retired numbers from players who were also named to the NHL's Top 100 Players of All Time list — Gordie Howe, Ted Lindsay, Terry Sawchuk, Alex Delvecchio, and Steve Yzerman. Five legends. Five topics. You're in good company. 🔴🏆"
+    +"</div></div>";
+  }
+  return"";
+}
+
+// EGG 10 — Logo tap 5x activates Wings theme for 30 seconds
+function eggActivateWingsTheme(){
+  EGG.wingsThemeActive=true;
+  if(EGG.wingsThemeTimer) clearTimeout(EGG.wingsThemeTimer);
+  EGG.wingsThemeTimer=setTimeout(()=>{EGG.wingsThemeActive=false;r(false);},30000);
+  r(false);
+}
+function eggHandleLogoTap(){
+  EGG.logoTapCount++;
+  if(EGG.logoTapTimer) clearTimeout(EGG.logoTapTimer);
+  if(EGG.logoTapCount>=5){
+    EGG.logoTapCount=0;
+    eggActivateWingsTheme();
+    return;
+  }
+  EGG.logoTapTimer=setTimeout(()=>{EGG.logoTapCount=0;},2000);
+}
+
+// EGG 11 — Flash Wings logo on wrong answer (1 in 10)
+function eggMaybeFlashWingsLogo(){
+  if(Math.random()<(1/10)){
+    EGG.flashVisible=true;
+    r(false);
+    if(EGG.flashTimer) clearTimeout(EGG.flashTimer);
+    EGG.flashTimer=setTimeout(()=>{EGG.flashVisible=false;r(false);},2500);
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -777,19 +1554,22 @@ function renderHome(){
   const topicsDone=ssTopics.filter(t=>S.topicDone[t.id]).length;
   const passedExams=S.examHistory.filter(e=>e.pct>=75).length;
   const ssProgress=topicsDone+" of "+ssTopics.length+" lessons done · "+S.examHistory.length+" exam"+(S.examHistory.length!==1?"s":"")+" taken";
+  const egg=eggGetHomeLogoAndTagline();
+  const allTopicsEgg=eggAllTopicsDone(topicsDone);
   return"<div class='wrap'>"
   +"<div class='rangers-header' style='padding:16px 18px'>"
   +"<div style='display:flex;align-items:center;gap:18px'>"
-  +"<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/New_York_Rangers.svg/500px-New_York_Rangers.svg.png' alt='New York Rangers' style='width:33vw;max-width:150px;min-width:100px;height:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 3px 12px rgba(0,0,0,0.7))'>"
+  +"<img src='"+egg.logo+"' id='homeLogo' alt='Team Logo' style='width:33vw;max-width:150px;min-width:100px;height:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 3px 12px rgba(0,0,0,0.7));cursor:pointer' data-action='tapLogo'>"
   +"<div style='text-align:left;flex:1'>"
   +"<h1 style='font-size:27px;color:#fff;margin:0 0 2px;letter-spacing:0.05em;font-family:Oswald,sans-serif;line-height:1.1'>Kenzie's ServSafe Journey</h1>"
   +"<div style='width:44px;height:3px;background:#CE1126;margin:7px 0;border-radius:2px'></div>"
-  +"<p style='color:rgba(255,255,255,0.9);font-size:13px;font-style:italic;margin:0 0 4px'>Turning food safety into a superpower 🦸‍♀️</p>"
-  +"<p style='color:#A2AAAD;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RANGERS!</p>"
+  +egg.tagline
+  +egg.slogan
   +"</div>"
   +"</div>"
   +"<div id='syncStatus' style='font-size:11px;color:rgba(255,255,255,0.45);margin-top:8px;text-align:center'></div>"
   +"</div>"
+  +allTopicsEgg
   +"<div class='sec-label'>🍽️ ServSafe Certification Prep</div>"
   +"<button class='home-card' style='border-left-color:#003087' data-action='goServSafe'><span style='font-size:32px'>🍽️</span><div style='flex:1'><div style='font-size:15px;font-weight:bold;color:#222;margin-bottom:2px'>ServSafe Study Hub</div><div style='font-size:12px;color:#555'>"+ssProgress+"</div></div>"+(topicsDone===ssTopics.length&&passedExams>0?"<span style='font-size:18px'>🏆</span>":"")+"<span style='font-size:16px;color:#aaa'>›</span></button>"
   +"<div style='background:rgba(0,0,0,0.25);border-radius:13px;padding:12px 16px;text-align:center;margin-top:11px;border:1px solid rgba(255,255,255,0.1)'><p style='color:rgba(255,255,255,0.85);margin:0;font-size:13px;line-height:1.7'>🏒 No timer. No pressure. You've got this! 🏒</p></div>"
@@ -804,7 +1584,7 @@ function renderServSafe(){
   const sc=ssTopics.map(t=>"<button class='home-card' data-action='openTopic' data-id='"+t.id+"'><span style='font-size:32px'>"+t.icon+"</span><div style='flex:1'><div style='font-size:15px;font-weight:bold;color:#222;margin-bottom:2px'>"+t.title+"</div><div style='font-size:12px;color:#555'>Lesson + Pop Quiz</div></div>"+(S.topicDone[t.id]?"<span style='font-size:18px'>✅</span>":"")+"<span style='font-size:16px;color:#ccc'>›</span></button>").join("");
   const passedCount=S.examHistory.filter(e=>e.pct>=75).length;
   return"<div class='wrap'>"
-  +"<div class='top-bar'><button class='home-btn' data-action='goHome'>← Home</button><div><div style='font-size:15px;font-weight:bold;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.04em'>SERVSAFE PREP</div><div style='font-size:12px;color:rgba(255,255,255,0.7);margin-top:1px'>Lessons, quizzes & practice exams</div></div></div>"
+  +"<div class='top-bar'><button class='home-btn' data-action='goHome'>← Home</button><div style='flex:1'><div style='font-size:15px;font-weight:bold;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.04em'>SERVSAFE PREP</div><div style='font-size:12px;color:rgba(255,255,255,0.7);margin-top:1px'>Lessons, quizzes & practice exams</div></div><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/New_York_Rangers.svg/500px-New_York_Rangers.svg.png' alt='NYR' style='height:44px;width:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))'></div>"
   +"<div class='sec-label'>📖 Study by Topic</div>"
   +sc
   +"<div class='sec-label' style='margin-top:14px'>📝 Practice Exams</div>"
@@ -821,7 +1601,10 @@ function renderServSafe(){
 function renderSSLesson(){
   if(!S.topic)return renderHome();
   const pg=S.topic.lesson[S.lessonPage],pct=(S.lessonPage/S.topic.lesson.length)*100,isLast=S.lessonPage+1>=S.topic.lesson.length;
-  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:"+S.topic.accent+"' data-action='goHome'>← Home</button><div><div style='font-size:14px;font-weight:bold;color:#333'>"+S.topic.icon+" "+S.topic.title+"</div><div style='font-size:12px;color:#999;margin-top:1px'>Reading "+(S.lessonPage+1)+" of "+S.topic.lesson.length+"</div></div></div><div class='prog-wrap'><div class='prog-bar' style='width:"+pct+"%;background:linear-gradient(90deg,"+S.topic.light+","+S.topic.accent+")'></div></div><div class='card' style='border-left:5px solid "+S.topic.accent+"'><h2 style='font-size:17px;color:"+S.topic.accent+";margin:0 0 11px'>"+pg.h+"</h2><p style='font-size:16px;color:#333;line-height:1.8;margin:0'>"+pg.t+"</p></div><button class='big-btn' style='background:"+S.topic.accent+"' data-action='readLesson'>🔊 Read This Aloud</button><div style='display:flex;gap:9px'><button style='flex:1;padding:14px;border-radius:15px;background:"+(S.lessonPage===0?"#e0e0e0":"#f5f5f5")+";color:"+(S.lessonPage===0?"#bbb":"#555")+";font-size:14px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:"+(S.lessonPage===0?"not-allowed":"pointer")+"' data-action='lessonBack'"+(S.lessonPage===0?" disabled":"")+">← Back</button><button style='flex:2;padding:14px;border-radius:15px;background:linear-gradient(135deg,"+S.topic.light+","+S.topic.accent+");color:#fff;font-size:16px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:pointer' data-action='lessonNext'>"+(isLast?"Take the Quiz!":"Next →")+"</button></div></div>";
+  const bullets=pg.bullets?"<ul style='margin:12px 0 0 4px;padding:0;list-style:none'>"+pg.bullets.map(b=>"<li style='font-size:14px;color:#444;line-height:1.75;padding:4px 0 4px 20px;position:relative;border-bottom:1px solid #f0f0f0'><span style='position:absolute;left:0;color:"+S.topic.accent+"'>▸</span>"+b+"</li>").join("")+"</ul>":"";
+  const whyBox=pg.why?"<div style='background:"+S.topic.color+";border-radius:11px;padding:12px 14px;margin-top:13px;border-left:4px solid "+S.topic.accent+"'><div style='font-size:11px;font-weight:bold;color:"+S.topic.accent+";font-family:Oswald,sans-serif;letter-spacing:0.08em;margin-bottom:5px'>💡 WHY THIS MATTERS</div><p style='font-size:13px;color:#444;line-height:1.75;margin:0'>"+pg.why+"</p></div>":"";
+  const examTip=pg.tip?"<div style='background:#FFF8E1;border-radius:11px;padding:10px 13px;margin-top:10px;border-left:4px solid #F57F17'><div style='font-size:11px;font-weight:bold;color:#E65100;font-family:Oswald,sans-serif;letter-spacing:0.08em;margin-bottom:4px'>📝 EXAM TIP</div><p style='font-size:13px;color:#555;line-height:1.7;margin:0'>"+pg.tip+"</p></div>":"";
+  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:"+S.topic.accent+"' data-action='goHome'>← Home</button><div><div style='font-size:14px;font-weight:bold;color:#333'>"+S.topic.icon+" "+S.topic.title+"</div><div style='font-size:12px;color:#999;margin-top:1px'>Reading "+(S.lessonPage+1)+" of "+S.topic.lesson.length+"</div></div></div><div class='prog-wrap'><div class='prog-bar' style='width:"+pct+"%;background:linear-gradient(90deg,"+S.topic.light+","+S.topic.accent+")'></div></div><div class='card' style='border-left:5px solid "+S.topic.accent+"'><h2 style='font-size:17px;color:"+S.topic.accent+";margin:0 0 11px'>"+pg.h+"</h2><p style='font-size:15px;color:#333;line-height:1.85;margin:0'>"+pg.t+"</p>"+bullets+whyBox+examTip+"</div><button class='big-btn' style='background:"+S.topic.accent+"' data-action='readLesson'>🔊 Read This Aloud</button><div style='display:flex;gap:9px'><button style='flex:1;padding:14px;border-radius:15px;background:"+(S.lessonPage===0?"#e0e0e0":"#f5f5f5")+";color:"+(S.lessonPage===0?"#bbb":"#555")+";font-size:14px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:"+(S.lessonPage===0?"not-allowed":"pointer")+"' data-action='lessonBack'"+(S.lessonPage===0?" disabled":"")+">← Back</button><button style='flex:2;padding:14px;border-radius:15px;background:linear-gradient(135deg,"+S.topic.light+","+S.topic.accent+");color:#fff;font-size:16px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:pointer' data-action='lessonNext'>"+(isLast?"Take the Quiz!":"Next →")+"</button></div></div>";
 }
 
 // ═══════════════════════════════════════════
@@ -863,7 +1646,7 @@ function renderExam(){
   const pct=(S.examIdx/S.examQs.length)*100;
   const tn=TOPICS[q.topicIdx]||"General";
   const opts=q.opts.map((o,i)=>{let cls="opt-btn";if(S.examSel!==null){if(i===q.ans)cls+=" opt-correct";else if(i===S.examSel&&i!==q.ans)cls+=" opt-wrong";}return"<button class='"+cls+"' data-action='selectExam' data-i='"+i+"'"+(S.examSel!==null?" style='cursor:default'":"")+">ABCD"[i]+". "+o+"</button>";}).join("");
-  const explain=S.examSel!==null?"<div style='margin-top:11px;padding:12px 14px;border-radius:12px;background:"+(S.examSel===q.ans?"#E8EAF6":"#FFF3E0")+";font-size:14px;color:#444;line-height:1.6'>"+(S.examSel===q.ans?"Correct! ":"Not quite. ")+q.ex+"</div>":"";
+  const explain=S.examSel!==null?"<div style='margin-top:11px;padding:12px 14px;border-radius:12px;background:"+(S.examSel===q.ans?"#E8EAF6":"#FFF3E0")+";font-size:14px;color:#444;line-height:1.6'>"+(S.examSel===q.ans?"Correct! ":"Not quite. ")+q.ex+(S.examSel!==null&&S.examSel!==q.ans&&S.eggTaunt?("<br><span style='font-size:12px;color:#C8102E;display:flex;align-items:center;gap:5px;margin-top:6px'><img src='"+RW_LOGO+"' style='width:16px;height:16px;object-fit:contain'>"+escHtml(S.eggTaunt)+"</span>"):"")+"</div>":"";
   const nb=S.examSel!==null?"<button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#003087)' data-action='examNext'>"+(S.examIdx+1>=S.examQs.length?"See My Results":"Next Question")+"</button>":"<p style='text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-style:italic;margin-top:8px'>Tap an answer to continue 💙</p>";
   const typeLabel=S.examType==="short"?"Quick · Q":"Version "+S.examVersion.replace("v","")+" · Q";
   return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.4)' data-action='goHome'>← Home</button><div><div style='font-size:14px;font-weight:bold;color:#fff'>"+typeLabel+" "+(S.examIdx+1)+"/"+S.examQs.length+"</div><div style='font-size:12px;color:rgba(255,255,255,0.7);margin-top:1px'>"+tn+"</div></div></div><div class='prog-wrap'><div class='prog-bar' style='width:"+pct+"%;background:linear-gradient(90deg,#CE1126,#003087)'></div></div><div class='card'><p style='font-size:16px;color:#333;font-weight:bold;line-height:1.6;margin:0 0 14px'>"+q.q+"</p>"+opts+explain+"</div>"+nb+"</div>";
@@ -877,7 +1660,10 @@ function renderExamResult(){
   const rows=S.examQs.map((q,i)=>"<div class='result-row' style='color:"+(S.examAnswers[i]===q.ans?"#2E7D32":"#C62828")+"'><span>"+(S.examAnswers[i]===q.ans?"✓":"✗")+"</span><span style='flex:1'>"+q.q+"</span></div>").join("");
   const bdH=bd.filter(b=>b.tot>0).map(b=>{const c=b.tp>=75?"#2E7D32":b.tp>=50?"#F57F17":"#C62828";return"<div style='margin-bottom:9px'><div style='display:flex;justify-content:space-between;font-size:13px;color:#333;margin-bottom:2px'><span>"+b.name+"</span><span style='font-weight:bold;color:"+c+"'>"+b.tp+"% ("+b.correct+"/"+b.tot+")</span></div><div class='rbar-wrap'><div class='rbar' style='width:"+b.tp+"%;background:"+c+"'></div></div></div>";}).join("");
   const retryAction=S.examType==="short"?"goSelectShortExam":"goSelectExam";
-  return"<div class='wrap'><div style='text-align:center;padding-top:12px;margin-bottom:14px'><div style='font-size:56px;margin-bottom:8px'>"+(pass?"🏆":"💪")+"</div><h1 style='font-size:22px;color:#fff;margin-bottom:5px'>"+(pass?"You Would Pass the Real Exam!":"Keep Going — You Are Getting There!")+"</h1><div style='font-size:13px;color:rgba(255,255,255,0.8)'>"+typeLabel+" · "+new Date().toLocaleDateString()+"</div></div><div class='card'><div style='text-align:center;margin-bottom:14px'><div style='font-size:44px;font-weight:bold;color:"+(pass?"#2E7D32":"#CE1126")+"'>"+score+"/"+total+"</div><div style='font-size:17px;color:#666;margin-top:2px'>"+pct+"% correct · Passing is 75%</div><div style='margin-top:9px;padding:9px 13px;border-radius:11px;background:"+(pass?"#E8EAF6":"#FFF3E0")+";font-size:13px;color:#555;line-height:1.6'>"+(pass?"Wonderful! You scored above 75%. Consider trying another version to stay sharp. Let's Go Rangers! 🏒":"You scored "+pct+"%. Review the topics below with lower scores and try again. You have totally got this!")+"</div></div><div style='margin-bottom:12px'><div style='font-size:13px;font-weight:bold;color:#333;margin-bottom:9px'>Topic Breakdown:</div>"+bdH+"</div><details><summary style='font-size:13px;font-weight:bold;color:#555;cursor:pointer;padding:7px 0'>All Questions (tap to expand)</summary><div style='margin-top:9px'>"+rows+"</div></details></div><button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#003087)' data-action='retryExam'>🔁 Retake This Version</button><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d)' data-action='"+retryAction+"'>📝 Try a Different Version</button><button class='big-btn' style='background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.4)' data-action='goHome'>🏠 Home</button></div>";
+  const egg71=eggCheck71(pct);
+  const egg75=eggBarely75(pct);
+  const egg100=eggPerfectScore(pct);
+  return"<div class='wrap'><div style='text-align:center;padding-top:12px;margin-bottom:14px'><div style='font-size:56px;margin-bottom:8px'>"+(pass?"🏆":"💪")+"</div><h1 style='font-size:22px;color:#fff;margin-bottom:5px'>"+(pass?"You Would Pass the Real Exam!":"Keep Going — You Are Getting There!")+"</h1><div style='font-size:13px;color:rgba(255,255,255,0.8)'>"+typeLabel+" · "+new Date().toLocaleDateString()+"</div></div><div class='card'><div style='text-align:center;margin-bottom:14px'><div style='font-size:44px;font-weight:bold;color:"+(pass?"#2E7D32":"#CE1126")+"'>"+score+"/"+total+"</div><div style='font-size:17px;color:#666;margin-top:2px'>"+pct+"% correct · Passing is 75%</div><div style='margin-top:9px;padding:9px 13px;border-radius:11px;background:"+(pass?"#E8EAF6":"#FFF3E0")+";font-size:13px;color:#555;line-height:1.6'>"+(pass?"Wonderful! You scored above 75%. Consider trying another version to stay sharp. Let's Go Rangers! 🏒":"You scored "+pct+"%. Review the topics below with lower scores and try again. You have totally got this!")+"</div></div><div style='margin-bottom:12px'><div style='font-size:13px;font-weight:bold;color:#333;margin-bottom:9px'>Topic Breakdown:</div>"+bdH+"</div><details><summary style='font-size:13px;font-weight:bold;color:#555;cursor:pointer;padding:7px 0'>All Questions (tap to expand)</summary><div style='margin-top:9px'>"+rows+"</div></details></div>"+egg71+egg75+egg100+"<button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#003087)' data-action='retryExam'>🔁 Retake This Version</button><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d)' data-action='"+retryAction+"'>📝 Try a Different Version</button><button class='big-btn' style='background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.4)' data-action='goHome'>🏠 Home</button></div>";
 }
 
 // ═══════════════════════════════════════════
@@ -886,12 +1672,14 @@ function renderExamResult(){
 function renderReports(){
   if(!S.examHistory.length)return"<div class='wrap' style='text-align:center;padding-top:50px'><div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.4)' data-action='goHome'>← Home</button><div style='color:#fff;font-size:15px;font-weight:bold'>My Progress Report</div></div><div style='font-size:56px;margin:36px 0 14px'>📊</div><p style='color:#fff;font-size:17px;line-height:1.7'>No exams taken yet!<br>Complete a practice exam to see your progress here. 💙</p><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d);margin-top:22px;max-width:300px' data-action='goSelectExam'>Take Your First Exam</button></div>";
   const tot=S.examHistory.length,passed=S.examHistory.filter(e=>e.pct>=75).length,avg=Math.round(S.examHistory.reduce((s,e)=>s+e.pct,0)/tot),best=Math.max(...S.examHistory.map(e=>e.pct));
+  const eggBest71=eggReportBest71(best);
+  const eggEighth=eggEighthExam(tot);
   const vs=["v1","v2","v3","v4","v5"].map(ver=>{const h=S.examHistory.filter(e=>e.version===ver);if(!h.length)return null;const bV=Math.max(...h.map(e=>e.pct));return{ver,num:ver.replace("v",""),count:h.length,best:bV,passed:h.filter(e=>e.pct>=75).length};}).filter(Boolean);
   const ta=TOPICS.map((name,ti)=>{const all=S.examHistory.filter(e=>e.topicBreakdown).map(e=>e.topicBreakdown[ti]).filter(b=>b&&b.tot>0);if(!all.length)return null;return{name,avg:Math.round(all.reduce((s,b)=>s+b.tp,0)/all.length)};}).filter(Boolean);
   const vc=vs.map(v=>{const c=v.best>=75?"#4CAF50":v.best>=60?"#FFB74D":"#EF9A9A";return"<div style='background:rgba(255,255,255,0.1);border-radius:13px;padding:12px 14px;margin-bottom:9px'><div style='display:flex;justify-content:space-between;align-items:center'><div style='color:#fff;font-weight:bold;font-size:14px'>Version "+v.num+"</div><div style='color:"+c+";font-weight:bold;font-size:15px'>"+v.best+"% best</div></div><div style='color:rgba(255,255,255,0.75);font-size:12px;margin-top:3px'>Taken "+v.count+" time"+(v.count!==1?"s":"")+" · "+v.passed+" passed</div><div class='rbar-wrap' style='margin-top:7px'><div class='rbar' style='width:"+v.best+"%;background:"+c+"'></div></div></div>";}).join("");
   const tc2=ta.map(t=>{const c=t.avg>=75?"#4CAF50":t.avg>=50?"#FFB74D":"#EF9A9A";return"<div style='margin-bottom:9px'><div style='display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,0.9);margin-bottom:2px'><span>"+t.name+"</span><span style='font-weight:bold;color:"+c+"'>"+t.avg+"% avg</span></div><div class='rbar-wrap'><div class='rbar' style='width:"+t.avg+"%;background:"+c+"'></div></div></div>";}).join("");
   const rr=S.examHistory.slice(0,10).map(e=>{const c=e.pct>=75?"#4CAF50":e.pct>=60?"#FFB74D":"#EF9A9A";const vn=e.version?e.version.replace("v",""):"?";const typeTag=e.examType==="short"?"⚡":"📝";return"<div style='display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1)'><div><div style='color:#fff;font-size:14px;font-weight:bold'>"+typeTag+" Version "+vn+"</div><div style='color:rgba(255,255,255,0.6);font-size:12px'>"+e.date+"</div></div><div style='text-align:right'><div style='color:"+c+";font-size:17px;font-weight:bold'>"+e.pct+"%</div><div style='color:rgba(255,255,255,0.6);font-size:12px'>"+e.score+"/"+e.total+"</div></div></div>";}).join("");
-  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.4)' data-action='goHome'>← Home</button><div><div style='font-size:15px;font-weight:bold;color:#fff'>📊 My Progress Report</div><div style='font-size:12px;color:rgba(255,255,255,0.75);margin-top:1px'>"+tot+" exam"+(tot!==1?"s":"")+" taken</div></div></div><div class='stat-grid'><div class='stat-box'><div class='stat-num'>"+passed+"</div><div class='stat-lbl'>Exams Passed (75%+)</div></div><div class='stat-box'><div class='stat-num'>"+avg+"%</div><div class='stat-lbl'>Average Score</div></div><div class='stat-box'><div class='stat-num'>"+best+"%</div><div class='stat-lbl'>Best Score Ever</div></div><div class='stat-box'><div class='stat-num'>"+tot+"</div><div class='stat-lbl'>Total Exams Taken</div></div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Results by Version</div>"+(vc||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"</div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Average Score by Topic</div>"+(tc2||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"<div style='font-size:12px;color:rgba(255,255,255,0.6);margin-top:7px'>💡 Topics under 75% are worth extra review!</div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:3px'>Recent Exams</div>"+rr+"</div><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d)' data-action='goSelectExam'>📝 Take a Full Exam</button><button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#7a0010)' data-action='goSelectShortExam'>⚡ Take a Quick Practice</button>"+(S.examHistory.length?"<button class='big-btn' style='background:rgba(255,100,100,0.3);border:1px solid rgba(255,255,255,0.3)' data-action='clearHistory'>🗑️ Clear All History</button>":"")+"</div>";
+  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.4)' data-action='goHome'>← Home</button><div><div style='font-size:15px;font-weight:bold;color:#fff'>📊 My Progress Report</div><div style='font-size:12px;color:rgba(255,255,255,0.75);margin-top:1px'>"+tot+" exam"+(tot!==1?"s":"")+" taken</div></div></div>"+eggBest71+eggEighth+"<div class='stat-grid'><div class='stat-box'><div class='stat-num'>"+passed+"</div><div class='stat-lbl'>Exams Passed (75%+)</div></div><div class='stat-box'><div class='stat-num'>"+avg+"%</div><div class='stat-lbl'>Average Score</div></div><div class='stat-box'><div class='stat-num'>"+best+"%</div><div class='stat-lbl'>Best Score Ever</div></div><div class='stat-box'><div class='stat-num'>"+tot+"</div><div class='stat-lbl'>Total Exams Taken</div></div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Results by Version</div>"+(vc||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"</div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Average Score by Topic</div>"+(tc2||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"<div style='font-size:12px;color:rgba(255,255,255,0.6);margin-top:7px'>💡 Topics under 75% are worth extra review!</div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:3px'>Recent Exams</div>"+rr+"</div><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d)' data-action='goSelectExam'>📝 Take a Full Exam</button><button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#7a0010)' data-action='goSelectShortExam'>⚡ Take a Quick Practice</button>"+(S.examHistory.length?"<button class='big-btn' style='background:rgba(255,100,100,0.3);border:1px solid rgba(255,255,255,0.3)' data-action='clearHistory'>🗑️ Clear All History</button>":"")+"</div>";
 }
 
 // ═══════════════════════════════════════════
@@ -1022,31 +1810,7 @@ function renderFeedback(){
   +"<button class='big-btn' style='background:"+(canSend?"linear-gradient(135deg,#CE1126,#003087)":"#ccc")+";cursor:"+(canSend?"pointer":"not-allowed")+"' data-action='fbSend'"+(canSend?"":" disabled")+">📤 Send Feedback</button>"
   +(fb.error?"<div style='background:#FFEBEE;border-radius:11px;padding:12px;color:#C62828;font-size:13px;text-align:center;margin-bottom:9px'>⚠️ "+escHtml(fb.error)+"</div>":"")
   +"<button class='big-btn' style='background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2)' data-action='goHome'>← Cancel</button>"
-  +"<button class='big-btn' style='background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);font-size:12px;color:rgba(255,255,255,0.5);padding:10px' data-action='fbTest'>🔧 Send Test Email</button>"
   +"</div>";
-}
-
-async function sendTestEmail(){
-  S.fb.sending=true;S.fb.error="";r(false);
-  try{
-    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
-      feedback_type: "🔧 TEST",
-      mood_rating: "🤩 Love it!",
-      topics_affected: "Test — all systems go",
-      message: "This is an automated test email from Kenzie's ServSafe app. If you received this, EmailJS is configured correctly! 🏒",
-      app_stats: "Test fired at "+new Date().toLocaleString(),
-      screenshot_attached: "No",
-      screenshot_data: "",
-      screenshot_name: "",
-      sent_at: new Date().toLocaleString()
-    });
-    S.fb={type:"",mood:0,tags:[],message:"",screenshot:null,screenshotName:"",sending:false,sent:true,error:""};
-  }catch(e){
-    S.fb.sending=false;
-    const msg=e.text||e.message||JSON.stringify(e);
-    S.fb.error="Test failed: "+msg;
-  }
-  r(false);
 }
 
 async function submitFeedback(){
@@ -1084,6 +1848,296 @@ async function submitFeedback(){
 }
 
 // ═══════════════════════════════════════════
+// PIN ENTRY SCREEN
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// PIN GAME DATA
+// ═══════════════════════════════════════════
+const PIN_CLUES = [
+  {n:1,  emoji:"🔒", text:"There is something special hiding behind here."},
+  {n:2,  emoji:"🎬", text:"Clue #1: Somewhere out there, a man was standing on the bow of a very large ship, screaming that he was the king of the world. What were you watching that winter? (And no Googling — that's cheating! 😏)"},
+  {n:3,  emoji:"🐑", text:"Clue #2: Scientists shocked the world by creating something that had never existed before — a perfect copy of a sheep named Dolly. One of a kind... except she wasn't."},
+  {n:4,  emoji:"👂", text:"Clue #3: In a Las Vegas boxing ring, a man made the most infamous snack choice in sports history. Evander Holyfield's ear was never quite the same."},
+  {n:5,  emoji:"🌹", text:"Clue #4: England wept. The whole world stopped. A princess was lost on a Paris road, and nothing was ever quite the same again."},
+  {n:6,  emoji:"🍎", text:"Clue #5: A man in a black turtleneck walked back through the doors of a fruit company he had once been kicked out of. The tech world would never be the same. Still not Googling, right? 😏"},
+  {n:7,  emoji:"📚", text:"Clue #6: A young boy with round glasses and a lightning bolt scar appeared on bookshelves for the very first time. A billion children's childhoods began."},
+  {n:8,  emoji:"⛳", text:"Clue #7: A young man in a red shirt walked Augusta National like he owned it. He dominated the Masters by 12 strokes. Nobody had seen anything like it."},
+  {n:9,  emoji:"🎵", text:"Clue #8: Two words. Spice Girls. That's the clue. Think about when they were absolutely everywhere — radio, TV, magazines, your friends' bedrooms. That moment."},
+  {n:10, emoji:"🏒", text:"Clue #9: Steve Yzerman had been waiting 13 long, painful years for one perfect moment. He finally got it. Captain. Detroit. June. The whole city cried."},
+  {n:11, emoji:"🚀", text:"Clue #10: NASA landed something on Mars and sent back photos. The whole world was glued to the images. The mission was called Pathfinder. Connect the dots — and please, no Googling. You've come this far! 🙏"}
+];
+
+function pinGetClue(){
+  const w = S.pin.wrongCount;
+  if(w === 0) return PIN_CLUES[0]; // first visit
+  const idx = Math.min(w, PIN_CLUES.length - 1);
+  return PIN_CLUES[idx];
+}
+
+function pinStartLockout(){
+  S.pin.locked = true;
+  S.pin.lockSecondsLeft = 15;
+  // Pick random stats, no repeats in this batch
+  const pool = (S.hockeyStats && S.hockeyStats.length ? S.hockeyStats : [
+    "🏒 Gordie Howe played in 5 different decades.", "🏆 Detroit has won 11 Stanley Cups.", "🎯 Steve Yzerman captained Detroit for 20 seasons."
+  ]).slice().sort(()=>Math.random()-0.5);
+  S.pin.lockStats = pool.slice(0, 6);
+  S.pin.statIdx = 0;
+  r(false);
+  // Rotate stat every 3 seconds
+  S.pin.statInterval = setInterval(()=>{
+    S.pin.statIdx = (S.pin.statIdx + 1) % S.pin.lockStats.length;
+    r(false);
+  }, 3000);
+  // Count down seconds
+  S.pin.lockCountdown = setInterval(()=>{
+    S.pin.lockSecondsLeft--;
+    if(S.pin.lockSecondsLeft <= 0){
+      clearInterval(S.pin.statInterval);
+      clearInterval(S.pin.lockCountdown);
+      S.pin.locked = false;
+      S.pin.entry = "";
+      S.pin.error = "";
+      r(false);
+    } else {
+      r(false);
+    }
+  }, 1000);
+}
+
+// ═══════════════════════════════════════════
+// PIN SCREEN RENDER
+// ═══════════════════════════════════════════
+function renderPin(){
+  // LOCKOUT STATE
+  if(S.pin.locked){
+    const stat = S.pin.lockStats ? S.pin.lockStats[S.pin.statIdx % S.pin.lockStats.length] : "🏒 Did you know? Detroit Red Wings: 11 Stanley Cups.";
+    const barPct = Math.round(((15 - S.pin.lockSecondsLeft) / 15) * 100);
+    return"<div class='wrap' style='text-align:center;padding-top:60px'>"
+    +"<div style='font-size:52px;margin-bottom:14px'>🔒</div>"
+    +"<h2 style='color:#fff;font-family:Oswald,sans-serif;font-size:22px;letter-spacing:0.08em;margin-bottom:8px'>VAULT LOCKED</h2>"
+    +"<p style='color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:24px'>Too many wrong attempts. Try again in <strong style='color:#FFCC00;font-size:16px'>"+S.pin.lockSecondsLeft+"s</strong></p>"
+    +"<div style='background:rgba(255,255,255,0.1);border-radius:99px;height:6px;max-width:260px;margin:0 auto 28px;overflow:hidden'>"
+    +"<div style='height:100%;border-radius:99px;background:linear-gradient(90deg,#C8102E,#FFCC00);transition:width 0.9s ease;width:"+barPct+"%'></div>"
+    +"</div>"
+    +"<div style='background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-left:4px solid #C8102E;border-radius:14px;padding:18px 18px;max-width:340px;margin:0 auto;min-height:80px;display:flex;align-items:center;justify-content:center'>"
+    +"<p style='color:rgba(255,255,255,0.9);font-size:14px;line-height:1.8;margin:0;font-style:italic'>"+stat+"</p>"
+    +"</div>"
+    +"<p style='color:rgba(255,255,255,0.3);font-size:11px;margin-top:16px;font-family:Oswald,sans-serif;letter-spacing:0.08em'>WHILE YOU WAIT — HOCKEY FACTS 🏒</p>"
+    +"</div>";
+  }
+
+  // NORMAL PIN ENTRY STATE
+  const clue = pinGetClue();
+  const dots = "●".repeat(S.pin.entry.length) + "○".repeat(4 - S.pin.entry.length);
+  const keys = ["1","2","3","4","5","6","7","8","9","","0","⌫"];
+  const keyBtns = keys.map(k=>{
+    if(k==="") return"<div></div>";
+    return"<button data-action='pinKey' data-val='"+k+"' style='background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:18px 10px;font-size:22px;font-weight:bold;color:#fff;font-family:Oswald,sans-serif;cursor:pointer;transition:all 0.1s;active:transform:scale(0.95)'>"+k+"</button>";
+  }).join("");
+
+  const wrongBadge = S.pin.wrongCount > 0
+    ? "<div style='background:rgba(200,16,46,0.2);border-radius:99px;padding:4px 12px;display:inline-block;margin-bottom:14px'><span style='font-size:11px;color:#FF8A80;font-family:Oswald,sans-serif;letter-spacing:0.06em'>"+S.pin.wrongCount+" wrong attempt"+(S.pin.wrongCount!==1?"s":"")+" · next lockout at "+(Math.ceil(S.pin.wrongCount/5)*5)+"</span></div>"
+    : "";
+
+  return"<div class='wrap' style='text-align:center;padding-top:36px'>"
+  +"<img src='https://raw.githubusercontent.com/webgenerations77/kenzie/main/Logo.png' style='height:60px;width:auto;object-fit:contain;margin-bottom:14px'>"
+  +"<h2 style='color:#fff;font-family:Oswald,sans-serif;font-size:20px;letter-spacing:0.1em;margin-bottom:4px'>SECRET VAULT</h2>"
+  +"<p style='color:rgba(255,255,255,0.4);font-size:11px;font-family:Oswald,sans-serif;letter-spacing:0.08em;margin-bottom:20px'>4-DIGIT PIN REQUIRED</p>"
+  // Clue — inline, no box on first visit; subtle card on subsequent clues
+  +(S.pin.wrongCount === 0
+    ? "<p style='color:rgba(255,255,255,0.55);font-size:13px;font-style:italic;margin-bottom:20px'>"+clue.emoji+" "+clue.text+"</p>"
+    : "<div style='background:rgba(255,204,0,0.07);border-left:3px solid #FFCC00;border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:16px;text-align:left'>"
+      +"<p style='font-size:13px;color:rgba(255,255,255,0.85);line-height:1.75;margin:0'>"+clue.emoji+" "+clue.text+"</p>"
+      +"</div>")
+  +wrongBadge
+  // Dots
+  +"<div style='font-size:32px;letter-spacing:14px;color:#fff;margin-bottom:6px;font-family:Oswald,sans-serif'>"+dots+"</div>"
+  // Error message
+  +(S.pin.error ? "<div style='color:#FF6B6B;font-size:13px;margin-bottom:10px;animation:popIn 0.2s ease'>"+S.pin.error+"</div>" : "<div style='margin-bottom:16px'></div>")
+  // Numpad
+  +"<div style='display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:260px;margin:0 auto 20px'>"+keyBtns+"</div>"
+  +"<button class='big-btn' style='background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);max-width:260px;margin:0 auto;font-size:13px' data-action='goHome'>← Cancel</button>"
+  +"</div>";
+}
+
+// ═══════════════════════════════════════════
+// PIN VICTORY SCREEN
+// ═══════════════════════════════════════════
+function renderPinVictory(){
+  return"<div class='wrap' style='text-align:center;padding-top:30px'>"
+  // Fireworks row
+  +"<div style='font-size:32px;letter-spacing:4px;margin-bottom:16px'>🎉🏒🏆🔴🏆🏒🎉</div>"
+  // Hero banner
+  +"<div style='background:linear-gradient(135deg,#C8102E,#8B0000);border-radius:22px;padding:28px 22px;margin-bottom:18px;box-shadow:0 12px 40px rgba(0,0,0,0.5);position:relative;overflow:hidden'>"
+  +"<div style='position:absolute;top:-15px;right:-15px;font-size:90px;opacity:0.07'>🏆</div>"
+  +"<img src='"+RW_LOGO+"' style='width:70px;height:70px;object-fit:contain;margin-bottom:12px'>"
+  +"<h1 style='font-size:28px;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.06em;margin-bottom:8px;text-transform:uppercase'>YOU CRACKED IT!</h1>"
+  +"<div style='font-size:52px;font-weight:bold;color:#FFCC00;font-family:Oswald,sans-serif;letter-spacing:0.1em;margin-bottom:8px'>1 9 9 7</div>"
+  +"<div style='width:50px;height:3px;background:rgba(255,255,255,0.4);border-radius:2px;margin:0 auto 14px'></div>"
+  +"<p style='color:rgba(255,255,255,0.95);font-size:15px;line-height:1.9;margin:0;font-family:Lora,Georgia,serif'>"
+  +"The PIN is <strong>1997</strong> — the year the Detroit Red Wings won the Stanley Cup."
+  +"</p>"
+  +"</div>"
+  // Story card
+  +"<div style='background:rgba(255,255,255,0.97);border-radius:18px;padding:22px 20px;margin-bottom:14px;box-shadow:0 6px 24px rgba(0,0,0,0.25);border-top:4px solid #C8102E;text-align:left'>"
+  +"<div style='font-size:20px;margin-bottom:10px'>🏆 The 1997 Stanley Cup</div>"
+  +"<p style='font-size:14px;color:#333;line-height:1.9;margin:0 0 12px'>"
+  +"On June 7, 1997, Steve Yzerman lifted the Stanley Cup after <strong>13 years</strong> as Detroit's captain without a championship. The Red Wings swept the Philadelphia Flyers <strong>4-0</strong> — the most dominant Finals performance in decades. Brendan Shanahan, Sergei Fedorov, Nicklas Lidstrom, and Dominik Hasek were all at the peak of their powers. It was a dynasty."
+  +"</p>"
+  +"<p style='font-size:14px;color:#333;line-height:1.9;margin:0 0 12px'>"
+  +"Just six days after the victory parade, limousine driver Richard Gnida fell asleep at the wheel. Vladimir Konstantinov — who had just been named to the All-Star team — was critically injured and never played again. The Wings dedicated their <strong>1998</strong> Cup title to him, carrying him onto the ice in his wheelchair. It remains one of the most emotional moments in hockey history."
+  +"</p>"
+  +"<div style='background:#FFF3F3;border-radius:11px;padding:12px 14px;border-left:3px solid #C8102E'>"
+  +"<p style='font-size:13px;color:#8B0000;line-height:1.7;margin:0'>"
+  +"<strong>🗽 Meanwhile, in New York...</strong> The Rangers finished the 1996-97 season with a record of <strong>38 wins, 34 losses, and 10 ties</strong> — good enough for 86 points, which sounds fine until you realize it wasn't enough to make the playoffs. While Detroit was hoisting the Cup, the Rangers were watching from their couches. The gap between these two franchises in 1997? Enormous."
+  +"</p>"
+  +"</div>"
+  +"</div>"
+  // Clue connection card
+  +"<div style='background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:16px 18px;margin-bottom:16px;text-align:left'>"
+  +"<p style='font-size:13px;font-weight:bold;color:#FFCC00;font-family:Oswald,sans-serif;letter-spacing:0.06em;margin-bottom:10px'>🥚 THE CLUES — ALL FROM 1997</p>"
+  +"<div style='font-size:12px;color:rgba(255,255,255,0.75);line-height:2'>"
+  +"🎬 Titanic released (Dec 1997)<br>"
+  +"🐑 Dolly the sheep cloned (Feb 1997)<br>"
+  +"👂 Tyson bites Holyfield's ear (June 1997)<br>"
+  +"🌹 Princess Diana dies (Aug 1997)<br>"
+  +"🍎 Steve Jobs returns to Apple (Sep 1997)<br>"
+  +"📚 Harry Potter published (June 1997)<br>"
+  +"⛳ Tiger Woods wins Masters (Apr 1997)<br>"
+  +"🎵 Spice Girls at peak Spice Mania (1997)<br>"
+  +"🏒 Steve Yzerman wins the Cup (June 1997)<br>"
+  +"🚀 Mars Pathfinder lands (July 1997)"
+  +"</div>"
+  +"</div>"
+  +"<button class='big-btn' style='background:linear-gradient(135deg,#C8102E,#8B0000)' data-action='goEggList'>🥚 View All Easter Eggs</button>"
+  +"<button class='big-btn' style='background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2)' data-action='goHome'>🏠 Back Home</button>"
+  +"</div>";
+}
+
+// ═══════════════════════════════════════════
+// EASTER EGG LIST SCREEN
+// ═══════════════════════════════════════════
+function renderEggList(){
+  const eggs=[
+    {
+      num:1, trigger:"Every Tuesday",
+      icon:"🗓️",
+      title:"Wings Day Tuesday",
+      desc:"Every Tuesday the Rangers logo on the home screen is quietly replaced by the Red Wings logo and the tagline turns gold.",
+      why:"The Detroit Red Wings have won the Stanley Cup 11 times. The Rangers? 4. Every Tuesday is a reminder of that gap. 😇"
+    },
+    {
+      num:2, trigger:"1st day of every month",
+      icon:"📅",
+      title:"Monthly Fact Drop",
+      desc:"On the 1st of each month, the slogan under the tagline reads: 'Red Wings are better (it's the 1st — fact of the month!)'",
+      why:"Some facts just need to be repeated monthly to sink in."
+    },
+    {
+      num:3, trigger:"Tap the home logo 5 times fast",
+      icon:"👆",
+      title:"Konami Tap Code",
+      desc:"Tap the team logo on the home screen 5 times within 2 seconds. The entire app switches to Red Wings theme for 30 seconds, then snaps back.",
+      why:"Named after the classic Konami Code cheat code. Five taps, thirty seconds of truth. Try it! 🔴"
+    },
+    {
+      num:4, trigger:"Wrong answer — 1-in-12 chance",
+      icon:"❌",
+      title:"The Wrong Answer Taunt",
+      desc:"When you get a practice exam question wrong, there's a 1-in-12 chance a Red Wings fact appears inline below the answer explanation.",
+      why:"Rotating facts include Gordie Howe's 801 goals, Steve Yzerman's 20-year captaincy, and the Wings' 9 retired numbers. Precision matters!"
+    },
+    {
+      num:5, trigger:"Wrong answer — 1-in-10 chance",
+      icon:"🔴",
+      title:"The Corner Flash",
+      desc:"On a wrong answer, there's also a separate 1-in-10 chance a small Red Wings badge flashes in the bottom-right corner for 2.5 seconds.",
+      why:"Just a gentle, silent reminder. 'Red Wings still better 🔴'"
+    },
+    {
+      num:6, trigger:"Score exactly 71% on any exam",
+      icon:"7️⃣1️⃣",
+      title:"The Gordie Howe 71",
+      desc:"Score exactly 71% and a Red Wings card appears on your results screen with the full story.",
+      why:"In 1971, Gordie Howe — hockey's greatest player and the greatest Red Wing — came out of retirement at age 45 to play professional hockey alongside his two sons, Mark and Marty. He wore #9 his entire career. The Wings retired his number in 1972. 71 is his year. Try to beat it!"
+    },
+    {
+      num:7, trigger:"Score exactly 75% on any exam",
+      icon:"7️⃣5️⃣",
+      title:"The Barely There",
+      desc:"Score exactly 75% (the minimum passing score) and a Wings card appears with a very specific historical parallel.",
+      why:"The Detroit Red Wings finished the 1985-86 season at exactly .500 — and still made the playoffs. Sometimes the bare minimum is still enough to be a winner. Just like 75%."
+    },
+    {
+      num:8, trigger:"Score exactly 100% on any exam",
+      icon:"💯",
+      title:"Perfect Score Invasion",
+      desc:"Ace an exam with 100% and the Wings take over your results screen with a full tribute card.",
+      why:"The Red Wings scored 100+ points in a season 13 times between 1994 and 2016. A perfect score is Detroit energy. We can't help but celebrate it."
+    },
+    {
+      num:9, trigger:"Your all-time best score is 71%",
+      icon:"📊",
+      title:"Best Score Easter Egg",
+      desc:"If your personal best exam score ever is 71%, a Wings card appears at the top of your Progress Report.",
+      why:"#71 was worn by several Red Wings greats over the years. Also: the Wings franchise was founded in 1926, and by 1971 they already had 3 Stanley Cups. Details matter."
+    },
+    {
+      num:10, trigger:"You take your 8th exam",
+      icon:"8️⃣",
+      title:"Eight Legends",
+      desc:"On the exam you take after completing your 8th total exam, a Wings card appears on your Progress Report listing all 8 retired Wings jersey numbers.",
+      why:"The Red Wings have retired 8 numbers: #1 Terry Sawchuk, #6 Larry Aurie, #7 Ted Lindsay, #9 Gordie Howe, #10 Alex Delvecchio, #12 Sid Abel, #16 Vladimir Konstantinov, and #19 Steve Yzerman. Eight legends. Like your eight exams."
+    },
+    {
+      num:11, trigger:"Complete all 5 study topics",
+      icon:"✅",
+      title:"Five Legends, Five Topics",
+      desc:"Once all 5 topic lessons are marked complete, a Wings card appears on the home screen.",
+      why:"Five Red Wings players were named to the NHL's official Top 100 Players of All Time list: Gordie Howe, Ted Lindsay, Terry Sawchuk, Alex Delvecchio, and Steve Yzerman. Five legends. Five topics. You're in elite company."
+    },
+    {
+      num:12, trigger:"App syncs to cloud — 1-in-15 chance",
+      icon:"☁️",
+      title:"The Sneaky Sync Message",
+      desc:"Every time your progress saves to the cloud, there's a 1-in-15 chance the '☁️ Synced just now' message becomes something a little different.",
+      why:"Messages include: 'Synced (Red Wings still better btw)', 'Saved! 🔴 11 Cups > 4 Cups. Just syncing facts.', and 'Progress saved! Wings have been Cup contenders since 1926 🔴'. The sneakiest egg — you may never even notice it."
+    }
+  ];
+
+  const cards=eggs.map(e=>"<div style='background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-left:4px solid #C8102E;border-radius:14px;padding:15px 15px;margin-bottom:12px;text-align:left'>"
+    +"<div style='display:flex;align-items:center;gap:10px;margin-bottom:8px'>"
+    +"<span style='font-size:24px'>"+e.icon+"</span>"
+    +"<div>"
+    +"<div style='font-size:14px;font-weight:bold;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.04em'>#"+e.num+" — "+e.title+"</div>"
+    +"<div style='font-size:11px;color:#FFCC00;font-family:Oswald,sans-serif;letter-spacing:0.06em;margin-top:2px'>TRIGGER: "+e.trigger+"</div>"
+    +"</div>"
+    +"</div>"
+    +"<p style='font-size:13px;color:rgba(255,255,255,0.85);line-height:1.7;margin:0 0 7px'>"+e.desc+"</p>"
+    +"<div style='background:rgba(200,16,46,0.2);border-radius:9px;padding:8px 11px'>"
+    +"<p style='font-size:12px;color:#FFCC00;line-height:1.6;margin:0'><strong>Why?</strong> "+e.why+"</p>"
+    +"</div>"
+    +"</div>"
+  ).join("");
+
+  return"<div class='wrap'>"
+  +"<div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.5)' data-action='goHome'>← Home</button>"
+  +"<div><div style='font-size:15px;font-weight:bold;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.04em'>🥚 EASTER EGG VAULT</div>"
+  +"<div style='font-size:12px;color:rgba(255,255,255,0.6);margin-top:1px'>All 12 hidden secrets</div></div></div>"
+  +"<div style='background:linear-gradient(135deg,#C8102E,#8B0000);border-radius:16px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px'>"
+  +"<img src='"+RW_LOGO+"' style='width:52px;height:52px;object-fit:contain;flex-shrink:0'>"
+  +"<div>"
+  +"<div style='font-size:16px;font-weight:bold;color:#fff;font-family:Oswald,sans-serif;letter-spacing:0.05em;margin-bottom:3px'>The Red Wings Are Better</div>"
+  +"<div style='font-size:12px;color:rgba(255,255,255,0.8);line-height:1.6'>12 Easter eggs hidden throughout this app — all pointing to one undeniable truth. 🏒</div>"
+  +"</div>"
+  +"</div>"
+  +cards
+  +"<button class='big-btn' style='background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25)' data-action='goHome'>🏠 Back Home</button>"
+  +"</div>";
+}
+
+// ═══════════════════════════════════════════
 // EVENT BINDING
 // ═══════════════════════════════════════════
 function bindEvents(){
@@ -1112,19 +2166,57 @@ function bindEvents(){
         S.examIdx=0;S.examSel=null;S.examAnswers=[];
         S.screen="practiceExam";stopSpeech();r();
       }
-      else if(a==="selectExam"){if(S.examSel===null){S.examSel=parseInt(el.dataset.i);r(false);}}
-      else if(a==="examNext"){const newA=[...S.examAnswers,S.examSel];if(S.examIdx+1>=S.examQs.length){S.examAnswers=newA;S.screen="examResult";saveHist();r();}else{S.examAnswers=newA;S.examIdx++;S.examSel=null;r();}}
+      else if(a==="selectExam"){if(S.examSel===null){S.examSel=parseInt(el.dataset.i);const q=S.examQs[S.examIdx];const isWrong=S.examSel!==q.ans;S.eggTaunt=isWrong?eggWrongAnswerTaunt():null;if(isWrong)eggMaybeFlashWingsLogo();r(false);}}
+      else if(a==="tapLogo"){eggHandleLogoTap();}
+      else if(a==="examNext"){const newA=[...S.examAnswers,S.examSel];S.eggTaunt=null;if(S.examIdx+1>=S.examQs.length){S.examAnswers=newA;S.screen="examResult";saveHist();r();}else{S.examAnswers=newA;S.examIdx++;S.examSel=null;r();}}
       else if(a==="retryExam"){
         S.examQs=buildExam(S.examVersion,S.examType);
         S.examIdx=0;S.examSel=null;S.examAnswers=[];
         S.screen="practiceExam";r();
       }
       else if(a==="goFeedback"){S.fb={type:"",mood:0,tags:[],message:"",screenshot:null,screenshotName:"",sending:false,sent:false,error:""};S.screen="feedback";r();}
+      else if(a==="goPin"){
+        // Clear any running timers from previous visit
+        if(S.pin.statInterval) clearInterval(S.pin.statInterval);
+        if(S.pin.lockCountdown) clearInterval(S.pin.lockCountdown);
+        S.pin={entry:"",error:"",wrongCount:S.pin.wrongCount||0,locked:false,lockTimer:null,lockSecondsLeft:0,statIdx:0,statInterval:null,lockCountdown:null,lockStats:[]};
+        S.screen="pin";r();
+      }
+      else if(a==="goEggList"){S.screen="eggList";r();}
+      else if(a==="pinKey"){
+        if(S.pin.locked) return;
+        const v=el.dataset.val;
+        if(v==="⌫"){S.pin.entry=S.pin.entry.slice(0,-1);S.pin.error="";}
+        else if(S.pin.entry.length<4){S.pin.entry+=v;}
+        // Auto-submit when 4 digits entered
+        if(S.pin.entry.length===4){
+          if(S.pin.entry===S.cloudPin){
+            // 🎉 CORRECT!
+            if(S.pin.statInterval) clearInterval(S.pin.statInterval);
+            if(S.pin.lockCountdown) clearInterval(S.pin.lockCountdown);
+            S.pin.wrongCount=0;
+            S.screen="pinVictory";r();
+          } else {
+            // ❌ Wrong
+            S.pin.wrongCount++;
+            S.pin.entry="";
+            const nextLockAt = Math.ceil(S.pin.wrongCount/5)*5;
+            const untilLock = nextLockAt - S.pin.wrongCount;
+            if(S.pin.wrongCount % 5 === 0){
+              // Trigger lockout
+              S.pin.error="";
+              pinStartLockout();
+            } else {
+              S.pin.error="Wrong PIN. "+untilLock+" attempt"+(untilLock!==1?"s":"")+" before lockout. 🔒";
+            }
+          }
+        }
+        r(false);
+      }
       else if(a==="fbMood"){S.fb.mood=parseInt(el.dataset.i);r(false);}
       else if(a==="fbType"){S.fb.type=el.dataset.val;r(false);}
       else if(a==="fbTag"){const v=el.dataset.val;const idx=S.fb.tags.indexOf(v);if(idx>-1)S.fb.tags.splice(idx,1);else S.fb.tags.push(v);r(false);}
       else if(a==="fbSend"){submitFeedback();}
-      else if(a==="fbTest"){sendTestEmail();}
     });
   });
 
