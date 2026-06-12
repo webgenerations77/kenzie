@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>ServSafe Study App</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
@@ -15,23 +15,23 @@
   --light-navy:#e6ecf5;
   --black:#0a0a0a;
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 body{font-family:'Lora',Georgia,serif;min-height:100vh;background:var(--navy);transition:background 0.5s}
 button{font-family:'Lora',Georgia,serif;cursor:pointer;border:none;transition:transform 0.1s}
 button:active{transform:scale(0.97)}
 h1,h2,h3{font-family:'Oswald',sans-serif;letter-spacing:0.03em}
-.wrap{max-width:640px;margin:0 auto;padding:20px 14px}
-.card{background:#fff;border-radius:16px;padding:20px 17px;box-shadow:0 6px 28px rgba(0,0,0,0.18);margin-bottom:12px}
-.home-card{background:rgba(255,255,255,0.97);border:none;border-radius:15px;padding:15px 16px;width:100%;display:flex;align-items:center;gap:12px;box-shadow:0 4px 18px rgba(0,0,0,0.25);margin-bottom:10px;text-align:left;font-family:'Lora',Georgia,serif;border-left:4px solid var(--navy)}
+.wrap{max-width:640px;margin:0 auto;padding:16px 14px;font-size:16px}
+.card{background:#fff;border-radius:16px;padding:20px 17px;box-shadow:0 6px 28px rgba(0,0,0,0.18);margin-bottom:12px;font-size:16px}
+.home-card{background:rgba(255,255,255,0.97);border:none;border-radius:15px;padding:17px 16px;width:100%;display:flex;align-items:center;gap:12px;box-shadow:0 4px 18px rgba(0,0,0,0.25);margin-bottom:11px;text-align:left;font-family:'Lora',Georgia,serif;border-left:4px solid var(--navy);min-height:72px}
 .prog-wrap{background:rgba(255,255,255,0.2);border-radius:99px;height:9px;margin-bottom:16px;overflow:hidden}
 .prog-bar{height:100%;border-radius:99px;transition:width 0.5s ease;background:linear-gradient(90deg,var(--silver),var(--white))}
-.opt-btn{width:100%;padding:12px 14px;border-radius:11px;background:#f8f8f8;border:2px solid #ddd;color:#222;font-size:15px;text-align:left;margin-bottom:8px;cursor:pointer;font-family:'Lora',Georgia,serif;transition:all 0.2s;display:block}
+.opt-btn{width:100%;padding:15px 16px;border-radius:11px;background:#f8f8f8;border:2px solid #ddd;color:#222;font-size:16px;text-align:left;margin-bottom:10px;cursor:pointer;font-family:'Lora',Georgia,serif;transition:all 0.2s;display:block;min-height:52px}
 .opt-btn:hover{border-color:var(--navy);background:var(--light-navy)}
 .opt-correct{background:#e6ecf5!important;border-color:#003087!important;color:#001a4d!important}
 .opt-wrong{background:#FFEBEE!important;border-color:#C62828!important;color:#B71C1C!important}
 .top-bar{display:flex;align-items:center;gap:11px;margin-bottom:16px}
 .home-btn{color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:bold;white-space:nowrap;font-family:'Oswald',sans-serif;letter-spacing:0.05em;background:rgba(0,0,0,0.3)}
-.big-btn{width:100%;padding:14px;border-radius:14px;font-size:15px;font-weight:bold;color:#fff;border:none;margin-bottom:9px;font-family:'Oswald',sans-serif;letter-spacing:0.06em;cursor:pointer;text-transform:uppercase}
+.big-btn{width:100%;padding:16px;border-radius:14px;font-size:17px;font-weight:bold;color:#fff;border:none;margin-bottom:10px;font-family:'Oswald',sans-serif;letter-spacing:0.06em;cursor:pointer;text-transform:uppercase;min-height:54px}
 .sec-label{color:rgba(255,255,255,0.7);font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 8px 3px;font-family:'Oswald',sans-serif}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;z-index:200}
 .overlay-box{background:#fff;border-radius:22px;padding:34px 38px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.4);animation:popIn 0.3s ease;max-width:320px;border-top:5px solid var(--navy)}
@@ -66,10 +66,6 @@ h1,h2,h3{font-family:'Oswald',sans-serif;letter-spacing:0.03em}
 .fb-star{font-size:30px;cursor:pointer;transition:transform 0.1s;filter:grayscale(1) opacity(0.4)}
 .fb-star.lit{filter:none}
 .fb-star:hover{transform:scale(1.15)}
-.fb-drop{border:2px dashed #ccc;border-radius:12px;padding:18px;text-align:center;cursor:pointer;background:#f9f9f9;transition:border-color 0.2s;position:relative}
-.fb-drop:hover,.fb-drop.drag{border-color:#003087;background:#eef2fa}
-.fb-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.fb-preview{max-width:100%;border-radius:10px;margin-top:10px;box-shadow:0 3px 12px rgba(0,0,0,0.15)}
 .fb-sending{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;color:#003087;font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:0.05em}
 .fb-spinner{width:22px;height:22px;border:3px solid #e0e7f5;border-top-color:#003087;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -359,8 +355,7 @@ q("Best example of physical pest control?",["Pesticide spray","Installing screen
 q("What does the presence of cockroach cast skins indicate?",["A new infestation is beginning","An established, ongoing cockroach infestation","The infestation is ending","A different pest is present"],1,"Cast skins indicate cockroaches have been breeding and growing in the facility."),
 q("Why is it important to remove clutter from storage areas?",["To improve appearance","To eliminate harborage areas for pests","To reduce fire hazards only","To make inventory easier"],1,"Clutter creates hiding and nesting spots for pests."),
 q("Best practice for receiving food deliveries to prevent pests?",["Accept all deliveries at front entrance","Inspect deliveries carefully before bringing them inside, rejecting infested items","Accept deliveries quickly to minimize door open time","Deliveries are pre-screened so no inspection is needed"],1,"All deliveries must be carefully inspected for signs of pest activity.")
-],
-v4:[
+],v4:[
 q("MOST important factor in preventing foodborne illness?",["Using expensive equipment","Temperature control and proper handwashing","Buying premium ingredients","Working quickly"],1,"Temperature control and proper handwashing are the foundation of prevention."),
 q("Which pathogen produces heat-resistant spores?",["Norovirus","Clostridium perfringens","E. coli O157:H7","Salmonella"],1,"C. perfringens produces heat-resistant spores that survive cooking."),
 q("Which best describes the incubation period of a pathogen?",["Time it takes to kill the pathogen","Time between exposure and when symptoms appear","Time food spends in the danger zone","Time needed to cook food safely"],1,"The incubation period is the time between consuming contaminated food and when symptoms appear."),
@@ -451,8 +446,7 @@ q("Which pest is capable of squeezing through gaps as small as 1/4 inch?",["Rats
 q("What does harborage mean in pest control?",["A place where pesticides are stored","Any place where pests can hide, nest, or breed","The entry point for pests","The area treated by a PCO"],1,"Harborage refers to any area that provides shelter, nesting, or breeding space for pests."),
 q("Best description of role of Person in Charge in pest control?",["Apply pesticides when needed","Ensure a pest control program is in place, logs are maintained, and infestations are reported","Only schedule PCO visits","Personally inspect for pests daily"],1,"The PIC is responsible for ensuring the pest management program is functioning and properly documented."),
 q("What to do with food stored in area where rodents were found?",["Inspect and use if it looks okay","Discard all food in the affected area regardless of packaging","Rewrap and refrigerate","Cook thoroughly before serving"],1,"All food in an area with rodent activity must be discarded due to contamination risk.")
-],
-v5:[
+],v5:[
 q("Which BEST defines a foodborne illness?",["Feeling sick after eating any meal","A disease transmitted to people through food containing harmful agents","Getting sick from overeating","An allergic reaction to food"],1,"A foodborne illness is a disease caused by eating food containing harmful agents."),
 q("PRIMARY way pathogens are transferred from food handler to food?",["Breathing near food","Improper handwashing via the fecal-oral route","Wearing the same clothes","Working too quickly"],1,"The fecal-oral route via improperly washed hands is the most common transfer route."),
 q("Most effective control measure against Norovirus?",["Cooking food to 165F","Proper handwashing by food handlers","Refrigerating all food","Using bleach on all surfaces"],1,"Norovirus is most effectively controlled through rigorous proper handwashing."),
@@ -552,19 +546,19 @@ const pretestLinks=[
   {name:"StateFoodSafety ServSafe Study Guide",url:"https://www.statefoodsafety.com/Resources/Resources/servsafe-study-guide",desc:"Free downloadable study guide covering all main ServSafe topics in plain language."}
 ];
 const ssTopics=[
-  {id:"contamination",title:"Food Safety & Contamination",icon:"\u{1F9A0}",accent:"#C62828",light:"#EF9A9A",color:"#FCE4EC",
+  {id:"contamination",title:"Food Safety & Contamination",icon:"\u{1F9A0}",accent:"#003087",light:"#4a6fad",color:"#e6ecf5",
    lesson:[{h:"What is Food Contamination?",t:"Contamination means something harmful has gotten into food. There are three types: biological like bacteria, chemical like cleaning products, and physical like a piece of glass."},{h:"The Temperature Danger Zone",t:"Bacteria grow fastest between 41F and 135F. This is the Danger Zone. Always keep cold food cold and hot food hot."},{h:"Cross-Contamination",t:"This happens when germs spread from one food to another, usually from raw meat to ready-to-eat foods. Always use separate cutting boards for meat and vegetables."},{h:"TCS Foods",t:"Some foods need extra care because bacteria love them. These include meat, poultry, fish, eggs, dairy, cooked rice, beans, and cut fruits and vegetables."},{h:"How Food Gets Contaminated",t:"Common causes include not cooking to the right temperature, improper storage, using dirty equipment, and poor personal hygiene."}],
    questions:BANK.v1.slice(0,5)},
-  {id:"temperature",title:"Time and Temperature Control",icon:"\u{1F321}️",accent:"#F57F17",light:"#FFD54F",color:"#FFF8E1",
+  {id:"temperature",title:"Time and Temperature Control",icon:"\u{1F321}️",accent:"#003087",light:"#4a6fad",color:"#e6ecf5",
    lesson:[{h:"Why Temperature Matters",t:"Cooking food to the right temperature kills harmful bacteria. Using a food thermometer is the only reliable way to know if food is safe."},{h:"Key Cooking Temperatures",t:"Poultry must reach 165F. Ground meat must reach 155F. Seafood and whole cuts of beef and pork must reach 145F."},{h:"Hot and Cold Holding",t:"Hot food being held must stay at 135F or above. Cold food must stay at 41F or below. Check temperatures regularly."},{h:"Cooling Food Safely",t:"Cool food from 135F to 70F within 2 hours, then from 70F to 41F within 4 more hours. Total cooling time must not exceed 6 hours."},{h:"Thawing Food Safely",t:"Never thaw food on the counter. Safe methods include the refrigerator, cold running water, microwave before cooking, or as part of the cooking process."}],
    questions:BANK.v1.slice(18,23)},
-  {id:"hygiene",title:"Personal Hygiene",icon:"\u{1F9FC}",accent:"#283593",light:"#7986CB",color:"#E8EAF6",
+  {id:"hygiene",title:"Personal Hygiene",icon:"\u{1F9FC}",accent:"#CE1126",light:"#e05a6a",color:"#fde8eb",
    lesson:[{h:"Why Hygiene Matters",t:"Food handlers are one of the most common sources of food contamination. Good hygiene habits protect every customer you serve."},{h:"When to Wash Your Hands",t:"Wash hands before handling food, after touching raw meat, after using the restroom, after sneezing, after touching your face or hair, and after handling garbage."},{h:"How to Wash Hands Properly",t:"Use soap and warm water. Scrub for at least 20 seconds. Rinse well and dry with a paper towel."},{h:"Gloves Are Not a Substitute",t:"Always wash hands before putting on gloves. Change gloves when switching tasks, after touching your face, and at least every 4 hours."},{h:"When to Stay Home",t:"If you have vomiting, diarrhea, or jaundice, or a diagnosis of Salmonella, Shigella, E. coli, Hepatitis A, or Norovirus, do not work with food."}],
    questions:BANK.v1.slice(36,41)},
-  {id:"cleaning",title:"Cleaning and Sanitizing",icon:"\u{1F9F9}",accent:"#00695C",light:"#4DB6AC",color:"#E0F7FA",
+  {id:"cleaning",title:"Cleaning and Sanitizing",icon:"\u{1F9F9}",accent:"#003087",light:"#4a6fad",color:"#e6ecf5",
    lesson:[{h:"Cleaning vs Sanitizing",t:"Cleaning removes dirt and food from a surface. Sanitizing reduces bacteria to safe levels. You must always clean before you sanitize."},{h:"The 3-Compartment Sink",t:"Step 1: Wash in hot soapy water. Step 2: Rinse in clean water. Step 3: Sanitize. Then air dry. Never towel dry."},{h:"Common Sanitizers",t:"The three most common sanitizers are chlorine, iodine, and quaternary ammonium. Each has specific concentration and contact time requirements."},{h:"Sanitizing Surfaces",t:"Surfaces should be cleaned and sanitized after each use, before working with a different food type, and at least every 4 hours during continuous use."},{h:"Dishwasher Sanitizing",t:"High-temperature dishwashers require 180F in the final rinse. Chemical dishwashers require water at least 120F."}],
    questions:BANK.v1.slice(54,59)},
-  {id:"pests",title:"Pest Control and Facilities",icon:"\u{1F41B}",accent:"#6A1B9A",light:"#CE93D8",color:"#F3E5F5",
+  {id:"pests",title:"Pest Control and Facilities",icon:"\u{1F41B}",accent:"#CE1126",light:"#e05a6a",color:"#fde8eb",
    lesson:[{h:"Why Pest Control Matters",t:"Pests carry diseases and contaminate food. A single sighting is a serious problem in any food service establishment."},{h:"Signs of a Pest Problem",t:"Watch for droppings, gnaw marks, nesting materials, grease marks along walls, and live or dead insects or rodents."},{h:"Preventing Pests",t:"Seal cracks, keep doors closed, store food in sealed containers at least 6 inches off the floor, take out garbage regularly, and keep everything clean."},{h:"Working with a PCO",t:"Only a licensed Pest Control Operator should apply pesticides. Keep records of all visits and treatments."},{h:"Facility Maintenance",t:"Fix leaky pipes because pests love moisture. Maintain proper lighting and keep walls, floors, and ceilings in good repair."}],
    questions:BANK.v1.slice(72,77)}
 ];
@@ -597,19 +591,28 @@ async function loadFromCloud() {
     if (record.topicDone) S.topicDone = record.topicDone;
     if (record.eggPin) S.cloudPin = record.eggPin;
     if (record.hockeyStats) S.hockeyStats = record.hockeyStats;
-    if (record.lessonContent) {
-      // Merge rich lesson content into ssTopics
-      record.lessonContent.forEach(lc => {
-        const topic = ssTopics.find(t => t.id === lc.id);
-        if (topic) topic.lesson = lc.lesson;
-      });
-    }
     lastSyncedData = JSON.stringify(buildSyncPayload());
     console.log("Loaded from cloud ✓");
     const el=document.getElementById("syncStatus");
     if(el){el.textContent="☁️ Progress loaded";setTimeout(()=>{if(el)el.textContent="";},3000);}
   } catch(e) {
     console.warn("Cloud load failed, using local data:", e.message);
+  }
+  // Load rich lesson content from GitHub (separate from progress data)
+  try {
+    const ghResp = await fetch("https://raw.githubusercontent.com/webgenerations77/kenzie/main/lessons.json");
+    if (ghResp.ok) {
+      const ghData = await ghResp.json();
+      if (ghData.topics) {
+        ghData.topics.forEach(lc => {
+          const topic = ssTopics.find(t => t.id === lc.id);
+          if (topic && lc.lesson && lc.lesson.length > 0) topic.lesson = lc.lesson;
+        });
+        console.log("Rich lessons loaded from GitHub ✓");
+      }
+    }
+  } catch(e) {
+    console.warn("GitHub lessons fetch failed, using built-in lessons:", e.message);
   }
 }
 
@@ -652,541 +655,6 @@ function buildSyncPayload() {
     topicAverages,
     // Secret PIN for Easter Egg vault (stored in JSONbin so it can be changed remotely)
     eggPin: "1997",
-    // Rich lesson content — stored in JSONbin to keep HTML file lean
-    lessonContent: [
-      { id: "contamination", lesson: [
-        {
-          h: "What Is Food Contamination — and Why Should You Care?",
-          t: "Food contamination means something harmful has entered food that could make a person sick. It doesn't always look, smell, or taste different — which makes it genuinely dangerous. The CDC estimates that 48 million Americans get sick from foodborne illness every year. That's 1 in 6 people. As a food handler, your decisions directly impact whether that number goes up or down.",
-          why: "Most foodborne illness is completely preventable. Understanding contamination is the foundation of everything else in food safety — if you understand how food gets contaminated, every other rule makes sense.",
-          tip: "The exam will ask you to identify types of contamination. Remember: Biological = living organisms (bacteria, viruses, parasites). Chemical = cleaning products, pesticides, or additives. Physical = foreign objects like glass, bone, or metal."
-        },
-        {
-          h: "Biological Contamination: The Most Common Threat",
-          t: "Biological contamination involves living microorganisms — bacteria, viruses, parasites, and fungi — that get into food. Bacteria like Salmonella, E. coli, and Listeria are the most common culprits. Unlike a piece of glass you can see, biological contaminants are invisible. A piece of chicken can look perfectly normal and be loaded with dangerous bacteria.",
-          bullets: [
-            "Bacteria multiply by doubling — one cell becomes two, two become four, and so on. In ideal conditions, bacteria can double every 20 minutes.",
-            "At that rate, a single bacterium can become over 1 million in just 7 hours.",
-            "Viruses like Norovirus don't grow in food — but they survive in it and just need to be ingested to cause illness.",
-            "Parasites like Cryptosporidium and Giardia are spread primarily through contaminated water or produce."
-          ],
-          why: "Knowing that bacteria multiply exponentially is why time and temperature control is so critical. It's not just that food is contaminated — it's that every minute in the danger zone, the contamination gets exponentially worse.",
-          tip: "Biological contamination is the most common cause of foodborne illness outbreaks. The exam heavily tests this category."
-        },
-        {
-          h: "The Temperature Danger Zone: Where Bacteria Thrive",
-          t: "The Temperature Danger Zone is the range between 41°F and 135°F. Within this range, bacteria grow fastest — particularly between 70°F and 125°F, where doubling can happen every 20 minutes. Room temperature (around 70°F) is practically a bacteria hotel. Food left on a counter isn't just cooling down — it's actively becoming more dangerous with every passing minute.",
-          bullets: [
-            "Below 41°F: bacterial growth slows dramatically but does not stop entirely.",
-            "Above 135°F: most bacteria begin to die, and above 165°F the kill is rapid.",
-            "41°F to 135°F: the Danger Zone — never leave TCS food here for more than 4 cumulative hours.",
-            "The most dangerous window is 70°F–125°F, where growth is fastest."
-          ],
-          why: "This is why you refrigerate food — not just to keep it cool, but to dramatically slow bacterial growth. Every degree matters. A refrigerator running at 45°F instead of 41°F can double the rate of bacterial growth.",
-          tip: "41°F–135°F is the Danger Zone. Memorize it. It appears on nearly every version of the ServSafe exam."
-        },
-        {
-          h: "Cross-Contamination: How Bacteria Travel",
-          t: "Cross-contamination is when harmful microorganisms — usually bacteria — are transferred from one surface or food to another. The classic example: cutting raw chicken on a board, then using that same board to slice vegetables for a salad. The bacteria on the chicken are now on the vegetables, which will be eaten raw with no heat to kill them. Cross-contamination can also happen from hands, utensils, drip from improperly stored food, and unclean equipment.",
-          bullets: [
-            "Direct cross-contamination: raw meat touches ready-to-eat food.",
-            "Indirect cross-contamination: a cutting board or knife transfers bacteria between foods.",
-            "Drip contamination: raw meat stored above ready-to-eat food drips onto it.",
-            "Hand-to-food contamination: a food handler touches raw meat then touches a bun."
-          ],
-          why: "Ready-to-eat foods are the most dangerous target because they receive no further cooking to kill bacteria. Once contaminated, they go straight into someone's mouth.",
-          tip: "The exam will ask which storage order prevents cross-contamination. Top to bottom in the refrigerator: ready-to-eat foods, then raw fish, raw beef/pork, raw ground meat, then raw poultry at the very bottom. This order is based on required cooking temperatures."
-        },
-        {
-          h: "TCS Foods: Which Foods Need the Most Protection",
-          t: "TCS stands for Time/Temperature Control for Safety. TCS foods are those that support the growth of bacteria and therefore require careful temperature control throughout receiving, storage, prep, cooking, and service. What makes a food TCS? Bacteria need moisture, protein, and a neutral pH to thrive. TCS foods provide all three.",
-          bullets: [
-            "Meat, poultry, fish, and seafood",
-            "Eggs and dairy products",
-            "Cooked starches: rice, beans, pasta, potatoes",
-            "Cut melons, cut tomatoes, cut leafy greens",
-            "Tofu and soy products",
-            "Sprouts and sprout seeds",
-            "Garlic-in-oil mixtures"
-          ],
-          why: "Non-TCS foods (crackers, dry rice, whole uncut fruits) are safe at room temperature because they lack the moisture or protein that bacteria need. Once you cut a tomato or cook a potato, you've changed its chemistry — it's now a TCS food that needs temperature control.",
-          tip: "The exam loves to test which foods ARE and ARE NOT TCS. Whole uncut tomato = not TCS. Cut tomato = TCS. Dry beans = not TCS. Cooked beans = TCS."
-        },
-        {
-          h: "Chemical and Physical Contamination",
-          t: "Chemical contamination occurs when harmful chemicals enter food — cleaning products, pesticides, incorrect food additives, or chemicals that leach from containers. Physical contamination is when a foreign object gets into food — glass, bone, metal shavings, staples, or even a bandage. Both are serious hazards that can cause injury or illness.",
-          bullets: [
-            "Never store chemicals near food — even fumes can contaminate.",
-            "All chemical containers must be clearly labeled at all times.",
-            "Use only food-grade containers for storing food — never repurpose chemical buckets.",
-            "Physical contaminants can cause choking, broken teeth, or internal injury.",
-            "Inspect equipment regularly — a chipped cutting board or cracked container is a physical hazard."
-          ],
-          why: "Chemical and physical contamination are often overlooked because biological contamination gets most of the attention. But a customer who finds glass in their food or has an allergic reaction from a cleaning product residue is just as harmed.",
-          tip: "The exam distinguishes between the three types of contamination. Know examples of each: Biological (Salmonella), Chemical (bleach residue), Physical (bone fragment)."
-        },
-        {
-          h: "The Big 6 Pathogens: The Most Dangerous Threats",
-          t: "The FDA identifies six pathogens as the most dangerous in food service — so dangerous that food handlers diagnosed with them must be excluded from the operation entirely, not just restricted. These are called the Big 6: Norovirus, Hepatitis A, Salmonella Typhi, Shiga toxin-producing E. coli (STEC), Nontyphoidal Salmonella, and Shigella. Each spreads primarily through the fecal-oral route — meaning they get into food through improper handwashing.",
-          bullets: [
-            "Norovirus: most common cause of foodborne illness. Spreads aggressively. Requires 48 hours symptom-free before return.",
-            "Hepatitis A: attacks the liver. Can be transmitted for weeks before symptoms appear.",
-            "Salmonella Typhi: causes typhoid fever. Requires health authority approval to return to work.",
-            "STEC (E. coli O157:H7): can cause life-threatening kidney failure, especially in children.",
-            "Nontyphoidal Salmonella: commonly linked to eggs, poultry, and produce.",
-            "Shigella: highly contagious, spread through contaminated water and produce."
-          ],
-          why: "These pathogens are excluded (not just restricted) because the risk they pose is too high to allow any food contact duties. Understanding why helps you remember the rule — it's not arbitrary; these specific organisms have caused mass illness outbreaks.",
-          tip: "Know the difference between EXCLUSION (no work at all) and RESTRICTION (non-food contact duties only). The Big 6 require exclusion. A sore throat with fever in a general population operation requires restriction."
-        },
-        {
-          h: "Allergens: A Different Kind of Contamination",
-          t: "Food allergens aren't pathogens — but they can be just as deadly. The FDA recognizes 9 major food allergens: milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, and sesame. For a person with a severe allergy, even a trace amount of an allergen — invisible to the eye — can trigger anaphylaxis, a life-threatening immune response. Allergen cross-contact (different from cross-contamination) occurs when an allergen is unintentionally transferred to an allergen-free food.",
-          bullets: [
-            "Cross-contact cannot be removed by cooking — allergens survive heat.",
-            "Equipment must be thoroughly cleaned and sanitized between allergen and allergen-free prep.",
-            "Never assume a 'little bit' is safe for an allergic customer.",
-            "Always take allergen requests seriously — mishandling can be fatal.",
-            "Labels on packaged food must clearly declare all 9 major allergens."
-          ],
-          why: "Unlike bacteria, allergens can't be killed or cooked away. Once they're in a dish, they're there. This is why dedicated equipment and surfaces for allergen-free prep is the gold standard — not just good practice.",
-          tip: "The exam distinguishes cross-contamination (bacteria transfer) from cross-contact (allergen transfer). Know both terms and what causes each."
-        }
-      ]},
-      { id: "temperature", lesson: [
-        {
-          h: "Why Temperature Is Your Most Powerful Food Safety Tool",
-          t: "Temperature is the single most controllable factor in preventing bacterial growth in food. Bacteria need warmth to multiply — remove the warmth and you remove the threat. This is why every major food safety rule eventually connects back to temperature: cooking temperatures, holding temperatures, cooling temperatures, storage temperatures. Understanding the WHY behind temperature rules makes them much easier to remember and apply.",
-          why: "Temperature doesn't just slow bacteria — it can kill them entirely. Cooking to the correct minimum internal temperature is the last line of defense before food reaches a customer's plate. If that step is skipped or done wrong, there is no second chance.",
-          tip: "Temperature-related questions make up a significant portion of the ServSafe exam. Know your minimum internal cooking temperatures cold — pun intended."
-        },
-        {
-          h: "Minimum Internal Cooking Temperatures",
-          t: "Minimum internal temperatures exist because different foods harbor different pathogens at different depths. A steak can be seared on the outside and the interior may still be safe — because pathogens live on the surface. But ground beef has surface pathogens mixed throughout, requiring a higher internal temperature to guarantee safety. Similarly, poultry can harbor Salmonella deep in the meat, requiring the highest cooking temperature.",
-          bullets: [
-            "165°F — Poultry (whole, ground, or stuffed), stuffed meats, stuffed pasta, reheated leftovers",
-            "155°F — Ground beef, ground pork, ground seafood, eggs cooked for hot holding",
-            "145°F — Whole intact beef/pork/veal/lamb steaks and roasts (with 3-min rest), seafood, eggs served immediately",
-            "135°F — Fruits, vegetables, grains, and legumes cooked for hot holding",
-            "165°F — Any food cooked in a microwave (must rest 2 minutes and be covered)"
-          ],
-          why: "The 3-minute rest time at 145°F for steaks and roasts isn't arbitrary — it allows carryover heat to continue killing bacteria at the surface as the interior equalizes. Cutting the meat immediately releases that heat and can drop the internal temperature below the kill threshold.",
-          tip: "The exam will give you a scenario and ask the minimum temperature. Stuffed anything = 165°F. Ground anything = 155°F. Intact muscle meat = 145°F. Memorize the exceptions first."
-        },
-        {
-          h: "Hot Holding: Keeping Hot Food Safe During Service",
-          t: "Once food is cooked, the job isn't done. If food is being held for service — on a steam table, in a chafing dish, or under a heat lamp — it must stay at 135°F or above at all times. Bacteria that survived cooking can begin to multiply again as food cools into the danger zone. Hot holding equipment is designed to maintain temperature, not to cook or reheat food.",
-          bullets: [
-            "Check temperatures at least every 2 hours during hot holding.",
-            "If food drops below 135°F, it has 4 total cumulative hours in the danger zone before it must be discarded.",
-            "Steam tables, chafing dishes, and heat lamps are holding equipment — never use them to reheat food.",
-            "Stir foods regularly to distribute heat evenly throughout.",
-            "Never mix fresh hot food with food already being held — it disrupts temperature tracking."
-          ],
-          why: "The danger isn't just initial cooking — bacteria can re-contaminate food after cooking from surfaces, air, or handlers. Hot holding above 135°F prevents that re-contamination from becoming a danger.",
-          tip: "Steam tables CANNOT reliably reach 165°F fast enough to safely reheat food. Always reheat in an oven, stovetop, or microwave first, then transfer to a steam table for holding."
-        },
-        {
-          h: "Cold Holding: Keeping Cold Food Safe",
-          t: "Cold food must be maintained at 41°F or below during storage and service. This applies to salad bars, deli cases, refrigerators, and any cold holding setup. Unlike hot holding, which kills bacteria, cold holding simply slows bacterial growth — it doesn't stop it entirely. This is why even properly refrigerated food has a maximum shelf life.",
-          bullets: [
-            "Ready-to-eat TCS food stored at 41°F or below can be kept for a maximum of 7 days.",
-            "Date labels are mandatory — write the prep or open date and the use-by date.",
-            "FIFO (First In, First Out) ensures older food is used before newer stock.",
-            "Cold food without temperature control can only be held for a maximum of 4 hours before discard.",
-            "Monitor refrigerator temperatures at least daily — equipment can fail without warning."
-          ],
-          why: "The 7-day maximum at 41°F exists because even slow bacterial growth adds up. After 7 days, food that looked and smelled fine on day 1 may have accumulated dangerous levels of Listeria, which grows even at refrigerator temperatures.",
-          tip: "Listeria monocytogenes can grow at refrigerator temperatures — it's one of the reasons cold holding isn't a permanent solution and date labeling is mandatory."
-        },
-        {
-          h: "Cooling Food Safely: The Two-Stage Process",
-          t: "Cooling is one of the most dangerous steps in food service — and one of the most commonly mishandled. When a large batch of hot food is placed directly into a refrigerator, the outside cools quickly but the center stays warm for hours, sitting squarely in the danger zone. ServSafe requires a two-stage cooling process to move food through the danger zone as quickly as possible.",
-          bullets: [
-            "Stage 1: Cool from 135°F to 70°F within 2 hours.",
-            "Stage 2: Cool from 70°F to 41°F within 4 more hours.",
-            "Total cooling time: 6 hours maximum.",
-            "If Stage 1 isn't met in 2 hours, discard the food — do not attempt to continue cooling.",
-            "Best methods: ice baths, blast chillers, shallow pans (no more than 2 inches deep), ice paddles."
-          ],
-          why: "The two-stage process targets the most dangerous temperature window. From 135°F to 70°F is where bacterial growth begins to accelerate — that first drop must happen quickly. The second stage is more forgiving because growth slows significantly below 70°F.",
-          tip: "The exam loves cooling questions. Know both stages, both time limits, and the best methods. Never cool large batches of food in deep covered containers in a refrigerator — this is the most common cooling mistake."
-        },
-        {
-          h: "Thawing Food the Right Way",
-          t: "Thawing food on the counter is one of the most dangerous and most common mistakes in home and professional kitchens. When food thaws at room temperature, the outside enters the danger zone long before the inside has thawed — creating a perfect environment for bacterial growth. ServSafe approves only four safe thawing methods, each designed to keep food out of the danger zone.",
-          bullets: [
-            "Refrigerator thawing: safest method. Food stays at or below 41°F throughout. Takes the longest.",
-            "Cold running water: water must be 70°F or below. Food must be submerged. Cook immediately after.",
-            "Microwave: only safe if food will be cooked immediately afterward.",
-            "As part of cooking: thin items like frozen hamburger patties can be cooked from frozen — just verify the final internal temperature."
-          ],
-          why: "The counter method fails because frozen food acts like an insulator — the interior stays frozen while the exterior warms rapidly through the danger zone. Bacteria can grow to dangerous levels on the outside of meat before the inside has even thawed.",
-          tip: "Never thaw at room temperature, in warm water, or on a counter. These are automatic fails on the ServSafe exam and real health code violations."
-        },
-        {
-          h: "Food Thermometers: Your Most Important Tool",
-          t: "You cannot judge internal food temperature by looking at color, touch, or the juices running clear. These are myths that cause foodborne illness. A properly calibrated food thermometer is the only reliable way to verify that food has reached a safe internal temperature. Different types of thermometers work best for different foods — using the wrong type gives inaccurate readings.",
-          bullets: [
-            "Bimetallic stemmed: best for large roasts and thick foods. Insert into the thickest part. Has a sensing area 1–2 inches from the tip.",
-            "Thermocouple: fastest and most accurate. Works with thin foods like burger patties. Reads from the tip.",
-            "Infrared: measures surface temperature only — not suitable for verifying internal cooking temperature.",
-            "Thermistor (digital): thin probe, reads quickly, good for a wide range of foods.",
-            "Always calibrate using the ice-point method: 32°F in an ice water slurry."
-          ],
-          why: "A thermometer is cheap. A foodborne illness lawsuit, health code violation, or customer hospitalization is not. Calibrate thermometers before each shift and after any drop, extreme temperature change, or rough handling.",
-          tip: "The exam tests which thermometer to use for which food. Thin patties = thermocouple. Large roasts = bimetallic stemmed. Surface check only = infrared. Calibration = ice water slurry at 32°F."
-        },
-        {
-          h: "The Complete Temperature Reference Guide",
-          t: "Before your exam, you need these numbers memorized cold. This page is your master reference. Read through it once carefully, then come back to it as many times as you need.",
-          bullets: [
-            "Danger Zone: 41°F – 135°F",
-            "Max time in danger zone: 4 cumulative hours (then discard)",
-            "Poultry, stuffed meats, reheated leftovers: 165°F",
-            "Ground meats, eggs for hot holding: 155°F",
-            "Whole intact steaks/roasts, seafood, eggs served immediately: 145°F (+ 3-min rest for roasts)",
-            "Fruits, vegetables, grains for hot holding: 135°F",
-            "Hot holding minimum: 135°F",
-            "Cold holding maximum: 41°F",
-            "Cooling Stage 1: 135°F → 70°F within 2 hours",
-            "Cooling Stage 2: 70°F → 41°F within 4 hours (6 hours total)",
-            "Refrigerator maximum: 41°F",
-            "Freezer maximum: 0°F",
-            "Handwashing water: ~100°F (comfortable warm)",
-            "3-compartment wash sink: 110°F minimum",
-            "High-temp dishwasher final rinse: 180°F",
-            "Chemical dishwasher minimum water temp: 120°F",
-            "Thermometer calibration (ice point): 32°F"
-          ],
-          why: "The real ServSafe exam is 90 questions and you have 90 minutes. Having these numbers memorized means you can answer temperature questions in seconds and use your remaining time on the harder scenario-based questions.",
-          tip: "Print this list or write it out by hand. Writing information down significantly improves retention. You've got this!"
-        }
-      ]},
-      { id: "hygiene", lesson: [
-        {
-          h: "Why Personal Hygiene Is the #1 Food Safety Factor",
-          t: "The most common source of foodborne illness contamination in food service isn't the food itself — it's the people handling it. Food handlers who are ill, who haven't washed their hands properly, or who have poor hygiene habits are the primary vector for spreading pathogens like Norovirus, Hepatitis A, and Salmonella. Everything else in food safety — temperatures, storage, equipment — can be perfect, but one food handler with poor hygiene can undo all of it.",
-          why: "This isn't about making food handlers feel judged. It's about understanding that human hands are extraordinarily effective at transferring bacteria and viruses. We touch our faces 16 times per hour on average. Every touch is a potential contamination event.",
-          tip: "Personal hygiene questions appear throughout the exam. They're often scenario-based: 'A food handler does X — what should they do?' Know the correct response for each situation."
-        },
-        {
-          h: "Handwashing: The Single Most Important Action You Can Take",
-          t: "Proper handwashing isn't just rinsing your hands — there's a specific technique that actually removes pathogens. The friction from scrubbing physically removes bacteria from the skin. Soap doesn't kill bacteria — it loosens and suspends them so they can be rinsed away. The 20-second scrub time exists because studies show that's the minimum needed to meaningfully reduce pathogen counts.",
-          bullets: [
-            "Step 1: Wet hands and forearms with warm running water (~100°F).",
-            "Step 2: Apply soap — bar or liquid, both work.",
-            "Step 3: Scrub hands, between fingers, under nails, and forearms for at least 20 seconds.",
-            "Step 4: Rinse thoroughly under running water.",
-            "Step 5: Dry with a single-use paper towel or air dryer.",
-            "Step 6: Use paper towel to turn off the faucet."
-          ],
-          why: "The 20-second rule isn't arbitrary — it takes about that long for friction and soap to effectively lift and remove pathogens from the skin. Cold water and quick rinses don't accomplish this. Studies show most people wash for about 6 seconds — far less than needed.",
-          tip: "The exam will ask about the correct handwashing order. Wet → Soap → Scrub 20 seconds → Rinse → Dry. This sequence must be memorized exactly."
-        },
-        {
-          h: "When Exactly Must You Wash Your Hands?",
-          t: "Food handlers must wash their hands any time there's a reasonable chance their hands have become contaminated. This happens far more frequently than most people realize. The key is understanding that hands are contaminated by almost everything we touch — not just obviously dirty things.",
-          bullets: [
-            "Before starting work and after every break",
-            "Before and after handling raw meat, poultry, or seafood",
-            "After using the restroom (must wash in restroom AND upon returning to food area)",
-            "After touching your face, hair, body, or clothing",
-            "After sneezing, coughing, or blowing your nose",
-            "After handling garbage or trash",
-            "After handling chemicals or cleaning products",
-            "After handling money",
-            "After touching animals",
-            "After eating or drinking",
-            "After handling cell phones or personal items"
-          ],
-          why: "This list is long because contamination happens constantly. Your phone has more bacteria on it than a toilet seat. Money is handled by hundreds of people. Hair carries bacteria. The more contamination events you can identify, the safer food service becomes.",
-          tip: "Gloves are NOT a substitute for handwashing. Hands must be washed before putting gloves on. Gloves must be changed whenever you would wash your hands. The exam tests this frequently."
-        },
-        {
-          h: "Gloves: Protection and Limitations",
-          t: "Single-use gloves provide an additional barrier between hands and food, but they are misunderstood by many food handlers. Gloves are not a force field — they must be used correctly to be effective. The biggest mistake is treating gloves as if they make hands permanently clean, which leads to the exact same contamination risks as bare hands.",
-          bullets: [
-            "Always wash hands before putting on gloves.",
-            "Change gloves whenever you would wash your hands (same triggers apply).",
-            "Change gloves at least every 4 hours during continuous use.",
-            "Change gloves when switching between raw and ready-to-eat foods.",
-            "Change gloves if they become torn, soiled, or contaminated.",
-            "Never wash and reuse single-use gloves — they're single use for a reason.",
-            "Latex allergies: use nitrile or vinyl gloves instead."
-          ],
-          why: "Gloves can develop microscopic tears that are invisible to the eye. Bacteria can penetrate these tears. Additionally, the outside of a glove becomes contaminated exactly as quickly as bare hands would — the difference is that gloves prevent transferring skin flora, but they don't prevent picking up environmental contamination.",
-          tip: "The exam will ask when gloves must be changed. The answer is: same situations as handwashing, plus every 4 hours minimum during continuous use."
-        },
-        {
-          h: "Illness, Symptoms, and When to Stay Home",
-          t: "Working with food while sick is one of the most direct ways to cause a foodborne illness outbreak. A single infected food handler with Norovirus can contaminate hundreds of meals. The challenge is that food handlers sometimes feel pressure to come in when sick, either from scheduling pressure or financial necessity. Understanding the specific rules — and why they exist — helps make the right call easier.",
-          bullets: [
-            "EXCLUDE from all work: Norovirus, Hepatitis A, Salmonella Typhi, STEC E. coli, Shigella, Nontyphoidal Salmonella (The Big 6)",
-            "EXCLUDE: any food handler with vomiting or diarrhea",
-            "EXCLUDE: jaundice (yellowing of skin/eyes — sign of Hepatitis A)",
-            "RESTRICT to non-food contact: sore throat with fever (in a regular operation)",
-            "EXCLUDE with sore throat and fever if serving highly susceptible populations",
-            "Norovirus exclusion ends 48 hours after ALL symptoms resolve",
-            "Big 6 diagnoses require health authority approval to return"
-          ],
-          why: "The Big 6 are specifically excluded (not just restricted) because they spread at extremely low infectious doses — meaning just a tiny amount of pathogen can cause illness. Norovirus, for example, requires fewer than 20 viral particles to make someone sick.",
-          tip: "Know the difference: EXCLUSION means no work at all. RESTRICTION means limited duties (no food contact). The Big 6 = Exclusion. Sore throat with fever in a general operation = Restriction."
-        },
-        {
-          h: "Personal Cleanliness: Uniforms, Hair, Nails, and Jewelry",
-          t: "Beyond handwashing, food handlers must maintain overall personal cleanliness in ways that prevent hair, skin, and other contaminants from entering food. These rules might feel overly strict, but each one exists because of documented contamination incidents.",
-          bullets: [
-            "Hair must be restrained with a hat, hairnet, or other effective restraint — pulled back ponytails alone are not sufficient.",
-            "Fingernails must be short, clean, and unpolished. Nail polish can chip into food. Artificial nails harbor bacteria and can break off.",
-            "Jewelry must be minimal — a plain wedding band is generally acceptable. Rings with stones, bracelets, and watches trap bacteria and can fall into food.",
-            "Uniforms and aprons must be clean and changed if they become contaminated.",
-            "Remove aprons before entering the restroom — never bring food prep clothing into a bathroom.",
-            "Avoid touching your face, hair, or body while working with food.",
-            "Food handlers should not wear strong perfumes or colognes — chemical contamination risk."
-          ],
-          why: "Hair in food is the classic physical contamination example — but the real danger is that hair carries bacteria. A hair restraint prevents hair (and the bacteria on it) from falling into food. It's both a physical and biological hazard prevention measure.",
-          tip: "The exam tests specific hygiene requirements. Know: no artificial nails, no nail polish, plain band rings only, hair must be restrained (not just tied back), aprons removed for restrooms."
-        },
-        {
-          h: "Eating, Drinking, and Tasting in Food Service",
-          t: "Eating and drinking in food preparation areas is prohibited because it creates multiple contamination risks. When you eat, you touch your mouth, which carries bacteria. Food and drink can splash or drip onto prep surfaces. And eating generates more reason to touch your face. However, food handlers do need to hydrate — there are safe ways to do it.",
-          bullets: [
-            "Eating is only allowed in designated areas away from food prep.",
-            "Drinking is allowed in food prep areas ONLY if using a covered container with a straw.",
-            "Never taste food with a spoon and then continue using that spoon — use a clean tasting spoon once and discard.",
-            "No gum chewing while working with food — it leads to touching the face/mouth repeatedly.",
-            "No smoking in food prep areas."
-          ],
-          why: "A covered container with a straw is specified because it prevents hands from contaminating the rim of the cup, and the straw prevents mouth contact with the outside of the container. This is a surprisingly precise rule that the exam tests.",
-          tip: "Know the covered-container-with-straw rule for drinking. And know that tasting food requires a clean, single-use spoon — taste and discard."
-        },
-        {
-          h: "Reporting Illness: Your Responsibility and the Manager's Role",
-          t: "Food handlers have a legal and ethical responsibility to report symptoms and diagnoses to their manager. Managers have a corresponding responsibility to act on that information immediately. The system only works when both sides fulfill their role. This isn't just policy — in many states, failure to report certain diagnoses is a criminal violation.",
-          bullets: [
-            "Food handlers must report: vomiting, diarrhea, jaundice, sore throat with fever, and any Big 6 diagnosis.",
-            "Managers must immediately restrict or exclude the food handler based on the symptom.",
-            "Managers must notify the local health authority when a food handler has a Big 6 diagnosis.",
-            "The operation must cooperate fully with any resulting health investigation.",
-            "A food handler cannot be punished for reporting illness — doing so is illegal.",
-            "Managers should train staff regularly on when and how to report symptoms."
-          ],
-          why: "The most dangerous scenario is the one where a food handler knows they're sick but comes in anyway — either from personal pressure or because they're afraid to report it. Managers who create a culture of open reporting literally save lives.",
-          tip: "The exam will present scenarios where a manager discovers a sick food handler. Know the exact steps: identify symptoms → restrict or exclude → notify health authority if Big 6 → document everything."
-        }
-      ]},
-      { id: "cleaning", lesson: [
-        {
-          h: "Cleaning vs. Sanitizing: Two Different Things That Must Both Happen",
-          t: "Cleaning and sanitizing are two separate processes that work together — but neither alone is sufficient. Cleaning removes dirt, food residue, and grease from a surface. Sanitizing reduces the number of pathogens on an already-clean surface to safe levels. You cannot effectively sanitize a dirty surface, and you cannot safely serve food from a cleaned-but-not-sanitized surface. Both steps are always required, in that order.",
-          why: "This sequence matters chemically. Food residue physically blocks sanitizer from making contact with the surface. It's like trying to disinfect a counter that still has visible food on it — the sanitizer can't reach the bacteria under the residue. Clean first, always.",
-          tip: "The exam will ask: what must happen before sanitizing? The answer is always cleaning first. This is tested repeatedly."
-        },
-        {
-          h: "The 6-Step Cleaning and Sanitizing Process",
-          t: "ServSafe defines a specific 6-step process for cleaning and sanitizing food contact surfaces. Each step has a purpose — skip one and the whole process is compromised. This process applies to prep tables, cutting boards, utensils, and any surface that touches food.",
-          bullets: [
-            "Step 1: Scrape or remove food bits and debris from the surface.",
-            "Step 2: Wash with hot soapy water (at least 110°F in a 3-compartment sink).",
-            "Step 3: Rinse with clean water to remove all soap residue.",
-            "Step 4: Sanitize — apply chemical sanitizer at the correct concentration for the required contact time.",
-            "Step 5: Allow to air dry completely — never towel dry.",
-            "Step 6: (For equipment) Reassemble and store properly."
-          ],
-          why: "The rinse step between washing and sanitizing is critical because soap residue neutralizes most chemical sanitizers — chlorine especially. If you sanitize over soapy residue, the sanitizer is rendered ineffective. This is why all three sinks in a 3-compartment setup are essential.",
-          tip: "The 3-compartment sink order is wash → rinse → sanitize. Air dry after — never towel dry. Towels re-contaminate surfaces."
-        },
-        {
-          h: "Chemical Sanitizers: Types, Concentrations, and Contact Time",
-          t: "The three most common chemical sanitizers in food service are chlorine (bleach), iodine, and quaternary ammonium compounds (quats). Each has a specific effective concentration range — too low and it doesn't work, too high and it becomes toxic and can leave dangerous residue. Contact time is equally important — the sanitizer must stay wet on the surface for the required time to actually kill pathogens.",
-          bullets: [
-            "Chlorine: 50–100 ppm. Most common and cheapest. Effective at lower concentrations. Weakened by organic matter and hot water.",
-            "Iodine: 12.5–25 ppm. Amber/brown color makes it easy to test visually. Less effective in hard water.",
-            "Quaternary Ammonium (Quats): 200–400 ppm (varies by product). More stable than chlorine. Effective in hard water. Leaves no residue.",
-            "Contact time: most require at least 30 seconds of wet contact with the surface.",
-            "Water temperature affects effectiveness: most sanitizers work best at 55–75°F."
-          ],
-          why: "PPM stands for parts per million — it's a measure of concentration. Using too little sanitizer means pathogens survive. Using too much means toxic chemical residue remains on food contact surfaces and could end up in food, making customers sick in a completely different way.",
-          tip: "Know the correct concentration for each sanitizer type. The exam will give you a scenario (sanitizer too weak, too strong) and ask what to do. Answer: discard and remake to correct concentration."
-        },
-        {
-          h: "Test Kits and Thermometers: Verifying Your Sanitizer Actually Works",
-          t: "You can't see whether a sanitizer solution is at the correct concentration by looking at it. A solution that looks clean and smells like bleach could be far too weak or far too strong. Test kits — simple paper strips that change color when dipped — are the only way to verify concentration. They're inexpensive, take seconds to use, and should be used every time fresh sanitizer is prepared.",
-          bullets: [
-            "Dip the test strip briefly in the sanitizer solution.",
-            "Remove and compare the color change to the manufacturer's chart immediately.",
-            "If concentration is too low: add more sanitizer chemical and retest.",
-            "If concentration is too high: add water to dilute and retest.",
-            "Replace sanitizer solutions regularly — at least every 4 hours, or when visibly dirty.",
-            "Cloudy or dirty sanitizer is ineffective — replace it immediately."
-          ],
-          why: "Sanitizer solutions degrade over time, especially chlorine solutions which lose effectiveness when exposed to organic matter, light, and heat. A test kit costs pennies. A foodborne illness outbreak costs far more.",
-          tip: "The exam tests test kit usage. Know: dip briefly, compare to chart, don't leave strip in solution. Also know that cloudy or dirty sanitizer must be replaced."
-        },
-        {
-          h: "The 3-Compartment Sink: Setup and Use",
-          t: "The 3-compartment sink is the manual dishwashing standard for food service when a commercial dishwasher isn't available or practical. Each compartment has a specific function, and the order is mandatory. Setting up and using a 3-compartment sink correctly ensures that dishes come out clean, rinsed of soap, and sanitized to safe levels.",
-          bullets: [
-            "Compartment 1 — Wash: hot water at least 110°F with detergent. Scrub items to remove all food and grease.",
-            "Compartment 2 — Rinse: clean warm water. No soap. Removes detergent residue so sanitizer can work.",
-            "Compartment 3 — Sanitize: water with chemical sanitizer at correct concentration. 30 seconds minimum contact time.",
-            "After sanitizing: air dry on a clean drying rack. Never towel dry.",
-            "Change solutions when visibly dirty or at least every 4 hours.",
-            "Pre-scrape all items before placing in the wash compartment."
-          ],
-          why: "The rinse compartment exists for one reason: to remove soap that would otherwise neutralize the sanitizer in compartment 3. Skipping the rinse step is one of the most common — and consequential — 3-compartment sink mistakes.",
-          tip: "Wash water minimum is 110°F. Sanitize compartment: use a test kit to verify concentration. Air dry after. The exam will ask the order and minimum temperatures."
-        },
-        {
-          h: "Dishwashing Machines: Temperature vs. Chemical Sanitizing",
-          t: "Commercial dishwashers sanitize using one of two methods: high-temperature sanitizing (heat) or chemical sanitizing. Both are effective when used correctly, but they have different operating requirements. Using the wrong settings, or running the machine when it's malfunctioning, means dishes aren't actually sanitized — they just look clean.",
-          bullets: [
-            "High-temperature dishwashers: final rinse must reach 180°F at the surface of the dishes.",
-            "Chemical sanitizing dishwashers: water must be at least 120°F and chemical must be at correct concentration.",
-            "Always check temperatures and sanitizer levels before starting service.",
-            "If a dishwasher fails to reach required temperature/concentration, take it out of service and use the 3-compartment sink.",
-            "Dishes must air dry after — stacking wet dishes traps moisture and promotes bacterial growth."
-          ],
-          why: "180°F at the dish surface — not just the water — is the standard for high-temp dishwashers because dishes arrive at the final rinse cooler than the water. The machine must be calibrated to ensure the surface reaches 180°F despite this temperature drop.",
-          tip: "Know both types: high-temp (180°F final rinse) and chemical (120°F water + correct sanitizer concentration). If either fails, the machine must be taken out of service."
-        },
-        {
-          h: "Cleaning Schedules, Frequency, and Master Cleaning Programs",
-          t: "Not every surface needs to be sanitized every 4 hours — but food contact surfaces do. A Master Cleaning Program is a formal schedule that lists every surface in the operation, how often it must be cleaned and/or sanitized, who is responsible, and what products to use. Having a written schedule prevents the 'I thought someone else did it' problem.",
-          bullets: [
-            "Food contact surfaces (cutting boards, prep tables, slicers): clean and sanitize after each use, before switching food types, and at minimum every 4 hours during continuous use.",
-            "Non-food contact surfaces (walls, floors, shelving): clean regularly but do not require sanitizing to the same standard.",
-            "Equipment with multiple parts (slicers, mixers): disassemble, clean each component, rinse, sanitize, reassemble.",
-            "Wiping cloths: store in sanitizer solution between uses — never just rinse and reuse.",
-            "Drain cleaning: at least daily to prevent fly breeding and organic buildup."
-          ],
-          why: "The 4-hour rule for food contact surfaces exists because bacteria can grow to dangerous levels on a surface in 4 hours at room temperature. Even surfaces that look clean can harbor invisible bacterial colonies.",
-          tip: "The exam will ask: how often must food contact surfaces be cleaned and sanitized during continuous use? The answer is: at least every 4 hours."
-        },
-        {
-          h: "Chemicals in Food Service: Storage, Labeling, and Safety",
-          t: "Cleaning and sanitizing chemicals are effective tools — but they're also hazardous. Improper storage, unlabeled containers, or incorrect use can cause chemical contamination of food or injury to staff. A Safety Data Sheet (SDS) — formerly called an MSDS — must be on file and accessible for every chemical used in the operation.",
-          bullets: [
-            "Store all chemicals separately from food, utensils, and food-contact surfaces.",
-            "All chemical containers must be clearly labeled at all times — never store chemicals in unmarked containers.",
-            "SDS sheets must be on file and accessible to all staff.",
-            "Never mix chemicals unless specifically directed by the manufacturer — some combinations create toxic gases.",
-            "Use only food-safe chemicals on food contact surfaces.",
-            "Train all staff on proper chemical use, dilution ratios, and emergency procedures.",
-            "Chemical storage areas must be locked or restricted."
-          ],
-          why: "Chemical contamination from cleaning products is a real and underappreciated food safety hazard. Residue left on food contact surfaces can transfer directly to food. Some cleaning agents in high concentrations are corrosive or toxic — proper dilution isn't just about effectiveness, it's about safety.",
-          tip: "The exam will ask where chemicals must be stored (away from food, clearly labeled, locked area) and what must be on file (SDS/Safety Data Sheets). Know both."
-        }
-      ]},
-      { id: "pests", lesson: [
-        {
-          h: "Why Pest Control Is a Critical Food Safety Issue",
-          t: "Pests in a food service operation aren't just unpleasant — they're a direct public health hazard. Cockroaches, rodents, and flies carry and spread dozens of pathogens including Salmonella, E. coli, Listeria, and Staphylococcus. They contaminate food through direct contact, droppings, urine, and hair. A single cockroach sighting during a health inspection can result in immediate closure of a food service establishment.",
-          why: "Pest contamination is particularly dangerous because it often goes undetected. Rodents operate at night, cockroaches hide during daylight hours, and contaminated food may look, smell, and taste completely normal. By the time the problem is discovered, dozens of customers may already have been exposed.",
-          tip: "The exam tests pest identification, prevention, response, and the role of a licensed PCO. Know all four areas."
-        },
-        {
-          h: "Recognizing the Signs: How to Identify a Pest Problem",
-          t: "Pests go to great lengths to hide from humans — which is why being able to read the signs of their presence is a critical skill. Waiting until you actually see a pest means the infestation is already well established. Early detection through regular inspection prevents small problems from becoming major health violations.",
-          bullets: [
-            "Rodents: droppings (small, dark pellets), gnaw marks on food packaging and structure, grease marks on walls from their fur, nesting materials (shredded paper, fabric, insulation), fresh tracks in dusty areas.",
-            "Cockroaches: droppings (small black specks resembling ground pepper), egg cases (brown, capsule-shaped), cast skins (shed exoskeletons), musty odor in infested areas, grease smear marks along walls.",
-            "Flies: clusters of flies near drains or garbage, larvae (maggots) in wet organic matter, pupae cases near food sources.",
-            "Stored product pests: webbing in flour or cereal, clumping in dry goods, larvae or beetles in grain products."
-          ],
-          why: "Each sign tells you something specific about the pest. Fresh rodent droppings (moist, dark) vs. old droppings (dry, gray) tell you whether the infestation is active. Egg cases tell you cockroaches are breeding on-site. Reading these signs correctly determines the urgency of the response.",
-          tip: "The exam may show you a scenario and ask what pest is indicated. Match signs to pests: gnaw marks + grease marks = rodents. Egg cases + cast skins = cockroaches. Webbing in flour = stored product pests."
-        },
-        {
-          h: "Integrated Pest Management (IPM): Prevention First",
-          t: "Integrated Pest Management (IPM) is the gold standard approach to pest control in food service. Rather than simply reacting to pest sightings with pesticide applications, IPM takes a systematic prevention-first approach — making the facility as inhospitable to pests as possible, then using chemical controls only as a last resort.",
-          bullets: [
-            "Denial of entry: seal cracks, gaps, and openings. Install door sweeps. Use air curtains. Screen vents and floor drains.",
-            "Denial of food: store all food in sealed, pest-proof containers. Keep food at least 6 inches off the floor. Clean up spills immediately.",
-            "Denial of water: fix leaky pipes and drains. Eliminate standing water. Clean floor drains regularly.",
-            "Denial of shelter: eliminate clutter, cardboard boxes, and excess storage. Rotate stock regularly to disturb potential nesting sites.",
-            "Monitoring: inspect regularly and keep logs. Use pheromone traps, glue boards, and monitoring devices.",
-            "Control: when prevention fails, use licensed PCO with targeted, food-safe chemical applications."
-          ],
-          why: "IPM is more effective than spray-first approaches because it addresses the ROOT CAUSE of pest activity — the conditions that attract and sustain them. A cockroach that can't find food, water, or shelter in your facility will not establish an infestation, regardless of how many it finds outside.",
-          tip: "The exam tests IPM principles heavily. Know: prevention before chemicals, licensed PCO for pesticide application, deny food/water/shelter/entry. The first step in IPM is identification and prevention, not pesticide use."
-        },
-        {
-          h: "The Role of the Licensed Pest Control Operator (PCO)",
-          t: "Food service operations should never attempt to apply pesticides themselves. Pesticide application in a food environment requires specialized training, licensing, and knowledge of food-safe products and application methods. A licensed Pest Control Operator (PCO) has the expertise to identify the specific pest, select the appropriate treatment, apply it safely, and document the work.",
-          bullets: [
-            "Only a licensed PCO should apply pesticides in a food service operation.",
-            "The PCO should provide documentation of every visit: date, pest findings, products used, concentrations, areas treated.",
-            "Operations should have a written pest control contract with a licensed PCO.",
-            "Schedule preventive PCO visits on a regular basis — don't wait for a sighting.",
-            "After any pesticide treatment, ventilate the area and follow all PCO instructions before resuming food service.",
-            "Keep all PCO records on file — health inspectors will ask for them."
-          ],
-          why: "Using the wrong pesticide in a food environment — or applying it incorrectly — can contaminate food and surfaces with chemical residue. Some pesticides are toxic at low levels. The licensing requirement exists because the consequences of error are severe.",
-          tip: "The exam will ask who can apply pesticides in a food operation. The answer is always: only a licensed PCO. Never food service staff, regardless of product label claims."
-        },
-        {
-          h: "Facility Maintenance: Structural Pest Prevention",
-          t: "The physical structure of a food service facility is either a pest's invitation or its barrier. Gaps around pipes, cracks in walls, improperly fitted doors, and damaged screens are open invitations for insects and rodents. Structural pest prevention — sometimes called 'pest exclusion' — means maintaining the building itself as the first line of defense.",
-          bullets: [
-            "Seal all gaps and cracks in walls, floors, and ceilings — particularly around utility pipes, drains, and electrical conduits.",
-            "Install door sweeps on all exterior doors — mice can enter through a gap as small as ¼ inch.",
-            "Keep exterior doors closed when not in active use; use air curtains where doors must stay open.",
-            "Screen all vents, drains, and windows.",
-            "Maintain proper lighting — yellow or sodium vapor lights near entrances attract fewer insects than white fluorescent lights.",
-            "Fix leaky plumbing immediately — standing water is a major attractant for pests of all types.",
-            "Keep outdoor garbage containers as far from the building as practical, in sealed containers."
-          ],
-          why: "A mouse can compress its body to fit through a gap the size of a dime. Cockroaches can flatten themselves to fit through gaps as thin as 1/16 inch. Structural exclusion is the only way to prevent pests that are actively trying to enter from succeeding.",
-          tip: "Know what structural features prevent pest entry: door sweeps (bottom of doors), air curtains (entry points), sealed cracks (walls/pipes), screens (drains/vents). The exam tests these specifically."
-        },
-        {
-          h: "Garbage and Waste Management: Eliminating the #1 Pest Attractant",
-          t: "Garbage is the primary attractant for virtually every common food service pest — cockroaches, rodents, and flies all feed on organic waste. Proper garbage management doesn't just keep the facility clean — it actively removes the food source that sustains pest populations. Without consistent access to food, even established pest populations can't survive.",
-          bullets: [
-            "Use garbage containers with tight-fitting lids — inside and outside.",
-            "Empty indoor garbage cans frequently — at minimum daily, more often if they fill quickly.",
-            "Keep outdoor garbage containers as far from the building as practical.",
-            "Clean garbage containers regularly — organic residue inside the can continues to attract pests even when empty.",
-            "Never allow garbage to accumulate on floors or near food prep areas.",
-            "Grease traps and floor drains must be cleaned regularly — they accumulate organic matter that attracts flies."
-          ],
-          why: "Flies breed in organic matter. A single female housefly can lay up to 500 eggs in her lifetime, all in garbage, wet organic waste, or decaying food. Controlling garbage directly controls fly populations — not through pesticide, but by eliminating their breeding and feeding site.",
-          tip: "Garbage storage and management questions are common on the exam. Key rules: tight lids, away from building, cleaned containers, no floor accumulation."
-        },
-        {
-          h: "Pest Documentation and Regulatory Compliance",
-          t: "Pest control isn't just a practical necessity — it's a regulatory requirement. Health codes mandate that food service operations have active pest control programs, maintain documentation, and report significant infestations to health authorities. During a health inspection, a pest control log is one of the first things an inspector will request.",
-          bullets: [
-            "Maintain a written pest control log documenting every PCO visit: date, findings, products used, areas treated, PCO signature.",
-            "Keep a pest sighting log where staff can record any pest activity they observe, with date, time, and location.",
-            "Report significant or persistent pest infestations to the local health authority as required by regulation.",
-            "Cooperate fully with any health authority investigation following a pest-related complaint.",
-            "Ensure all staff know how to report pest sightings immediately to management.",
-            "Review pest control records regularly to identify trends — increasing trap activity signals a growing problem."
-          ],
-          why: "Documentation serves two purposes: it demonstrates compliance during health inspections, and it creates a trend record that allows you to catch worsening infestations before they become unmanageable. An operation that can show a consistent PCO schedule and clean sighting logs is demonstrating due diligence.",
-          tip: "The exam will ask what information pest control records must contain. Know: date of visit, chemicals used, areas treated, concentration, and PCO signature. Missing records is a health code violation."
-        },
-        {
-          h: "Responding to Pest Activity: Immediate Action Steps",
-          t: "Discovering pest activity requires an immediate, systematic response. The speed and thoroughness of the response determines whether a small problem stays small or becomes a full infestation. Every food handler should know what to do when they encounter evidence of pests — and that it's always: report immediately, don't ignore it.",
-          bullets: [
-            "Immediately report any pest sighting or evidence to the manager — don't handle it yourself.",
-            "If food has been in the pest-affected area, discard it immediately regardless of packaging condition.",
-            "Contact the licensed PCO immediately for assessment and treatment.",
-            "Document the sighting in the pest log: date, time, location, what was observed.",
-            "If the infestation is severe, consider temporary closure to prevent contamination of food being served.",
-            "After treatment, follow all PCO instructions before resuming service: ventilate, clean, sanitize.",
-            "Conduct a root-cause analysis: how did the pest gain access? What attracted it? Fix those conditions."
-          ],
-          why: "One cockroach seen during daylight hours is a serious sign — cockroaches are nocturnal and only venture out during the day when the population is large enough to compete for food. A single daytime sighting typically means dozens or hundreds are hiding nearby.",
-          tip: "The exam will present pest response scenarios. The correct first action is always: report to manager and contact the PCO. Never attempt to apply pesticide yourself. If food was exposed, discard it."
-        }
-      ]}
-    ],
     // Hockey stats shown during PIN lockout — stored here so they can be updated remotely
     hockeyStats: [
       "🏒 Wayne Gretzky scored 92 goals in a single season (1981-82). No one has come close since.",
@@ -1267,7 +735,7 @@ let S={
   pin:{entry:"", error:"", clue:"", wrongCount:0, locked:false, lockTimer:null, lockSecondsLeft:0, statIdx:0, statInterval:null},
   cloudPin:"1997",
   hockeyStats:[],
-  fb:{type:"",mood:0,tags:[],message:"",screenshot:null,screenshotName:"",sending:false,sent:false,error:""}
+  fb:{type:"",mood:0,tags:[],message:"",sending:false,sent:false,error:""}
 };
 function saveHist(){ scheduleSave(); }
 const cheers=["You are doing wonderfully!","That is exactly right!","Look at you go!","You are a natural!","Perfect! Keep going!","Fantastic work!","You've got this!","LET'S GO RANGERS! 🏒"];
@@ -1321,9 +789,9 @@ window.addEventListener("popstate",function(e){
 function render(){
   const bgMap={
     home:"linear-gradient(160deg,#003087 0%,#001a4d 100%)",
-    servsafeLesson:S.topic?"linear-gradient(160deg,"+S.topic.color+" 0%,#fff 60%)":"#fff",
-    quiz:S.topic?"linear-gradient(160deg,"+S.topic.color+" 0%,#fff 60%)":"#fff",
-    quizResult:S.topic?"linear-gradient(160deg,"+S.topic.color+" 0%,#fff 60%)":"#fff",
+    servsafeLesson:"linear-gradient(160deg,#001a4d 0%,#003087 100%)",
+    quiz:"linear-gradient(160deg,#1a0005 0%,#003087 100%)",
+    quizResult:"linear-gradient(160deg,#001a4d 0%,#003087 100%)",
     selectExam:"linear-gradient(135deg,#001a4d,#003087 50%,#004db3)",
     selectShortExam:"linear-gradient(135deg,#001a4d,#CE1126 50%,#a50d1f)",
     practiceExam:"linear-gradient(135deg,#1a0005,#3d0010)",
@@ -1604,7 +1072,7 @@ function renderSSLesson(){
   const bullets=pg.bullets?"<ul style='margin:12px 0 0 4px;padding:0;list-style:none'>"+pg.bullets.map(b=>"<li style='font-size:14px;color:#444;line-height:1.75;padding:4px 0 4px 20px;position:relative;border-bottom:1px solid #f0f0f0'><span style='position:absolute;left:0;color:"+S.topic.accent+"'>▸</span>"+b+"</li>").join("")+"</ul>":"";
   const whyBox=pg.why?"<div style='background:"+S.topic.color+";border-radius:11px;padding:12px 14px;margin-top:13px;border-left:4px solid "+S.topic.accent+"'><div style='font-size:11px;font-weight:bold;color:"+S.topic.accent+";font-family:Oswald,sans-serif;letter-spacing:0.08em;margin-bottom:5px'>💡 WHY THIS MATTERS</div><p style='font-size:13px;color:#444;line-height:1.75;margin:0'>"+pg.why+"</p></div>":"";
   const examTip=pg.tip?"<div style='background:#FFF8E1;border-radius:11px;padding:10px 13px;margin-top:10px;border-left:4px solid #F57F17'><div style='font-size:11px;font-weight:bold;color:#E65100;font-family:Oswald,sans-serif;letter-spacing:0.08em;margin-bottom:4px'>📝 EXAM TIP</div><p style='font-size:13px;color:#555;line-height:1.7;margin:0'>"+pg.tip+"</p></div>":"";
-  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:"+S.topic.accent+"' data-action='goHome'>← Home</button><div><div style='font-size:14px;font-weight:bold;color:#333'>"+S.topic.icon+" "+S.topic.title+"</div><div style='font-size:12px;color:#999;margin-top:1px'>Reading "+(S.lessonPage+1)+" of "+S.topic.lesson.length+"</div></div></div><div class='prog-wrap'><div class='prog-bar' style='width:"+pct+"%;background:linear-gradient(90deg,"+S.topic.light+","+S.topic.accent+")'></div></div><div class='card' style='border-left:5px solid "+S.topic.accent+"'><h2 style='font-size:17px;color:"+S.topic.accent+";margin:0 0 11px'>"+pg.h+"</h2><p style='font-size:15px;color:#333;line-height:1.85;margin:0'>"+pg.t+"</p>"+bullets+whyBox+examTip+"</div><button class='big-btn' style='background:"+S.topic.accent+"' data-action='readLesson'>🔊 Read This Aloud</button><div style='display:flex;gap:9px'><button style='flex:1;padding:14px;border-radius:15px;background:"+(S.lessonPage===0?"#e0e0e0":"#f5f5f5")+";color:"+(S.lessonPage===0?"#bbb":"#555")+";font-size:14px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:"+(S.lessonPage===0?"not-allowed":"pointer")+"' data-action='lessonBack'"+(S.lessonPage===0?" disabled":"")+">← Back</button><button style='flex:2;padding:14px;border-radius:15px;background:linear-gradient(135deg,"+S.topic.light+","+S.topic.accent+");color:#fff;font-size:16px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:pointer' data-action='lessonNext'>"+(isLast?"Take the Quiz!":"Next →")+"</button></div></div>";
+  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:"+S.topic.accent+"' data-action='goHome'>← Home</button><div><div style='font-size:14px;font-weight:bold;color:#fff'>"+S.topic.icon+" "+S.topic.title+"</div><div style='font-size:12px;color:rgba(255,255,255,0.7);margin-top:1px'>Reading "+(S.lessonPage+1)+" of "+S.topic.lesson.length+"</div></div></div><div class='prog-wrap'><div class='prog-bar' style='width:"+pct+"%;background:linear-gradient(90deg,"+S.topic.light+","+S.topic.accent+")'></div></div><div class='card' style='border-left:5px solid "+S.topic.accent+"'><h2 style='font-size:17px;color:"+S.topic.accent+";margin:0 0 11px'>"+pg.h+"</h2><p style='font-size:15px;color:#333;line-height:1.85;margin:0'>"+pg.t+"</p>"+bullets+whyBox+examTip+"</div><button class='big-btn' style='background:"+S.topic.accent+"' data-action='readLesson'>🔊 Read This Aloud</button><div style='display:flex;gap:9px'><button style='flex:1;padding:14px;border-radius:15px;background:"+(S.lessonPage===0?"#e0e0e0":"#f5f5f5")+";color:"+(S.lessonPage===0?"#bbb":"#555")+";font-size:14px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:"+(S.lessonPage===0?"not-allowed":"pointer")+"' data-action='lessonBack'"+(S.lessonPage===0?" disabled":"")+">← Back</button><button style='flex:2;padding:14px;border-radius:15px;background:linear-gradient(135deg,"+S.topic.light+","+S.topic.accent+");color:#fff;font-size:16px;font-weight:bold;border:none;font-family:Georgia,serif;cursor:pointer' data-action='lessonNext'>"+(isLast?"Take the Quiz!":"Next →")+"</button></div></div>";
 }
 
 // ═══════════════════════════════════════════
@@ -1613,7 +1081,7 @@ function renderSSLesson(){
 function renderQuiz(){
   if(!S.topic)return renderHome();
   const q=S.topic.questions[S.quizIdx],pct=(S.quizIdx/S.topic.questions.length)*100;
-  const opts=q.opts.map((o,i)=>{let cls="opt-btn";if(S.quizSel!==null){if(i===q.ans)cls+=" opt-correct";else if(i===S.quizSel&&i!==q.ans)cls+=" opt-wrong";}return"<button class='"+cls+"' data-action='selectQuiz' data-i='"+i+"'"+(S.quizSel!==null?" style='cursor:default'":"")+">ABCD"[i]+". "+o+"</button>";}).join("");
+  const opts=q.opts.map((o,i)=>{let cls="opt-btn";if(S.quizSel!==null){if(i===q.ans)cls+=" opt-correct";else if(i===S.quizSel&&i!==q.ans)cls+=" opt-wrong";}return"<button class='"+cls+"' data-action='selectQuiz' data-i='"+i+"'"+(S.quizSel!==null?" style='cursor:default'":"")+">"+"ABCD"[i]+". "+o+"</button>";}).join("");
   const explain=S.quizSel!==null?"<div style='margin-top:11px;padding:12px 14px;border-radius:12px;background:"+(S.quizSel===q.ans?"#E8EAF6":"#FFF3E0")+";font-size:14px;color:#444;line-height:1.6'>"+(S.quizSel===q.ans?"Correct! ":"Not quite. ")+q.ex+"</div>":"";
   const nb=S.quizSel!==null?"<button class='big-btn' style='background:linear-gradient(135deg,"+S.topic.light+","+S.topic.accent+")' data-action='quizNext'>"+(S.quizIdx+1>=S.topic.questions.length?"See Results":"Next Question")+"</button>":"<p style='text-align:center;color:#aaa;font-size:13px;font-style:italic;margin-top:8px'>Tap an answer to continue 💙</p>";
   return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:"+S.topic.accent+"' data-action='goHome'>← Home</button><div><div style='font-size:14px;font-weight:bold;color:#333'>📝 "+S.topic.title+" Quiz</div><div style='font-size:12px;color:#999;margin-top:1px'>Question "+(S.quizIdx+1)+" of "+S.topic.questions.length+"</div></div></div><div class='prog-wrap'><div class='prog-bar' style='width:"+pct+"%;background:linear-gradient(90deg,"+S.topic.light+","+S.topic.accent+")'></div></div><div class='card'><p style='font-size:16px;color:#333;font-weight:bold;line-height:1.6;margin:0 0 14px'>"+q.q+"</p>"+opts+explain+"</div>"+nb+"</div>";
@@ -1645,7 +1113,7 @@ function renderExam(){
   const q=S.examQs[S.examIdx];
   const pct=(S.examIdx/S.examQs.length)*100;
   const tn=TOPICS[q.topicIdx]||"General";
-  const opts=q.opts.map((o,i)=>{let cls="opt-btn";if(S.examSel!==null){if(i===q.ans)cls+=" opt-correct";else if(i===S.examSel&&i!==q.ans)cls+=" opt-wrong";}return"<button class='"+cls+"' data-action='selectExam' data-i='"+i+"'"+(S.examSel!==null?" style='cursor:default'":"")+">ABCD"[i]+". "+o+"</button>";}).join("");
+  const opts=q.opts.map((o,i)=>{let cls="opt-btn";if(S.examSel!==null){if(i===q.ans)cls+=" opt-correct";else if(i===S.examSel&&i!==q.ans)cls+=" opt-wrong";}return"<button class='"+cls+"' data-action='selectExam' data-i='"+i+"'"+(S.examSel!==null?" style='cursor:default'":"")+">"+"ABCD"[i]+". "+o+"</button>";}).join("");
   const explain=S.examSel!==null?"<div style='margin-top:11px;padding:12px 14px;border-radius:12px;background:"+(S.examSel===q.ans?"#E8EAF6":"#FFF3E0")+";font-size:14px;color:#444;line-height:1.6'>"+(S.examSel===q.ans?"Correct! ":"Not quite. ")+q.ex+(S.examSel!==null&&S.examSel!==q.ans&&S.eggTaunt?("<br><span style='font-size:12px;color:#C8102E;display:flex;align-items:center;gap:5px;margin-top:6px'><img src='"+RW_LOGO+"' style='width:16px;height:16px;object-fit:contain'>"+escHtml(S.eggTaunt)+"</span>"):"")+"</div>":"";
   const nb=S.examSel!==null?"<button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#003087)' data-action='examNext'>"+(S.examIdx+1>=S.examQs.length?"See My Results":"Next Question")+"</button>":"<p style='text-align:center;color:rgba(255,255,255,0.7);font-size:13px;font-style:italic;margin-top:8px'>Tap an answer to continue 💙</p>";
   const typeLabel=S.examType==="short"?"Quick · Q":"Version "+S.examVersion.replace("v","")+" · Q";
@@ -1679,7 +1147,7 @@ function renderReports(){
   const vc=vs.map(v=>{const c=v.best>=75?"#4CAF50":v.best>=60?"#FFB74D":"#EF9A9A";return"<div style='background:rgba(255,255,255,0.1);border-radius:13px;padding:12px 14px;margin-bottom:9px'><div style='display:flex;justify-content:space-between;align-items:center'><div style='color:#fff;font-weight:bold;font-size:14px'>Version "+v.num+"</div><div style='color:"+c+";font-weight:bold;font-size:15px'>"+v.best+"% best</div></div><div style='color:rgba(255,255,255,0.75);font-size:12px;margin-top:3px'>Taken "+v.count+" time"+(v.count!==1?"s":"")+" · "+v.passed+" passed</div><div class='rbar-wrap' style='margin-top:7px'><div class='rbar' style='width:"+v.best+"%;background:"+c+"'></div></div></div>";}).join("");
   const tc2=ta.map(t=>{const c=t.avg>=75?"#4CAF50":t.avg>=50?"#FFB74D":"#EF9A9A";return"<div style='margin-bottom:9px'><div style='display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,0.9);margin-bottom:2px'><span>"+t.name+"</span><span style='font-weight:bold;color:"+c+"'>"+t.avg+"% avg</span></div><div class='rbar-wrap'><div class='rbar' style='width:"+t.avg+"%;background:"+c+"'></div></div></div>";}).join("");
   const rr=S.examHistory.slice(0,10).map(e=>{const c=e.pct>=75?"#4CAF50":e.pct>=60?"#FFB74D":"#EF9A9A";const vn=e.version?e.version.replace("v",""):"?";const typeTag=e.examType==="short"?"⚡":"📝";return"<div style='display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1)'><div><div style='color:#fff;font-size:14px;font-weight:bold'>"+typeTag+" Version "+vn+"</div><div style='color:rgba(255,255,255,0.6);font-size:12px'>"+e.date+"</div></div><div style='text-align:right'><div style='color:"+c+";font-size:17px;font-weight:bold'>"+e.pct+"%</div><div style='color:rgba(255,255,255,0.6);font-size:12px'>"+e.score+"/"+e.total+"</div></div></div>";}).join("");
-  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.4)' data-action='goHome'>← Home</button><div><div style='font-size:15px;font-weight:bold;color:#fff'>📊 My Progress Report</div><div style='font-size:12px;color:rgba(255,255,255,0.75);margin-top:1px'>"+tot+" exam"+(tot!==1?"s":"")+" taken</div></div></div>"+eggBest71+eggEighth+"<div class='stat-grid'><div class='stat-box'><div class='stat-num'>"+passed+"</div><div class='stat-lbl'>Exams Passed (75%+)</div></div><div class='stat-box'><div class='stat-num'>"+avg+"%</div><div class='stat-lbl'>Average Score</div></div><div class='stat-box'><div class='stat-num'>"+best+"%</div><div class='stat-lbl'>Best Score Ever</div></div><div class='stat-box'><div class='stat-num'>"+tot+"</div><div class='stat-lbl'>Total Exams Taken</div></div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Results by Version</div>"+(vc||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"</div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Average Score by Topic</div>"+(tc2||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"<div style='font-size:12px;color:rgba(255,255,255,0.6);margin-top:7px'>💡 Topics under 75% are worth extra review!</div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:3px'>Recent Exams</div>"+rr+"</div><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d)' data-action='goSelectExam'>📝 Take a Full Exam</button><button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#7a0010)' data-action='goSelectShortExam'>⚡ Take a Quick Practice</button>"+(S.examHistory.length?"<button class='big-btn' style='background:rgba(255,100,100,0.3);border:1px solid rgba(255,255,255,0.3)' data-action='clearHistory'>🗑️ Clear All History</button>":"")+"</div>";
+  return"<div class='wrap'><div class='top-bar'><button class='home-btn' style='background:rgba(0,0,0,0.4)' data-action='goHome'>← Home</button><div><div style='font-size:15px;font-weight:bold;color:#fff'>📊 My Progress Report</div><div style='font-size:12px;color:rgba(255,255,255,0.75);margin-top:1px'>"+tot+" exam"+(tot!==1?"s":"")+" taken</div></div></div>"+eggBest71+eggEighth+"<div class='stat-grid'><div class='stat-box'><div class='stat-num'>"+passed+"</div><div class='stat-lbl'>Exams Passed (75%+)</div></div><div class='stat-box'><div class='stat-num'>"+avg+"%</div><div class='stat-lbl'>Average Score</div></div><div class='stat-box'><div class='stat-num'>"+best+"%</div><div class='stat-lbl'>Best Score Ever</div></div><div class='stat-box'><div class='stat-num'>"+tot+"</div><div class='stat-lbl'>Total Exams Taken</div></div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Results by Version</div>"+(vc||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"</div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:11px'>Average Score by Topic</div>"+(tc2||"<p style='color:rgba(255,255,255,0.6);font-size:13px'>No data yet.</p>")+"<div style='font-size:12px;color:rgba(255,255,255,0.6);margin-top:7px'>💡 Topics under 75% are worth extra review!</div></div><div style='background:rgba(255,255,255,0.12);border-radius:15px;padding:14px;margin-bottom:13px'><div style='font-size:13px;font-weight:bold;color:#fff;margin-bottom:3px'>Recent Exams</div>"+rr+"</div><button class='big-btn' style='background:linear-gradient(135deg,#003087,#001a4d)' data-action='goSelectExam'>📝 Take a Full Exam</button><button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#7a0010)' data-action='goSelectShortExam'>⚡ Take a Quick Practice</button>"+(S.examHistory.length?"<button class='big-btn' style='background:rgba(255,100,100,0.3);border:1px solid rgba(255,255,255,0.3)' data-action='clearHistory'>🗑️ Clear All History</button>":"")+"<div style='background:rgba(255,50,50,0.08);border:1px dashed rgba(255,100,100,0.4);border-radius:13px;padding:13px 15px;margin-top:4px'><div style='font-size:10px;color:rgba(255,150,150,0.7);font-family:Oswald,sans-serif;letter-spacing:0.1em;margin-bottom:8px;text-align:center'>⚠️ TEMP — REMOVE BEFORE GOING LIVE</div><button class='big-btn' style='background:rgba(180,0,0,0.6);border:1px solid rgba(255,80,80,0.5);margin-bottom:0;font-size:14px' data-action='resetAllProgress'>🔄 RESET ALL PROGRESS</button><div style='font-size:11px;color:rgba(255,180,180,0.6);text-align:center;margin-top:6px'>Wipes topics done + all exam history</div></div></div>";
 }
 
 // ═══════════════════════════════════════════
@@ -1754,17 +1222,6 @@ function renderFeedback(){
 
   const topicTags=["Food Safety","Temperature","Hygiene","Cleaning","Pest Control","Practice Exams","Quick Practice","Progress Report","App in general"].map(tag=>"<button class='fb-tag"+(fb.tags.includes(tag)?" active":"")+"' data-action='fbTag' data-val='"+escHtml(tag)+"'>"+escHtml(tag)+"</button>").join("");
 
-  const screenshotSection="<label class='fb-label'>📎 Attach a Screenshot <span style='font-weight:normal;color:#999;font-size:11px;text-transform:none'>(optional)</span></label>"
-  +"<div class='fb-drop' id='fbDropZone'>"
-  +"<input type='file' id='fbFileInput' accept='image/*' data-action='fbFile'>"
-  +(fb.screenshot
-    ?"<div style='font-size:13px;color:#003087;font-weight:bold'>📎 "+escHtml(fb.screenshotName)+"</div>"
-     +"<img src='"+fb.screenshot+"' class='fb-preview' alt='screenshot'>"
-     +"<div style='font-size:12px;color:#aaa;margin-top:6px'>Tap to change image</div>"
-    :"<div style='font-size:28px;margin-bottom:6px'>📷</div>"
-     +"<div style='font-size:14px;color:#555;font-weight:bold'>Tap to attach a screenshot</div>"
-     +"<div style='font-size:12px;color:#aaa;margin-top:4px'>JPG, PNG, GIF supported</div>")
-  +"</div>";
 
   const canSend=fb.message.trim().length>=3;
 
@@ -1774,7 +1231,7 @@ function renderFeedback(){
 
   // INTRO CARD
   +"<div class='card' style='border-left:4px solid #CE1126;margin-bottom:14px'>"
-  +"<p style='font-size:14px;color:#333;line-height:1.8;margin:0'>Hi! 👋 Use this to let me know if something's broken, confusing, or if you have an idea to make studying easier. You can also attach a screenshot to show exactly what you mean!</p>"
+  +"<p style='font-size:14px;color:#333;line-height:1.8;margin:0'>Hi! 👋 Use this to let me know if something's broken, confusing, or if you have an idea to make studying easier. Your feedback helps make this app better every day!</p>"
   +"</div>"
 
   // MOOD
@@ -1804,7 +1261,7 @@ function renderFeedback(){
   +"</div>"
 
   // SCREENSHOT
-  +"<div class='card'>"+screenshotSection+"</div>"
+  
 
   // SEND BUTTON
   +"<button class='big-btn' style='background:"+(canSend?"linear-gradient(135deg,#CE1126,#003087)":"#ccc")+";cursor:"+(canSend?"pointer":"not-allowed")+"' data-action='fbSend'"+(canSend?"":" disabled")+">📤 Send Feedback</button>"
@@ -1831,15 +1288,12 @@ async function submitFeedback(){
     topics_affected: S.fb.tags.length?S.fb.tags.join(", "):"(none selected)",
     message: S.fb.message,
     app_stats: "Topics completed: "+topicsDone+"/5 | Exams taken: "+examsTaken+" | Best score: "+bestScore,
-    screenshot_attached: S.fb.screenshot?"Yes — see attachment note below":"No screenshot attached",
-    screenshot_data: S.fb.screenshot||"",
-    screenshot_name: S.fb.screenshotName||"",
     sent_at: new Date().toLocaleString()
   };
 
   try{
     await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, templateParams);
-    S.fb={type:"",mood:0,tags:[],message:"",screenshot:null,screenshotName:"",sending:false,sent:true,error:""};
+    S.fb={type:"",mood:0,tags:[],message:"",sending:false,sent:true,error:""};
   }catch(e){
     S.fb.sending=false;
     S.fb.error="Hmm, something went wrong sending the email. Check your connection and try again! ("+e.text+")";
@@ -2151,6 +1605,7 @@ function bindEvents(){
       else if(a==="goReports"){S.screen="reports";r();}
       else if(a==="openLinks"){S.screen="links";r();}
       else if(a==="clearHistory"){if(confirm("Clear all exam history? This cannot be undone.")){S.examHistory=[];saveHist();r();}}
+      else if(a==="resetAllProgress"){if(confirm("Reset ALL progress? This will wipe exam history AND all completed topics. Cannot be undone.")){S.examHistory=[];S.topicDone={};saveHist();r();}}
       else if(a==="openTopic"){const t=ssTopics.find(x=>x.id===el.dataset.id);S.topic=t;S.lessonPage=0;S.quizIdx=0;S.quizSel=null;S.quizAnswers=[];S.screen="servsafeLesson";stopSpeech();r();}
       else if(a==="lessonNext"){if(S.lessonPage+1>=S.topic.lesson.length){S.screen="quiz";S.quizIdx=0;S.quizSel=null;S.quizAnswers=[];stopSpeech();r();}else{stopSpeech();S.lessonPage++;r();}}
       else if(a==="lessonBack"){if(S.lessonPage>0){stopSpeech();S.lessonPage--;r();}}
@@ -2174,7 +1629,7 @@ function bindEvents(){
         S.examIdx=0;S.examSel=null;S.examAnswers=[];
         S.screen="practiceExam";r();
       }
-      else if(a==="goFeedback"){S.fb={type:"",mood:0,tags:[],message:"",screenshot:null,screenshotName:"",sending:false,sent:false,error:""};S.screen="feedback";r();}
+      else if(a==="goFeedback"){S.fb={type:"",mood:0,tags:[],message:"",sending:false,sent:false,error:""};S.screen="feedback";r();}
       else if(a==="goPin"){
         // Clear any running timers from previous visit
         if(S.pin.statInterval) clearInterval(S.pin.statInterval);
@@ -2238,56 +1693,6 @@ function bindEvents(){
     });
   }
 
-  // File input for screenshot
-  const fbFile=document.getElementById("fbFileInput");
-  if(fbFile){
-    fbFile.addEventListener("change",()=>{
-      const file=fbFile.files[0];
-      if(!file)return;
-      compressImage(file, file.name);
-    });
-    // Drag-and-drop highlight
-    const dz=document.getElementById("fbDropZone");
-    if(dz){
-      dz.addEventListener("dragover",(e)=>{e.preventDefault();dz.classList.add("drag");});
-      dz.addEventListener("dragleave",()=>dz.classList.remove("drag"));
-      dz.addEventListener("drop",(e)=>{e.preventDefault();dz.classList.remove("drag");const f=e.dataTransfer.files[0];if(f&&f.type.startsWith("image/")){compressImage(f,f.name);}});
-    }
-  }
-}
-
-// Compress image via canvas — EmailJS total payload must be under 50Kb.
-// We target 25Kb for the image alone to leave room for other fields.
-function compressImage(file, name){
-  const reader=new FileReader();
-  reader.onload=(e)=>{
-    const img=new Image();
-    img.onload=()=>{
-      const canvas=document.createElement("canvas");
-      // Hard cap at 400px wide — screenshots are readable at this size
-      const MAX=400;
-      let w=img.width, h=img.height;
-      if(w>MAX){h=Math.round(h*(MAX/w));w=MAX;}
-      // Also cap height at 600px to handle tall phone screenshots
-      if(h>600){w=Math.round(w*(600/h));h=600;}
-      canvas.width=w; canvas.height=h;
-      const ctx=canvas.getContext("2d");
-      ctx.drawImage(img,0,0,w,h);
-      // Step quality down aggressively until base64 string is under 25Kb
-      let quality=0.6;
-      let dataUrl=canvas.toDataURL("image/jpeg",quality);
-      while(dataUrl.length>25000 && quality>0.1){
-        quality=Math.round((quality-0.05)*100)/100;
-        dataUrl=canvas.toDataURL("image/jpeg",quality);
-      }
-      const kb=Math.round(dataUrl.length/1024);
-      S.fb.screenshot=dataUrl;
-      S.fb.screenshotName=name+" (compressed ~"+kb+"Kb)";
-      r(false);
-    };
-    img.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
 }
 
 // ═══════════════════════════════════════════
