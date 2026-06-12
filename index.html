@@ -48,7 +48,7 @@ h1,h2,h3{font-family:'Oswald',sans-serif;letter-spacing:0.03em}
 .ver-btn.done{border-color:#003087;border-left-color:#003087;background:#eef2fa}
 .rbar-wrap{background:#e0e0e0;border-radius:99px;height:7px;overflow:hidden;margin-top:4px}
 .rbar{height:100%;border-radius:99px;transition:width 0.6s ease}
-.rangers-header{background:linear-gradient(135deg,var(--black) 0%,var(--navy) 60%);border-radius:20px;padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.4)}
+.rangers-header{background:linear-gradient(135deg,var(--black) 0%,var(--navy) 60%);border-radius:20px;padding:22px 18px;text-align:center;margin-bottom:18px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
 .rangers-header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
 /* FEEDBACK */
 .fb-label{font-size:12px;font-weight:bold;color:#555;font-family:'Oswald',sans-serif;letter-spacing:0.06em;display:block;margin-bottom:6px;text-transform:uppercase}
@@ -855,14 +855,14 @@ function eggGetHomeLogoAndTagline(){
     return{
       logo:RW_LOGO,
       tagline:"<p style='color:#FFCC00;font-size:12px;margin:0 0 3px;font-style:italic'>🪄 It's Tuesday — Wings Day! Every Tuesday the Red Wings take over. Why? Because they've won the Stanley Cup 11 times to the Rangers' 4. Just saying. 😇</p>",
-      slogan:"<p style='color:#FFCC00;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RED WINGS! 🔴</p>"
+      slogan:"<p style='color:#FFCC00;font-size:13px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RED WINGS! 🔴</p>"
     };
   }
   // First day of month: tagline swap only
   if(date===1){
     return{
       logo:NYR_LOGO,
-      tagline:"<p style='color:rgba(255,255,255,0.9);font-size:13px;font-style:italic;margin:0 0 4px'>Turning food safety into a superpower 🦸‍♀️</p>",
+      tagline:"<p style='color:rgba(255,255,255,0.9);font-size:14px;font-style:italic;margin:0 0 5px'>Turning food safety into a superpower 🦸‍♀️</p>",
       slogan:"<p style='color:#FFCC00;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.08em;font-weight:600'>🔴 Red Wings are better (it's the 1st — fact of the month!)</p>"
     };
   }
@@ -871,13 +871,13 @@ function eggGetHomeLogoAndTagline(){
     return{
       logo:RW_LOGO,
       tagline:"<p style='color:#FFCC00;font-size:12px;margin:0 0 3px;font-style:italic'>🥚 Easter Egg activated! You tapped the logo 5 times. The Red Wings theme is yours for 30 seconds — enjoy it while it lasts! 😄</p>",
-      slogan:"<p style='color:#FFCC00;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RED WINGS! 🔴</p>"
+      slogan:"<p style='color:#FFCC00;font-size:13px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RED WINGS! 🔴</p>"
     };
   }
   return{
     logo:NYR_LOGO,
-    tagline:"<p style='color:rgba(255,255,255,0.9);font-size:13px;font-style:italic;margin:0 0 4px'>Turning food safety into a superpower 🦸‍♀️</p>",
-    slogan:"<p style='color:#A2AAAD;font-size:12px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RANGERS!</p>"
+    tagline:"<p style='color:rgba(255,255,255,0.9);font-size:14px;font-style:italic;margin:0 0 5px'>Turning food safety into a superpower 🦸‍♀️</p>",
+    slogan:"<p style='color:#A2AAAD;font-size:13px;margin:0;font-family:Oswald,sans-serif;letter-spacing:0.1em;font-weight:600'>LET'S GO RANGERS!</p>"
   };
 }
 
@@ -1023,9 +1023,9 @@ function renderHome(){
   return"<div class='wrap'>"
   +"<div class='rangers-header' style='padding:16px 18px'>"
   +"<div style='display:flex;align-items:center;gap:18px'>"
-  +"<img src='"+egg.logo+"' id='homeLogo' alt='Team Logo' style='width:33vw;max-width:150px;min-width:100px;height:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 3px 12px rgba(0,0,0,0.7));cursor:pointer' data-action='tapLogo'>"
+  +"<img src='"+egg.logo+"' id='homeLogo' alt='Team Logo' style='width:33vw;max-width:160px;min-width:110px;height:auto;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 3px 12px rgba(0,0,0,0.7));cursor:pointer' data-action='tapLogo'>"
   +"<div style='text-align:left;flex:1'>"
-  +"<h1 style='font-size:clamp(22px,7vw,32px);color:#fff;margin:0 0 2px;letter-spacing:0.05em;font-family:Oswald,sans-serif;line-height:1.1'>Kenzie's ServSafe Journey</h1>"
+  +"<h1 style='font-size:34px;color:#fff;margin:0 0 4px;letter-spacing:0.05em;font-family:Oswald,sans-serif;line-height:1'>Kenzie's ServSafe Journey</h1>"
   +"<div style='width:44px;height:3px;background:#CE1126;margin:7px 0;border-radius:2px'></div>"
   +egg.tagline
   +egg.slogan
@@ -1035,7 +1035,7 @@ function renderHome(){
   +"</div>"
   +allTopicsEgg
   +"<div class='sec-label'>🍽️ ServSafe Certification Prep</div>"
-  +"<button class='home-card' style='border-left-color:#003087' data-action='goServSafe'><span style='font-size:28px'>🍽️</span><div style='flex:1'><div style='font-size:15px;font-weight:bold;color:#222;margin-bottom:2px'>ServSafe Study Hub</div><div style='font-size:12px;color:#555'>"+ssProgress+"</div></div>"+(topicsDone===ssTopics.length&&passedExams>0?"<span style='font-size:18px'>🏆</span>":"")+"<span style='font-size:16px;color:#aaa'>›</span></button>"
+  +"<button class='home-card' style='border-left-color:#003087' data-action='goServSafe'><span style='font-size:32px'>🍽️</span><div style='flex:1'><div style='font-size:15px;font-weight:bold;color:#222;margin-bottom:2px'>ServSafe Study Hub</div><div style='font-size:12px;color:#555'>"+ssProgress+"</div></div>"+(topicsDone===ssTopics.length&&passedExams>0?"<span style='font-size:18px'>🏆</span>":"")+"<span style='font-size:16px;color:#aaa'>›</span></button>"
   +"<div style='background:rgba(0,0,0,0.25);border-radius:13px;padding:12px 16px;text-align:center;margin-top:11px;border:1px solid rgba(255,255,255,0.1)'><p style='color:rgba(255,255,255,0.85);margin:0;font-size:13px;line-height:1.7'>🏒 No timer. No pressure. You've got this! 🏒</p></div>"
   +"<button class='big-btn' style='background:linear-gradient(135deg,#CE1126,#8b0018);margin-top:10px' data-action='goFeedback'>💬 Send Feedback</button>"
   +"</div>";
