@@ -1,1 +1,6 @@
 .impeccable/
+# Trellis (transient)
+.trellis/report.json
+.trellis/.last-sent.json
+.trellis/.state.json
+.trellis/config.json
