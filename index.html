@@ -1772,10 +1772,10 @@ window.addEventListener("load", async function() {
 </script>
 <script>
 // Trellis beacon — reports app lifecycle to dashboard when configured
-// TODO: Set TRELLIS_BEACON_TOKEN via hosting environment (Vercel: Settings > Environment Variables)
+// TODO: Replace the token placeholder below with your actual Trellis token before deploying
 (function(){try{
-  const token="TRELLIS_BEACON_TOKEN"; // Placeholder; owner fills in actual token
-  if(!token||token.startsWith("TRELLIS_")) return; // silently skip if not configured
+  const token="__TRELLIS_BEACON_TOKEN__"; // Placeholder for owner to replace with actual token
+  if(!token || token.includes("__")) return; // silently skip if not configured (still has placeholder)
   const f={fields:{
     project:{stringValue:"kenzie"},
     token:{stringValue:token},
