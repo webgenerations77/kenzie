@@ -1771,5 +1771,24 @@ window.addEventListener("load", async function() {
 });
 </script>
 <script>
-(function(){try{const f={fields:{project:{stringValue:"kenzie"},token:{stringValue:"065f2834b2aeba3100557f6e1d5c0ae09d20"}}};fetch("https://firestore.googleapis.com/v1/projects/trellis-d8b55/databases/(default)/documents/beacon_reports?key=AIzaSyAxQNIV-il5DbW6ShDHJTG33cxSSe0ejwY",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(f)}).catch(()=>{});}catch(e){}})();
+// Trellis beacon — reports app lifecycle to dashboard when configured
+// TODO: Set TRELLIS_BEACON_TOKEN via hosting environment (Vercel: Settings > Environment Variables)
+(function(){try{
+  const token="TRELLIS_BEACON_TOKEN"; // Placeholder; owner fills in actual token
+  if(!token||token.startsWith("TRELLIS_")) return; // silently skip if not configured
+  const f={fields:{
+    project:{stringValue:"kenzie"},
+    token:{stringValue:token},
+    event:{stringValue:"heartbeat"},
+    status:{stringValue:"ok"},
+    at:{timestampValue:new Date().toISOString()},
+    expireAt:{timestampValue:new Date(Date.now()+90*24*3600*1000).toISOString()}
+  }};
+  fetch("https://firestore.googleapis.com/v1/projects/trellis-d8b55/databases/(default)/documents/beacon_reports",{
+    method:"POST",
+    keepalive:true,
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(f)
+  }).catch(()=>{});
+}catch(e){}})();
 </script></body></html>
