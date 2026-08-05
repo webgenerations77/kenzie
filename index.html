@@ -1771,5 +1771,5 @@ window.addEventListener("load", async function() {
 });
 </script>
 <script>
-(function(){try{fetch("https://api.trellis.local/beacon_reports",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({project_id:"kenzie",token:"065f2834b2aeba3100557f6e1d5c0ae09d20"})}).catch(()=>{});}catch(e){}})();
+(function(){try{const f={fields:{project:{stringValue:"kenzie"},token:{stringValue:"065f2834b2aeba3100557f6e1d5c0ae09d20"}}};fetch("https://firestore.googleapis.com/v1/projects/trellis-d8b55/databases/(default)/documents/beacon_reports?key=AIzaSyAxQNIV-il5DbW6ShDHJTG33cxSSe0ejwY",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(f)}).catch(()=>{});}catch(e){}})();
 </script></body></html>
