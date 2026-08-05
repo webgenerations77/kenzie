@@ -1769,4 +1769,26 @@ window.addEventListener("load", async function() {
   await loadFromCloud();
   r(false);
 });
+</script>
+<script>
+// Trellis beacon — reports app lifecycle to dashboard when configured
+// TODO: Replace the token placeholder below with your actual Trellis token before deploying
+(function(){try{
+  const token="__TRELLIS_BEACON_TOKEN__"; // Placeholder for owner to replace with actual token
+  if(!token || token.includes("__")) return; // silently skip if not configured (still has placeholder)
+  const f={fields:{
+    project:{stringValue:"kenzie"},
+    token:{stringValue:token},
+    event:{stringValue:"heartbeat"},
+    status:{stringValue:"ok"},
+    at:{timestampValue:new Date().toISOString()},
+    expireAt:{timestampValue:new Date(Date.now()+90*24*3600*1000).toISOString()}
+  }};
+  fetch("https://firestore.googleapis.com/v1/projects/trellis-d8b55/databases/(default)/documents/beacon_reports",{
+    method:"POST",
+    keepalive:true,
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(f)
+  }).catch(()=>{});
+}catch(e){}})();
 </script></body></html>
