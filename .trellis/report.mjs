@@ -157,14 +157,43 @@ function buildPayload(report, cfg, sessionId, trigger) {
       if (report.version[k] != null) v[k] = clampStr(report.version[k], 500)
     if (Object.keys(v).length) f.version = v
   }
+  // ⚠⚠ `status` IS ACCEPTED AS AN ALIAS FOR `action`, AND THAT IS NOT SLOPPINESS.
+  // On 2026-08-25 four sessions in one project wrote `status: "fixed"` — which is
+  // exactly what Trellis's own bug records call this field — and the old line here
+  // turned all EIGHTEEN of them into `found`, because an unrecognized value fell
+  // through to the default. Eighteen finished fixes arrived as eighteen fresh
+  // discoveries; no error was raised anywhere, the reports sent cleanly, and the
+  // bugs then sat un-closeable for three days because they also carried no note.
+  // The trap is that the input schema and the stored schema use different names
+  // for one idea, so `status` is the natural thing to write. Accepting both is
+  // the cheapest way to close it for good.
+  //
+  // ⚠ AND AN UNRECOGNIZED VALUE NO LONGER VANISHES SILENTLY. It still sends as
+  // `found` — refusing the report outright would throw away a whole session's
+  // record, and this file exits 0 on every path precisely so it can never take a
+  // session down — but it now says so in `findings`, which reaches the owner.
+  // A silent default that CREATES work is the dangerous direction: it manufactures
+  // a backlog nobody can close, which is the permissive-collapse family this
+  // project keeps paying for.
+  const BUG_ACTIONS = ['found', 'fixed', 'reopened']
+  const badActions = []
   if (Array.isArray(report.bugs))
-    f.bugs = clampArr(report.bugs, 20).map((b) => ({
-      key: clampStr(b.key, 80),
-      title: clampStr(b.title, 200),
-      severity: ['critical', 'high', 'medium', 'low'].includes(b.severity) ? b.severity : 'medium',
-      action: ['found', 'fixed', 'reopened'].includes(b.action) ? b.action : 'found',
-      ...(b.note ? { note: clampStr(b.note, 500) } : {}),
-    }))
+    f.bugs = clampArr(report.bugs, 20).map((b) => {
+      const named = BUG_ACTIONS.includes(b.action)
+        ? b.action
+        : BUG_ACTIONS.includes(b.status)
+          ? b.status
+          : null
+      if (named === null && (b.action != null || b.status != null))
+        badActions.push(`${clampStr(b.key, 80)}="${clampStr(b.action ?? b.status, 20)}"`)
+      return {
+        key: clampStr(b.key, 80),
+        title: clampStr(b.title, 200),
+        severity: ['critical', 'high', 'medium', 'low'].includes(b.severity) ? b.severity : 'medium',
+        action: named ?? 'found',
+        ...(b.note ? { note: clampStr(b.note, 500) } : {}),
+      }
+    })
   if (report.tests && typeof report.tests === 'object') {
     const t = {}
     if (typeof report.tests.ran === 'boolean') t.ran = report.tests.ran
@@ -179,6 +208,23 @@ function buildPayload(report, cfg, sessionId, trigger) {
       ...(x.severity ? { severity: x.severity } : {}),
       text: clampStr(x.text, 500),
     }))
+
+  // The only channel this file has that the owner actually reads. Appended after
+  // the session's own findings so it can never displace one, and clamped back to
+  // the same 20 the block above enforces.
+  if (badActions.length)
+    f.findings = [
+      ...(f.findings || []),
+      {
+        type: 'todo',
+        text: clampStr(
+          `Report format: ${badActions.length} bug ${badActions.length === 1 ? 'entry' : 'entries'} named an ` +
+            `action this reporter does not recognize and ${badActions.length === 1 ? 'was' : 'were'} recorded as ` +
+            `"found" — ${badActions.join(', ')}. Valid values are found, fixed or reopened (.trellis/README.md).`,
+          500,
+        ),
+      },
+    ].slice(0, 20)
 
   const fields = Object.fromEntries(
     Object.entries(f)
