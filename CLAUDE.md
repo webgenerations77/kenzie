@@ -9,6 +9,11 @@ This project reports dev activity to Trellis. Maintain `.trellis/report.json`
   `key` (reuse the same key when fixing a bug found earlier), a severity
   (critical/high/medium/low), plus test results, version/deploy changes, and
   notable review/security findings or TODOs.
+- Set `roadmap` to the whole plan you can see from here — every upcoming step
+  in the order you would do them, each with a stable kebab-case `key` and a
+  one-line `title`. It REPLACES the stored one, so restate every step that is
+  still coming; a step you leave out is a step Trellis treats as no longer
+  planned. Omit the field entirely only if you genuinely cannot see what is next.
 - Keep `summary` plain-language — the reader is a non-developer.
 - A Stop hook sends the file automatically; if asked to write the report
   before stopping, do so immediately, then stop. `/trellis-report` sends on
