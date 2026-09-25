@@ -1,0 +1,5 @@
+# Extra packages for fetch.py and frames.py (run on the Ubuntu server).
+# Also install ffmpeg with: sudo apt install ffmpeg
+-r requirements.txt
+yt-dlp>=2024.1.1
+Pillow>=10.0

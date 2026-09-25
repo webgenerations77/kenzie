@@ -1,0 +1,12 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Large media produced on the server by fetch.py / frames.py
+data/clips/
+data/frames/
+output/contact_sheets/

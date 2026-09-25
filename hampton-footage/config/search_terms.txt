@@ -1,0 +1,12 @@
+# One YouTube search query per line. Blank lines and lines starting with # are ignored.
+# Each query costs 100 units of the 10,000/day YouTube Data API quota.
+Dave Matthews Band Hampton 1996
+DMB 12/31/96
+DMB New Years Eve 1996
+Dave Matthews Hampton Coliseum New Years
+Tripping Billies Hampton 1996
+Dave Matthews Bela Fleck 1996
+Dave Matthews Flecktones Hampton
+DMB Live Trax 7
+Dave Matthews Band 1996 camcorder
+Dave Matthews Band balloon drop
