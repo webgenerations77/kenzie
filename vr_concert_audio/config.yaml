@@ -1,0 +1,43 @@
+# Configuration for the VR concert audio pipeline.
+# Copy this file (e.g. `cp config.yaml my_song.yaml`) and edit `input_path`
+# per song, or override any field with a CLI flag (see `--help`).
+
+# Path to the source recording (WAV or FLAC). Not committed to the repo —
+# supply your own file at runtime.
+input_path: "input/song.wav"
+
+# Directory where all pipeline outputs are written.
+output_dir: "output"
+
+# --- Stem separation (Demucs) ---
+separation:
+  # htdemucs_6s splits into: vocals, drums, bass, guitar, piano, other.
+  model: "htdemucs_6s"
+  # "auto" picks cuda if available, else cpu. Can force "cuda" or "cpu".
+  device: "auto"
+  # Shifts trade runtime for slightly better separation quality (Demucs
+  # "shifts" trick). 0 = fastest, 1-2 = higher quality, much slower on CPU.
+  shifts: 0
+  # Split the input into overlapping segments to bound peak memory use.
+  # Useful on GPUs with limited VRAM; ignored if null.
+  segment: null
+  # Output audio format for stems.
+  stem_format: "wav"
+
+# --- Full-mix analysis (librosa) ---
+analysis:
+  sample_rate: 44100
+  # Beat tracking tightness; higher = stricter adherence to the estimated
+  # tempo. librosa default is 100.
+  tightness: 100
+  # Minimum section length (seconds) when detecting section boundaries.
+  min_section_seconds: 8.0
+  # Number of section boundaries to aim for; null lets the algorithm decide
+  # based on song length.
+  max_sections: null
+
+# --- Output ---
+output:
+  beat_map_filename: "beat_map.json"
+  markers_filename: "markers.csv"
+  summary_filename: "summary.txt"

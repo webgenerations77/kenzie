@@ -6,3 +6,17 @@
 .trellis/config.json
 # Trellis (transient)
 .trellis/.lock-session
+
+# VR concert audio pipeline: never commit real audio or generated pipeline output
+*.wav
+*.flac
+*.mp3
+*.aiff
+*.aif
+*.m4a
+*.ogg
+*.opus
+vr_concert_audio/input/
+vr_concert_audio/output/
+vr_concert_audio/.venv/
+vr_concert_audio/**/__pycache__/
